@@ -1,0 +1,43 @@
+# Live path: 1H Nifty + Sensex RSI + 5-strike OI/PCR from Angel, Telegram every
+# 15 min with P&L, paper fills. Stocks and other indices are out of scope.
+# Live Angel One orders stay off.
+
+universe:
+  - NIFTY
+  - SENSEX
+
+mode: paper            # 1H Nifty + Sensex futures paper; observe = quotes only
+
+notifications:
+  console: true
+  telegram: true       # Used only when TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are set
+  telegram_every_scan: true   # 15-minute status + P&L snapshot, not only on trade signals
+  interval_minutes: 15
+  market_start: "09:30"       # Telegram from 9:30
+  market_end: "15:40"         # Telegram through 3:40
+  paper_end: "15:30"          # No paper fills after cash/F&O close
+
+strategy:
+  symbol: NIFTY
+  symbols:
+    - NIFTY
+    - SENSEX
+  timeframe: ONE_HOUR
+  rsi_period: 14
+  rsi_short: 70        # Short when 1H RSI >= 70
+  rsi_long: 30         # Long when 1H RSI <= 30
+  rsi_cover_short: 35  # Remaining short: book from 35 if ATM ΔPCR > 1, else at 30
+  rsi_cover_long: 65   # Remaining long: book from 65 if ATM ΔPCR < 0.8, else at 70
+  change_pcr_short_max: 0.8   # Short only if 5-strike ΔPCR < 0.8
+  change_pcr_long_min: 1.0    # Long only if 5-strike ΔPCR > 1.0
+  min_trading_days_to_expiry: 10
+  first_target_pct: 1.5       # If this hits first, book 1 of 2 lots
+  stop_loss_pct: 0.75         # Adverse move from entry: close all remaining lots
+  lots: 2                     # RSI+ATM ΔPCR before 1.5% books both lots
+
+google_sheets:
+  sheet_id: "1PhX3QFeNLMMITd8glmZ3C2YfoAeRJ9wZjXOeB0hjrPY"
+  worksheets:
+    - "RSI Paper trades"
+    - "RSI Portfolio Summary"
+    - "Supertrend Paper trades"

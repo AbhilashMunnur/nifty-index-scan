@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.cache/
+logs/
+secrets/
+.DS_Store
+data/rsi_only_5y_backtest.json
+data/pnl_cards/
+data/atm_premium_mark.json

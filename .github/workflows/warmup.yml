@@ -1,0 +1,29 @@
+name: Warm and kick 09:30 chain
+
+# Disabled: an 08:30 IST runner that sleeps until 09:30 billed ~50 minutes
+# before the open. cron-job.org (and the slot crons in scan.yml) start 09:30.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: nifty-1h-warmup
+  cancel-in-progress: true
+
+jobs:
+  kick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TZ: Asia/Kolkata
+    steps:
+      - name: Kick 09:30 scan
+        env:
+          GH_TOKEN: ${{ secrets.SCAN_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "SCAN_DISPATCH_TOKEN not set — cannot kick."
+            exit 0
+          fi
+          gh api --method POST "repos/${{ github.repository }}/dispatches" \
+            -f event_type='nifty-scan'
+          echo "Dispatched nifty-scan."

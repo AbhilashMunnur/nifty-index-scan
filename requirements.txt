@@ -1,0 +1,19 @@
+python-dotenv>=1.0.0
+requests>=2.31.0
+PyYAML>=6.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+yfinance>=0.2.40
+
+# Angel One SmartAPI
+smartapi-python>=1.5.5
+pyotp>=2.9.0
+logzero>=1.7.0
+websocket-client>=1.7.0
+
+# P&L card JPG for Telegram
+Pillow>=10.0.0
+
+# Optional: Telegram + Google Sheets
+gspread>=6.0.0
+google-auth>=2.28.0

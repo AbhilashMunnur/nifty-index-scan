@@ -1,0 +1,123 @@
+name: Nifty 1H RSI + OI scan
+
+# Stay inside GitHub Free's 2,000 min/month (private repos, shared with OI).
+# Tue/Thu: 09:30–15:30 IST every 15 min, plus 15:10, 15:15, and 15:40 (27 jobs).
+# Mon/Wed/Fri: 09:30–15:30 every 30 min, plus 15:40. No 15:10 or 15:15 (14 jobs).
+# One run per slot is about 750–900 min/month. Each Telegram includes a P&L snapshot.
+on:
+  schedule:
+    # Tue/Thu 09:30–15:15 IST (04:00–09:45 UTC). 09:45 UTC is 15:15 IST.
+    - cron: "0,15,30,45 4-9 * * 2,4"
+    # Tue/Thu 15:10 IST (09:40 UTC)
+    - cron: "40 9 * * 2,4"
+    # Mon/Wed/Fri 09:30–15:00 IST every 30 min (04:00–09:30 UTC)
+    - cron: "0,30 4-9 * * 1,3,5"
+    # 15:30 IST (10:00 UTC) every weekday
+    - cron: "0 10 * * 1-5"
+    # 15:40 IST (10:10 UTC) close every weekday
+    - cron: "10 10 * * 1-5"
+    # One late kick if GitHub skips 09:30 IST (04:02 UTC)
+    - cron: "2 4 * * 1-5"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [nifty-scan]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    concurrency:
+      group: nifty-1h-scan
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Kolkata
+      ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
+      ANGEL_CLIENT_CODE: ${{ secrets.ANGEL_CLIENT_CODE }}
+      ANGEL_PIN: ${{ secrets.ANGEL_PIN }}
+      ANGEL_TOTP_SECRET: ${{ secrets.ANGEL_TOTP_SECRET }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Slot guard
+        id: slot
+        run: |
+          python3 - <<'PY'
+          import os
+          from src.scan_slots import should_run_slot
+
+          event = os.environ.get("GITHUB_EVENT_NAME", "")
+          force = event == "workflow_dispatch"
+          run, reason, slot = should_run_slot(force=force)
+          print(reason)
+          if slot is not None:
+              print(f"slot={slot.isoformat()}")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+              handle.write(f"run={'true' if run else 'false'}\n")
+          PY
+
+      - uses: actions/setup-python@v5
+        if: steps.slot.outputs.run == 'true'
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        if: steps.slot.outputs.run == 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-dejavu-core
+          pip install -r requirements.txt
+
+      - name: Cache key for today
+        if: steps.slot.outputs.run == 'true'
+        id: today
+        run: echo "date=$(date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore market data cache
+        if: steps.slot.outputs.run == 'true'
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: nifty-market-${{ steps.today.outputs.date }}
+          restore-keys: |
+            nifty-market-
+
+      - name: Run scan
+        if: steps.slot.outputs.run == 'true'
+        timeout-minutes: 10
+        run: python -u main.py --once --slot-guard
+
+      - name: Save paper book and slot marker
+        if: always() && steps.slot.outputs.run == 'true'
+        run: |
+          mkdir -p data
+          # This scan's full 5-strike OI + premium snapshot must survive the
+          # ephemeral runner so the next 15-minute alert can classify flow.
+          # 14:30 Nifty+Sensex mark is the baseline for extra 15:00 / 15:10 /
+          # 15:15 power-hour BUY/WRITE scans (interval starts 14:30, not last 15 min).
+          git add data/band_scan_mark.json data/sensex_band_scan_mark.json data/power_hour_mark.json data/nifty_paper_book.json data/sensex_paper_book.json 2>/dev/null || true
+          if [ -z "$(git status --porcelain data)" ]; then
+            echo "Ledger unchanged."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "Update Nifty/Sensex paper books [skip ci]"
+
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase --autostash origin HEAD || true
+          done
+          echo "Could not push the ledger after 3 attempts."
+          exit 1
