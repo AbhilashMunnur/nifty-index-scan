@@ -51,11 +51,19 @@ jobs:
         run: |
           python3 - <<'PY'
           import os
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
           from src.scan_slots import should_run_slot
 
-          event = os.environ.get("GITHUB_EVENT_NAME", "")
-          force = event == "workflow_dispatch"
-          run, reason, slot = should_run_slot(force=force)
+          # Private Actions minutes reset 1 Oct 2026 00:00 UTC. This public
+          # copy stays quiet after that so both repos do not text the same slot.
+          if datetime.now(ZoneInfo("UTC")) >= datetime(2026, 10, 1, tzinfo=ZoneInfo("UTC")):
+              print("private repo resumed; public copy stays quiet")
+              run, reason, slot = False, "handed back to nifty-index-trade", None
+          else:
+              event = os.environ.get("GITHUB_EVENT_NAME", "")
+              force = event == "workflow_dispatch"
+              run, reason, slot = should_run_slot(force=force)
           print(reason)
           if slot is not None:
               print(f"slot={slot.isoformat()}")
