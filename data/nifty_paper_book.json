@@ -1,26 +1,7 @@
 {
-  "updated_at": "2026-09-25 12:31:15",
-  "realised_pnl": -23023.45,
-  "position": {
-    "direction": "LONG",
-    "tradingsymbol": "NIFTY29SEP26FUT",
-    "expiry": "2026-09-29",
-    "token": "68407",
-    "lot_size": 65,
-    "lots": 2,
-    "scale_lot_open": true,
-    "rsi_lot_open": true,
-    "first_target_pct": 1.5,
-    "first_target_price": 23691.11,
-    "stop_loss_pct": 0.75,
-    "stop_loss_price": 23165.94,
-    "entry_time": "2026-09-11 10:33:43",
-    "entry_price": 23341.0,
-    "entry_rsi": 27.7,
-    "pcr": 1.57,
-    "change_pcr": 1.17,
-    "reason": "1H RSI 27.7 <= 30 and \u0394PCR 1.17 > 1 (PCR 1.57)"
-  },
+  "updated_at": "2026-09-25 13:00:51",
+  "realised_pnl": -45780.92,
+  "position": null,
   "closed": [
     {
       "direction": "LONG",
@@ -33,6 +14,19 @@
       "exit_time": "2026-09-11 09:42:08",
       "exit_price": 23436.7,
       "pnl": -23023.45,
+      "exit_reason": "SL 0.75% against entry"
+    },
+    {
+      "direction": "LONG",
+      "tradingsymbol": "NIFTY29SEP26FUT",
+      "expiry": "2026-09-29",
+      "lots": 2,
+      "entry_time": "2026-09-11 10:33:43",
+      "entry_price": 23341.0,
+      "entry_rsi": 27.7,
+      "exit_time": "2026-09-25 13:00:51",
+      "exit_price": 23165.94,
+      "pnl": -22757.47,
       "exit_reason": "SL 0.75% against entry"
     }
   ]
