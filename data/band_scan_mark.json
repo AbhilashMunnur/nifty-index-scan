@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28 14:31:50",
+  "updated_at": "2026-09-28 15:02:01",
   "expiry": "2026-09-29",
   "atm": 22800.0,
   "lot_size": 65,
@@ -7,42 +7,42 @@
     {
       "label": "ITM2",
       "strike": 22700.0,
-      "call_oi": 2044640,
-      "put_oi": 12883585,
-      "call_ltp": 166.75,
-      "put_ltp": 36.8
+      "call_oi": 2185560,
+      "put_oi": 13455975,
+      "call_ltp": 147.8,
+      "put_ltp": 38.75
     },
     {
       "label": "ITM1",
       "strike": 22750.0,
-      "call_oi": 2319525,
-      "put_oi": 9701510,
-      "call_ltp": 130.25,
-      "put_ltp": 50.9
+      "call_oi": 3488485,
+      "put_oi": 10985650,
+      "call_ltp": 112.35,
+      "put_ltp": 54.0
     },
     {
       "label": "ATM",
       "strike": 22800.0,
-      "call_oi": 14469325,
-      "put_oi": 20049120,
-      "call_ltp": 99.05,
-      "put_ltp": 70.25
+      "call_oi": 17933175,
+      "put_oi": 20402395,
+      "call_ltp": 82.9,
+      "put_ltp": 74.4
     },
     {
       "label": "OTM1",
       "strike": 22850.0,
-      "call_oi": 17201730,
-      "put_oi": 9508265,
-      "call_ltp": 73.25,
-      "put_ltp": 94.75
+      "call_oi": 15599675,
+      "put_oi": 7944170,
+      "call_ltp": 59.35,
+      "put_ltp": 100.85
     },
     {
       "label": "OTM2",
       "strike": 22900.0,
-      "call_oi": 23914085,
-      "put_oi": 9447555,
-      "call_ltp": 53.65,
-      "put_ltp": 124.8
+      "call_oi": 21864895,
+      "put_oi": 8084895,
+      "call_ltp": 42.15,
+      "put_ltp": 133.35
     }
   ]
 }
