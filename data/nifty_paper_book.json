@@ -1,7 +1,26 @@
 {
-  "updated_at": "2026-09-25 13:00:51",
+  "updated_at": "2026-09-29 13:31:16",
   "realised_pnl": -45780.92,
-  "position": null,
+  "position": {
+    "direction": "LONG",
+    "tradingsymbol": "NIFTY27OCT26FUT",
+    "expiry": "2026-10-27",
+    "token": "48704",
+    "lot_size": 65,
+    "lots": 2,
+    "scale_lot_open": true,
+    "rsi_lot_open": true,
+    "first_target_pct": 1.5,
+    "first_target_price": 23153.77,
+    "stop_loss_pct": 0.75,
+    "stop_loss_price": 22640.51,
+    "entry_time": "2026-09-29 13:31:16",
+    "entry_price": 22811.6,
+    "entry_rsi": 29.8,
+    "pcr": 1.62,
+    "change_pcr": 1.14,
+    "reason": "1H RSI 29.8 <= 30 and \u0394PCR 1.14 > 1 (PCR 1.62)"
+  },
   "closed": [
     {
       "direction": "LONG",
