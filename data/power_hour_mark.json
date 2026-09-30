@@ -1,105 +1,105 @@
 {
-  "date": "2026-09-29",
+  "date": "2026-09-30",
   "baseline_slot": "14:30",
-  "updated_at": "2026-09-29 14:35:46",
+  "updated_at": "2026-09-30 14:32:17",
   "indices": {
     "NIFTY": {
-      "updated_at": "2026-09-29 14:35:46",
-      "expiry": "2026-09-29",
+      "updated_at": "2026-09-30 14:32:17",
+      "expiry": "2026-10-06",
       "atm": 22650.0,
       "lot_size": 65,
       "strikes": [
         {
           "label": "ITM2",
           "strike": 22550.0,
-          "call_oi": 1975870,
-          "put_oi": 16801590,
-          "call_ltp": 133.75,
-          "put_ltp": 7.75
+          "call_oi": 579280,
+          "put_oi": 1989260,
+          "call_ltp": 210.75,
+          "put_ltp": 94.5
         },
         {
           "label": "ITM1",
           "strike": 22600.0,
-          "call_oi": 7842770,
-          "put_oi": 32770075,
-          "call_ltp": 91.55,
-          "put_ltp": 16.1
+          "call_oi": 3535740,
+          "put_oi": 8469695,
+          "call_ltp": 179.1,
+          "put_ltp": 113.45
         },
         {
           "label": "ATM",
           "strike": 22650.0,
-          "call_oi": 14703065,
-          "put_oi": 24035895,
-          "call_ltp": 56.5,
-          "put_ltp": 30.85
+          "call_oi": 2205905,
+          "put_oi": 3277495,
+          "call_ltp": 150.6,
+          "put_ltp": 136.65
         },
         {
           "label": "OTM1",
           "strike": 22700.0,
-          "call_oi": 25655760,
-          "put_oi": 17817735,
-          "call_ltp": 31.6,
-          "put_ltp": 55.6
+          "call_oi": 9729135,
+          "put_oi": 8634405,
+          "call_ltp": 125.75,
+          "put_ltp": 161.4
         },
         {
           "label": "OTM2",
           "strike": 22750.0,
-          "call_oi": 16586440,
-          "put_oi": 5799430,
-          "call_ltp": 16.3,
-          "put_ltp": 90.3
+          "call_oi": 5916560,
+          "put_oi": 2825225,
+          "call_ltp": 103.85,
+          "put_ltp": 188.45
         }
       ],
-      "spot": 22670.75
+      "spot": 22631.3
     },
     "SENSEX": {
-      "updated_at": "2026-09-29 14:35:46",
+      "updated_at": "2026-09-30 14:32:17",
       "expiry": "2026-10-01",
-      "atm": 72400.0,
+      "atm": 72500.0,
       "lot_size": 20,
       "strikes": [
         {
           "label": "ITM2",
-          "strike": 72200.0,
-          "call_oi": 187940,
-          "put_oi": 696660,
-          "call_ltp": 606.0,
-          "put_ltp": 208.8
+          "strike": 72300.0,
+          "call_oi": 251860,
+          "put_oi": 1469860,
+          "call_ltp": 418.4,
+          "put_ltp": 163.4
         },
         {
           "label": "ITM1",
-          "strike": 72300.0,
-          "call_oi": 283640,
-          "put_oi": 696800,
-          "call_ltp": 541.75,
-          "put_ltp": 242.0
+          "strike": 72400.0,
+          "call_oi": 343900,
+          "put_oi": 1322460,
+          "call_ltp": 354.3,
+          "put_ltp": 201.55
         },
         {
           "label": "ATM",
-          "strike": 72400.0,
-          "call_oi": 341020,
-          "put_oi": 585300,
-          "call_ltp": 479.6,
-          "put_ltp": 281.1
+          "strike": 72500.0,
+          "call_oi": 1281320,
+          "put_oi": 2724340,
+          "call_ltp": 298.05,
+          "put_ltp": 243.55
         },
         {
           "label": "OTM1",
-          "strike": 72500.0,
-          "call_oi": 911340,
-          "put_oi": 876620,
-          "call_ltp": 419.0,
-          "put_ltp": 320.7
+          "strike": 72600.0,
+          "call_oi": 1286860,
+          "put_oi": 1440660,
+          "call_ltp": 247.05,
+          "put_ltp": 297.05
         },
         {
           "label": "OTM2",
-          "strike": 72600.0,
-          "call_oi": 470380,
-          "put_oi": 307620,
-          "call_ltp": 365.0,
-          "put_ltp": 365.35
+          "strike": 72700.0,
+          "call_oi": 1864720,
+          "put_oi": 1418540,
+          "call_ltp": 202.2,
+          "put_ltp": 350.95
         }
       ],
-      "spot": 72408.83
+      "spot": 72483.21
     }
   }
 }
