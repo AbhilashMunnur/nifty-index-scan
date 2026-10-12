@@ -219,6 +219,11 @@ def save_premium_mark(band: BandPcr, path: Path = MARKER) -> None:
     }
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    from src.scan_history import append_scan, history_kind
+
+    kind = history_kind(path)
+    if kind:
+        append_scan(kind, payload)
 
 
 def _prev_by_strike(mark: dict, expiry: str) -> dict[float, dict]:

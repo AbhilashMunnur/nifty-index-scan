@@ -94,32 +94,43 @@ jobs:
             nifty-market-
 
       - name: Run scan
+        id: scan
         if: steps.slot.outputs.run == 'true'
         timeout-minutes: 10
         run: python -u main.py --once --slot-guard
 
       - name: Save paper book and slot marker
+        id: save
         if: always() && steps.slot.outputs.run == 'true'
         run: |
-          mkdir -p data
-          # This scan's full 5-strike OI + premium snapshot must survive the
-          # ephemeral runner so the next 15-minute alert can classify flow.
-          # 14:30 Nifty+Sensex mark is the baseline for extra 15:00 / 15:10 /
-          # 15:15 power-hour BUY/WRITE scans (interval starts 14:30, not last 15 min).
-          git add data/band_scan_mark.json data/sensex_band_scan_mark.json data/power_hour_mark.json data/nifty_paper_book.json data/sensex_paper_book.json 2>/dev/null || true
-          if [ -z "$(git status --porcelain data)" ]; then
+          mkdir -p /tmp/kept-data data
+          cp -a data/. /tmp/kept-data/
+          git fetch origin main
+          git checkout -B main origin/main
+          git reset --hard origin/main
+          python3 scripts/keep_ledger.py /tmp/kept-data data
+          git add data
+          if git diff --cached --quiet; then
             echo "Ledger unchanged."
             exit 0
           fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data
           git commit -m "Update Nifty/Sensex paper books [skip ci]"
-
           for attempt in 1 2 3; do
-            if git push; then exit 0; fi
-            git pull --rebase --autostash origin HEAD || true
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git reset --hard origin/main
+            python3 scripts/keep_ledger.py /tmp/kept-data data
+            git add data
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Update Nifty/Sensex paper books [skip ci]"
           done
           echo "Could not push the ledger after 3 attempts."
           exit 1
+
+      - name: Publish public desk
+        if: steps.slot.outputs.run == 'true' && steps.scan.outcome == 'success' && steps.save.outcome == 'success'
+        env:
+          DESK_DEPLOY_KEY: ${{ secrets.DESK_DEPLOY_KEY }}
+        run: python scripts/publish_desk.py --push
