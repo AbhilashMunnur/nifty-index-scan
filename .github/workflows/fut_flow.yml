@@ -1,0 +1,122 @@
+name: Nifty and Sensex futures 15m flow
+
+# Public copy of the futures alerts while private Actions jobs are refused.
+# Every weekday 09:30–15:30 IST, every 15 minutes.
+on:
+  schedule:
+    - cron: "0,15,30,45 4-9 * * 1-5"
+    - cron: "0 10 * * 1-5"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [nifty-fut-flow]
+
+jobs:
+  fut-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    concurrency:
+      group: nifty-fut-flow
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Kolkata
+      ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
+      ANGEL_CLIENT_CODE: ${{ secrets.ANGEL_CLIENT_CODE }}
+      ANGEL_PIN: ${{ secrets.ANGEL_PIN }}
+      ANGEL_TOTP_SECRET: ${{ secrets.ANGEL_TOTP_SECRET }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Slot guard
+        id: slot
+        run: |
+          python3 - <<'PY'
+          import os
+          from src.fut_slots import should_run_fut_slot
+
+          event = os.environ.get("GITHUB_EVENT_NAME", "")
+          force = event == "workflow_dispatch"
+          run, reason, slot = should_run_fut_slot(force=force)
+          print(reason)
+          if slot is not None:
+              print(f"slot={slot.isoformat()}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+              handle.write(f"run={'true' if run else 'false'}\n")
+              if slot is not None:
+                  handle.write(f"id={slot.strftime('%Y%m%dT%H%M')}\n")
+          PY
+
+      - name: Claim this slot
+        id: claim
+        if: steps.slot.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="fut-slot-${{ steps.slot.outputs.id }}"
+          SHA=$(git rev-parse HEAD)
+          if gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+            -f ref="refs/tags/${TAG}" \
+            -f sha="$SHA"; then
+            echo "owned=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Futures slot ${TAG} already claimed. No second alert."
+            echo "owned=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.slot.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        if: steps.slot.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Run futures flow
+        id: flow
+        if: steps.slot.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
+        timeout-minutes: 5
+        run: python -u fut_flow.py
+
+      - name: Save futures mark
+        id: save
+        if: always() && steps.slot.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
+        run: |
+          mkdir -p /tmp/kept-data data
+          cp -a data/. /tmp/kept-data/
+          git fetch origin main
+          git checkout -B main origin/main
+          git reset --hard origin/main
+          python3 scripts/keep_ledger.py /tmp/kept-data data
+          git add data
+          if git diff --cached --quiet; then
+            echo "Futures mark unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update Nifty and Sensex futures flow marks [skip ci]"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git reset --hard origin/main
+            python3 scripts/keep_ledger.py /tmp/kept-data data
+            git add data
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Update Nifty and Sensex futures flow marks [skip ci]"
+          done
+          echo "Could not push the futures mark after 3 attempts."
+          exit 1
+
+      - name: Publish public desk
+        if: steps.slot.outputs.run == 'true' && steps.claim.outputs.owned == 'true' && steps.flow.outcome == 'success' && steps.save.outcome == 'success'
+        env:
+          DESK_DEPLOY_KEY: ${{ secrets.DESK_DEPLOY_KEY }}
+        run: python scripts/publish_desk.py --push

@@ -241,6 +241,23 @@ class IndexMarket:
                 return float(quote["ltp"])
         return None
 
+    def get_future_quote(self, contract: FutureContract) -> tuple[float | None, int | None]:
+        """Front-month futures price and open interest. Does not read the option chain."""
+        if not contract.token:
+            return None, None
+        try:
+            quotes = self._fetch_option_quotes(contract.exchange, [contract.token])
+        except Exception as exc:
+            print(f"  {contract.tradingsymbol}: futures quote failed ({exc})")
+            return None, None
+        row = quotes.get(contract.token) or {}
+        ltp = row.get("ltp")
+        oi = row.get("oi")
+        return (
+            None if ltp is None else float(ltp),
+            None if oi is None else int(oi),
+        )
+
     def hourly_rsi(self, symbol: str, ltp: float, period: int = 14) -> float | None:
         """Wilder RSI on 1-hour Nifty/Sensex candles, with the live bar set to LTP."""
         spec = require_index(symbol)
