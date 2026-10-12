@@ -199,5 +199,29 @@
       ],
       "slot": "2026-10-12 10:30"
     }
+  ],
+  "nifty_fut": [
+    {
+      "updated_at": "2026-10-12 10:52:10",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 22491.4,
+      "oi": 19039280,
+      "slot": "2026-10-12 10:45"
+    }
+  ],
+  "sensex_fut": [
+    {
+      "updated_at": "2026-10-12 10:52:11",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 72320.0,
+      "oi": 92300,
+      "slot": "2026-10-12 10:45"
+    }
   ]
 }
