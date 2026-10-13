@@ -1,0 +1,105 @@
+name: Futures day summary
+
+# Around 16:00 IST. Separate from the 15-minute futures alerts and the option scan.
+# 16:00 and 16:15 IST (10:30 and 10:45 UTC). The day tag lets only one of them text.
+on:
+  schedule:
+    - cron: "30,45 10 * * 1-5"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [nifty-fut-day]
+
+jobs:
+  fut-day:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    concurrency:
+      group: fut-day
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Kolkata
+      ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
+      ANGEL_CLIENT_CODE: ${{ secrets.ANGEL_CLIENT_CODE }}
+      ANGEL_PIN: ${{ secrets.ANGEL_PIN }}
+      ANGEL_TOTP_SECRET: ${{ secrets.ANGEL_TOTP_SECRET }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Trading day
+        id: day
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from src.scan_slots import is_trading_day, now_ist
+          now = now_ist()
+          today = now.strftime("%Y-%m-%d")
+          ready = is_trading_day(now.date())
+          if not ready:
+              print(f"holiday {today}")
+          for name in ("nifty", "sensex"):
+              opened = json.loads(Path(f"data/{name}_fut_day_open.json").read_text())
+              closed = json.loads(Path(f"data/{name}_fut_flow_mark.json").read_text())
+              open_at = str(opened.get("updated_at", ""))
+              close_at = str(closed.get("updated_at", ""))
+              if not open_at.startswith(today) or not close_at.startswith(today):
+                  print(f"{name}: session marks are not both from {today}")
+                  ready = False
+                  continue
+              if close_at[11:16] < "15:00":
+                  print(f"{name}: close {close_at} is before 15:00, not claiming the day")
+                  ready = False
+          if ready:
+              print(f"trading day {today}, close marks are in")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+              handle.write(f"run={'true' if ready else 'false'}\n")
+              handle.write(f"id={now.strftime('%Y%m%d')}\n")
+          PY
+
+      - name: Claim this day
+        id: claim
+        if: steps.day.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="fut-day-${{ steps.day.outputs.id }}"
+          SHA=$(git rev-parse HEAD)
+          if gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+            -f ref="refs/tags/${TAG}" \
+            -f sha="$SHA"; then
+            echo "owned=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Day summary ${TAG} already sent."
+            echo "owned=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.day.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        if: steps.day.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Send day summary
+        if: steps.day.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
+        timeout-minutes: 5
+        run: python -u fut_day.py
+
+      - name: Release the day if the summary failed
+        if: failure() && steps.claim.outputs.owned == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/fut-day-${{ steps.day.outputs.id }}" || true
+          echo "Released fut-day-${{ steps.day.outputs.id }} so a later run can send."

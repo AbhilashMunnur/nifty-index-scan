@@ -40,7 +40,7 @@ def band_around(
     """Strikes from `wings` below the spot ATM through `wings` above it.
 
     wings=2 is the everyday five-strike band. wings=6 is the Tuesday and
-    Thursday afternoon band: 6 below (ITM1–ITM6), the ATM, and 6 above.
+    Thursday afternoon band: 6 below, the ATM, and 6 above.
     """
     unique = sorted({float(strike) for strike in strikes if strike > 0})
     atm = pick_atm(unique, spot)

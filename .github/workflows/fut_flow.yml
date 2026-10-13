@@ -60,6 +60,8 @@ jobs:
         run: |
           TAG="fut-slot-${{ steps.slot.outputs.id }}"
           SHA=$(git rev-parse HEAD)
+          # Creating the ref fails when it already exists, including when the
+          # tag points at this same commit. git push would call that success.
           if gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
             -f ref="refs/tags/${TAG}" \
             -f sha="$SHA"; then

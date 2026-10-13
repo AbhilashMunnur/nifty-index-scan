@@ -394,6 +394,8 @@ class IndexMarket:
             put_oi = int(put_q.get("oi") or 0) if put_token else 0
             call_ltp = call_q.get("ltp") if call_token else None
             put_ltp = put_q.get("ltp") if put_token else None
+            # Prior-day OI is only for the five-strike entry rule. The outer
+            # strikes are for the afternoon buy/write list.
             call_prev = (
                 self._previous_session_oi(spec.fno_exchange, call_token)
                 if call_token and label in center

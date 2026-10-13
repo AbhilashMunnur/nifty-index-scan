@@ -1,0 +1,142 @@
+:root {
+  color-scheme: light;
+  --ink: #1c1915;
+  --muted: #6b645c;
+  --line: #d9d1c7;
+  --paper: #f6f1ea;
+  --card: #fffdf9;
+  --buy: #0d6b3d;
+  --write: #8a5a00;
+  --exit: #9b2c2c;
+  --cover: #1d4e89;
+  --flat: #5c564e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.45 "Segoe UI", system-ui, sans-serif;
+}
+
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 18px 64px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -0.03em;
+}
+
+.lede, .status, .meta, .foot {
+  color: var(--muted);
+}
+
+.lede { margin: 8px 0 22px; }
+
+.tiles {
+  display: grid;
+  gap: 12px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 96px;
+  padding: 16px 18px;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  background: var(--card);
+  color: inherit;
+  text-decoration: none;
+}
+
+.tile strong { font-size: 22px; }
+
+.tile span { color: var(--muted); margin-top: 4px; }
+
+.back {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+
+.day {
+  margin: 22px 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 14px 10px;
+  margin: 0 0 12px;
+}
+
+.card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.clock { font-size: 28px; letter-spacing: -0.03em; }
+
+.badge {
+  font-size: 13px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.totals { margin: 8px 0; font-weight: 600; }
+
+.strike {
+  border-top: 1px solid var(--line);
+  padding: 8px 0;
+}
+
+.strike b { font-variant-numeric: tabular-nums; }
+
+.leg {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.flow-BUY, .flow-NEW-BUYING { color: var(--buy); }
+.flow-WRITE, .flow-NEW-SELLING { color: var(--write); }
+.flow-LONG-EXIT { color: var(--exit); }
+.flow-SHORT-COVER, .flow-SHORT-COVERING { color: var(--cover); }
+.flow-OI-BUILD, .flow-OI-FALL, .flow-FLAT, .flow-BASELINE, .flow-UNCHANGED,
+.flow-PRICE-UP, .flow-PRICE-DOWN, .flow-N-A { color: var(--flat); }
+
+.book + .book { margin-top: 22px; }
+
+.money { font-size: 28px; font-variant-numeric: tabular-nums; }
+
+.down { color: var(--exit); }
+.up { color: var(--buy); }
+
+.trade {
+  border-top: 1px solid var(--line);
+  padding: 8px 0;
+}
+
+.foot { margin-top: 28px; font-size: 14px; }
+
+@media (min-width: 720px) {
+  .tiles { grid-template-columns: 1fr 1fr; }
+  .tiles .wide { grid-column: 1 / -1; }
+}

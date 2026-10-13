@@ -79,6 +79,56 @@ def test_signal_report_titles_the_index():
     assert trading_days_remaining(as_of, september) >= 10
 
 
+def test_tuesday_afternoon_band_is_thirteen_strikes_around_the_230_atm(tmp_path):
+    import json
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
+    from src.power_hour import saved_wide_strikes, wide_wings
+    from src.strikes import band_around
+
+    ist = ZoneInfo("Asia/Kolkata")
+    strikes = [float(x) for x in range(71000, 73001, 100)]
+    band = band_around(strikes, 71590.21, wings=6)
+    assert band is not None
+    labels, values = zip(*band)
+    assert labels[0] == "ITM6"
+    assert labels[6] == "ATM"
+    assert labels[-1] == "OTM6"
+    assert values == tuple(float(x) for x in range(71000, 72201, 100))
+    assert len(band) == 13
+    assert wide_wings(datetime(2026, 10, 8, 14, 30, tzinfo=ist)) == 6
+    assert wide_wings(datetime(2026, 10, 6, 15, 10, tzinfo=ist)) == 6
+    assert wide_wings(datetime(2026, 10, 8, 11, 0, tzinfo=ist)) == 2
+    assert wide_wings(datetime(2026, 10, 5, 15, 10, tzinfo=ist)) == 2
+
+    path = tmp_path / "power_hour_mark.json"
+    path.write_text(
+        json.dumps(
+            {
+                "date": "2026-10-08",
+                "baseline_slot": "14:30",
+                "indices": {
+                    "SENSEX": {
+                        "spot": 71590.21,
+                        "strikes": [
+                            {"label": label, "strike": strike} for label, strike in band
+                        ],
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    saved = saved_wide_strikes(
+        "SENSEX", datetime(2026, 10, 8, 15, 10, tzinfo=ist), path=path
+    )
+    assert saved is not None
+    assert saved[0] == ("ITM6", 71000.0)
+    assert saved[6] == ("ATM", 71600.0)
+    assert len(saved) == 13
+
+
 def test_atm_band_is_five_strikes_around_spot():
     strikes = [float(x) for x in range(23900, 24250, 50)]
     band = atm_band(strikes, 24078.3)
