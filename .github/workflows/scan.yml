@@ -105,6 +105,8 @@ jobs:
         run: |
           mkdir -p /tmp/kept-data data
           cp -a data/. /tmp/kept-data/
+          git reset --hard
+          git clean -fd
           git fetch origin main
           git checkout -B main origin/main
           git reset --hard origin/main
