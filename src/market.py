@@ -15,7 +15,7 @@ from src.indicators import calculate_rsi
 from src.models import FutureContract, IndexSnapshot
 from src.pcr import BandPcr, StrikePcr
 from src.scrip import SCRIP_MASTER_URL, download_cached
-from src.strikes import atm_band
+from src.strikes import band_around
 from src.universe import SPECS, IndexSpec, require_index
 
 MAX_TOKENS_PER_REQUEST = 50
@@ -328,8 +328,15 @@ class IndexMarket:
         ]
         return prior[-1] if prior else None
 
-    def get_atm_band_pcr(self, symbol: str, ltp: float) -> BandPcr | None:
-        """PCR and ΔPCR on ATM, OTM1, OTM2, ITM1, ITM2 of the nearest option expiry."""
+    def get_atm_band_pcr(
+        self,
+        symbol: str,
+        ltp: float,
+        *,
+        wings: int = 2,
+        fixed: list[tuple[str, float]] | None = None,
+    ) -> BandPcr | None:
+        """Option band around the spot ATM. wings=2 is five strikes; wings=6 is thirteen."""
         spec = require_index(symbol)
         nearest = self._nearest_expiry_rows(spec)
         if not nearest:
@@ -348,9 +355,9 @@ class IndexMarket:
                 continue
             by_strike.setdefault(strike, {})[leg] = row
 
-        band = atm_band(list(by_strike), ltp)
+        band = fixed or band_around(list(by_strike), ltp, wings=wings)
         if not band:
-            print(f"  {spec.symbol}: ATM ± 2 strikes not listed")
+            print(f"  {spec.symbol}: ATM ± {wings} strikes not listed")
             return None
 
         tokens: list[str] = []
@@ -368,7 +375,13 @@ class IndexMarket:
             return None
 
         lot_size = int(float(contracts[0].get("lotsize") or 0))
-        step = band[1][1] - band[0][1]
+        atm_strike = next(strike for label, strike in band if label == "ATM")
+        step = 0.0
+        for label, strike in band:
+            if label == "OTM1":
+                step = strike - atm_strike
+                break
+        center = {"ITM2", "ITM1", "ATM", "OTM1", "OTM2"}
         rows: list[StrikePcr] = []
         for label, strike in band:
             legs = by_strike.get(strike) or {}
@@ -383,12 +396,12 @@ class IndexMarket:
             put_ltp = put_q.get("ltp") if put_token else None
             call_prev = (
                 self._previous_session_oi(spec.fno_exchange, call_token)
-                if call_token
+                if call_token and label in center
                 else None
             )
             put_prev = (
                 self._previous_session_oi(spec.fno_exchange, put_token)
-                if put_token
+                if put_token and label in center
                 else None
             )
             rows.append(
@@ -408,7 +421,7 @@ class IndexMarket:
 
         return BandPcr(
             expiry=expiry,
-            atm=band[2][1],
+            atm=atm_strike,
             step=step,
             lot_size=lot_size,
             strikes=rows,

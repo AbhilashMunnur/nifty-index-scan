@@ -26,8 +26,22 @@ def strike_step(sorted_strikes: list[float], atm: float) -> float | None:
     return min(gaps) if gaps else None
 
 
-def atm_band(strikes: list[float], spot: float) -> list[tuple[str, float]] | None:
-    """Five strikes: ITM2, ITM1, ATM, OTM1, OTM2 (call-side labels vs spot)."""
+def _label_for_offset(offset: int) -> str:
+    if offset == 0:
+        return "ATM"
+    if offset < 0:
+        return f"ITM{-offset}"
+    return f"OTM{offset}"
+
+
+def band_around(
+    strikes: list[float], spot: float, *, wings: int = 2
+) -> list[tuple[str, float]] | None:
+    """Strikes from `wings` below the spot ATM through `wings` above it.
+
+    wings=2 is the everyday five-strike band. wings=6 is the Tuesday and
+    Thursday afternoon band: 6 below (ITM1–ITM6), the ATM, and 6 above.
+    """
     unique = sorted({float(strike) for strike in strikes if strike > 0})
     atm = pick_atm(unique, spot)
     if atm is None:
@@ -36,7 +50,22 @@ def atm_band(strikes: list[float], spot: float) -> list[tuple[str, float]] | Non
     if not step:
         return None
 
-    wanted = [atm + offset * step for offset in (-2, -1, 0, 1, 2)]
-    if any(strike not in unique for strike in wanted):
+    found: list[tuple[str, float]] = []
+    for offset in range(-wings, wings + 1):
+        strike = atm + offset * step
+        if strike not in unique:
+            if wings == 2:
+                return None
+            continue
+        found.append((_label_for_offset(offset), strike))
+    if wings == 2:
+        return found if len(found) == 5 else None
+    labels = {label for label, _strike in found}
+    if not {"ITM2", "ITM1", "ATM", "OTM1", "OTM2"} <= labels:
         return None
-    return list(zip(STRIKE_LABELS, wanted, strict=True))
+    return found
+
+
+def atm_band(strikes: list[float], spot: float) -> list[tuple[str, float]] | None:
+    """Five strikes: ITM2, ITM1, ATM, OTM1, OTM2 (call-side labels vs spot)."""
+    return band_around(strikes, spot, wings=2)

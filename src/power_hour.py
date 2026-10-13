@@ -27,6 +27,31 @@ def is_capture_slot(slot: datetime | None) -> bool:
     return clock in CAPTURE_SLOTS
 
 
+def wide_wings(when: datetime | None = None) -> int:
+    """Tuesday and Thursday from 14:30: 6 strikes each side of the 2:30 ATM."""
+    current = now_ist(when)
+    if current.weekday() in (1, 3) and current.time() >= BASELINE_SLOT:
+        return 6
+    return 2
+
+
+def saved_wide_strikes(
+    symbol: str, now: datetime | None = None, path: Path = MARKER
+) -> list[tuple[str, float]] | None:
+    """Exact 2:30 strikes, so a later price move does not shift the band."""
+    prior = (todays_mark(path, now=now).get("indices") or {}).get(symbol.upper()) or {}
+    rows = prior.get("strikes") or []
+    if len(rows) < 13:
+        return None
+    found: list[tuple[str, float]] = []
+    for row in rows:
+        try:
+            found.append((str(row["label"]), float(row["strike"])))
+        except (KeyError, TypeError, ValueError):
+            return None
+    return found
+
+
 def is_report_slot(slot: datetime | None) -> bool:
     clock = slot_clock(slot)
     if clock == time(15, 0):

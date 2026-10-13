@@ -27,14 +27,17 @@ from src.oi_flow import (
     mark_path_for,
     save_premium_mark,
 )
+from src.pcr import BandPcr
 from src.power_hour import (
     format_power_hour_report,
     is_capture_slot,
     is_report_slot,
     save_baseline,
+    saved_wide_strikes,
     should_capture_baseline,
     slot_clock,
     todays_mark,
+    wide_wings,
 )
 from src.report import format_open_position, format_pnl_snapshot, format_signal_report
 from src.scan_slots import active_slot, should_run_slot, write_last_slot
@@ -183,6 +186,33 @@ def run_observe(config, args) -> None:
         market.close()
 
 
+_STRATEGY_LABELS = ("ITM2", "ITM1", "ATM", "OTM1", "OTM2")
+
+
+def _strategy_band(band):
+    """Entry rules stay on the middle five strikes when the scan list is wider."""
+    if band is None or len(band.strikes) <= 5:
+        return band
+    rows = [row for row in band.strikes if row.label in _STRATEGY_LABELS]
+    if len(rows) != 5:
+        return band
+    return BandPcr(
+        expiry=band.expiry,
+        atm=band.atm,
+        step=band.step,
+        lot_size=band.lot_size,
+        strikes=rows,
+    )
+
+
+def _option_band(market, symbol: str, spot: float):
+    """Tue/Thu from 14:30: 13 strikes frozen at the 2:30 ATM. Other scans stay at 5."""
+    now = now_ist()
+    wings = wide_wings(now)
+    fixed = saved_wide_strikes(symbol, now) if wings == 6 else None
+    return market.get_atm_band_pcr(symbol, spot, wings=wings, fixed=fixed)
+
+
 def _fetch_sensex_band(market) -> tuple[object | None, float | None]:
     try:
         spot = market.get_ltps(["SENSEX"]).get("SENSEX")
@@ -193,7 +223,7 @@ def _fetch_sensex_band(market) -> tuple[object | None, float | None]:
         print("Power-hour Sensex: no index LTP")
         return None, None
     try:
-        return market.get_atm_band_pcr("SENSEX", spot), spot
+        return _option_band(market, "SENSEX", spot), spot
     except Exception as exc:
         print(f"Power-hour Sensex chain failed: {exc}")
         return None, spot
@@ -294,16 +324,17 @@ def scan_one_index(config, args, market, symbol: str, ltp: float | None) -> Inde
         symbol, min_trading_days=rules.min_trading_days_to_expiry
     )
     future_ltp = market.get_future_ltp(future) if future else None
-    band = market.get_atm_band_pcr(symbol, ltp)
-    signal, reason = evaluate_signal(rsi, band, rules)
-    atm_change_pcr = None if band is None else band.atm_change_pcr
+    band = _option_band(market, symbol, ltp)
+    signal_band = _strategy_band(band)
+    signal, reason = evaluate_signal(rsi, signal_band, rules)
+    atm_change_pcr = None if signal_band is None else signal_band.atm_change_pcr
 
     report = format_signal_report(
         spot=ltp,
         rsi=rsi,
         future=future,
         skipped=skipped,
-        band=band,
+        band=signal_band,
         signal=signal,
         reason=reason,
         future_ltp=future_ltp,
@@ -345,8 +376,8 @@ def scan_one_index(config, args, market, symbol: str, ltp: float | None) -> Inde
                 future,
                 future_ltp,
                 rsi=rsi,
-                pcr=None if band is None else band.pcr,
-                change_pcr=None if band is None else band.change_pcr,
+                pcr=None if signal_band is None else signal_band.pcr,
+                change_pcr=None if signal_band is None else signal_band.change_pcr,
                 reason=reason,
                 rules=rules,
             )
