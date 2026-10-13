@@ -3,7 +3,7 @@
 # Live scans are cron-job.org + scan.yml IST crons (no self-chain sleep).
 set -euo pipefail
 
-REPO="${GITHUB_REPOSITORY:-AbhilashMunnur/nifty-index-scan}"
+REPO="${GITHUB_REPOSITORY:-AbhilashMunnur/nifty-index-trade}"
 
 if ! command -v gh >/dev/null; then
   echo "Install GitHub CLI first: https://cli.github.com/"

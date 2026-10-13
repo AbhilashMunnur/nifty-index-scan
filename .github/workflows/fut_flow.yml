@@ -1,10 +1,13 @@
 name: Nifty and Sensex futures 15m flow
 
-# Public copy of the futures alerts while private Actions jobs are refused.
+# Separate from the option scan. Repo 1 runs this while Actions accepts its jobs.
+# Repo 2 runs the same slot only after GitHub refuses repo 1.
 # Every weekday 09:30–15:30 IST, every 15 minutes.
 on:
   schedule:
+    # 09:30–15:15 IST (04:00–09:45 UTC)
     - cron: "0,15,30,45 4-9 * * 1-5"
+    # 15:30 IST (10:00 UTC)
     - cron: "0 10 * * 1-5"
   workflow_dispatch:
   repository_dispatch:
@@ -13,7 +16,7 @@ on:
 jobs:
   fut-flow:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 18
     concurrency:
       group: nifty-fut-flow
       cancel-in-progress: false
@@ -33,8 +36,15 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Repo 2 stands down while repo 1 can scan
+        id: twin
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_TOKEN }}
+        run: python3 scripts/twin_host.py --workflow fut_flow.yml
+
       - name: Slot guard
         id: slot
+        if: steps.twin.outputs.scan == 'true'
         run: |
           python3 - <<'PY'
           import os
@@ -106,7 +116,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update Nifty and Sensex futures flow marks [skip ci]"
+          git commit -m "Update Nifty and Sensex futures flow marks"
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then exit 0; fi
             git fetch origin main
@@ -114,7 +124,7 @@ jobs:
             python3 scripts/keep_ledger.py /tmp/kept-data data
             git add data
             if git diff --cached --quiet; then exit 0; fi
-            git commit -m "Update Nifty and Sensex futures flow marks [skip ci]"
+            git commit -m "Update Nifty and Sensex futures flow marks"
           done
           echo "Could not push the futures mark after 3 attempts."
           exit 1

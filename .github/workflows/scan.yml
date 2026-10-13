@@ -1,17 +1,17 @@
 name: Nifty 1H RSI + OI scan
 
-# Stay inside GitHub Free's 2,000 min/month (private repos, shared with OI).
-# Tue/Thu: 09:30–15:30 IST every 15 min, plus 15:10, 15:15, and 15:40 (27 jobs).
-# Mon/Wed/Fri: 09:30–15:30 every 30 min, plus 15:40. No 15:10 or 15:15 (14 jobs).
-# One run per slot is about 750–900 min/month. Each Telegram includes a P&L snapshot.
+# Repo 1 (nifty-index-trade) scans every slot while Actions accepts its jobs.
+# Repo 2 (nifty-index-scan) scans the same slot only after GitHub refuses repo 1
+# (monthly minutes used up, or the spending limit).
+# Every weekday: 09:30–15:30 IST every 15 min, plus 15:40.
+# Tuesday and Thursday also run 15:10.
+# Each Telegram includes a P&L snapshot.
 on:
   schedule:
-    # Tue/Thu 09:30–15:15 IST (04:00–09:45 UTC). 09:45 UTC is 15:15 IST.
-    - cron: "0,15,30,45 4-9 * * 2,4"
+    # Weekdays 09:30–15:15 IST (04:00–09:45 UTC). 09:45 UTC is 15:15 IST.
+    - cron: "0,15,30,45 4-9 * * 1-5"
     # Tue/Thu 15:10 IST (09:40 UTC)
     - cron: "40 9 * * 2,4"
-    # Mon/Wed/Fri 09:30–15:00 IST every 30 min (04:00–09:30 UTC)
-    - cron: "0,30 4-9 * * 1,3,5"
     # 15:30 IST (10:00 UTC) every weekday
     - cron: "0 10 * * 1-5"
     # 15:40 IST (10:10 UTC) close every weekday
@@ -25,7 +25,7 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 14
+    timeout-minutes: 20
     concurrency:
       group: nifty-1h-scan
       cancel-in-progress: false
@@ -46,15 +46,20 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Repo 2 stands down while repo 1 can scan
+        id: twin
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_TOKEN }}
+        run: python3 scripts/twin_host.py --workflow scan.yml
+
       - name: Slot guard
         id: slot
+        if: steps.twin.outputs.scan == 'true'
         run: |
           python3 - <<'PY'
           import os
           from src.scan_slots import should_run_slot
 
-          # Private Actions jobs are refused (billing / spending limit), so
-          # this public copy sends the Telegram alerts until that is lifted.
           event = os.environ.get("GITHUB_EVENT_NAME", "")
           force = event == "workflow_dispatch"
           run, reason, slot = should_run_slot(force=force)
@@ -118,7 +123,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update Nifty/Sensex paper books [skip ci]"
+          git commit -m "Update Nifty/Sensex paper books"
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then exit 0; fi
             git fetch origin main
@@ -126,7 +131,7 @@ jobs:
             python3 scripts/keep_ledger.py /tmp/kept-data data
             git add data
             if git diff --cached --quiet; then exit 0; fi
-            git commit -m "Update Nifty/Sensex paper books [skip ci]"
+            git commit -m "Update Nifty/Sensex paper books"
           done
           echo "Could not push the ledger after 3 attempts."
           exit 1

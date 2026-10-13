@@ -3,9 +3,8 @@
 
 GitHub bills a full minute for every workflow run, including slot-guard skips.
 
-Tuesday and Thursday: 09:30–15:30 every 15 min, plus 15:10, 15:15, and 15:40.
-Monday, Wednesday, and Friday: 09:30–15:30 every 30 min, plus 15:40.
-No 15:10 or 15:15 on Mon/Wed/Fri.
+Every weekday: 09:30–15:30 every 15 min, plus 15:40.
+Tuesday and Thursday also ping 15:10.
 
 Usage:
   CRON_JOB_ORG_API_KEY=... python3 scripts/provision_cronjob_org.py
@@ -21,23 +20,27 @@ import urllib.error
 import urllib.request
 
 API = "https://api.cron-job.org"
-REPO = os.environ.get("GITHUB_REPOSITORY", "AbhilashMunnur/nifty-index-scan")
+REPO = os.environ.get("GITHUB_REPOSITORY", "AbhilashMunnur/nifty-index-trade")
 OLD_TITLE = "Nifty index trade — scan kick"
 DISPATCH_URL = f"https://api.github.com/repos/{REPO}/dispatches"
 # cron-job.org wdays: 1=Mon … 5=Fri, matching the jobs that already ran on weekdays.
 SPECS = (
-    ("Nifty scan — MWF 09:30 IST", [9], [30], [1, 3, 5]),
-    ("Nifty scan — MWF 10:00–14:30 IST", list(range(10, 15)), [0, 30], [1, 3, 5]),
-    ("Nifty scan — MWF 15:00/15:30/15:40 IST", [15], [0, 30, 40], [1, 3, 5]),
-    ("Nifty scan — Tue/Thu 09:30/09:45 IST", [9], [30, 45], [2, 4]),
-    ("Nifty scan — Tue/Thu 10:00–14:45 IST", list(range(10, 15)), [0, 15, 30, 45], [2, 4]),
-    ("Nifty scan — Tue/Thu 15:00–15:40 IST", [15], [0, 10, 15, 30, 40], [2, 4]),
+    ("Nifty scan — weekdays 09:30/09:45 IST", [9], [30, 45], [1, 2, 3, 4, 5]),
+    ("Nifty scan — weekdays 10:00–14:45 IST", list(range(10, 15)), [0, 15, 30, 45], [1, 2, 3, 4, 5]),
+    ("Nifty scan — weekdays 15:00/15:15/15:30/15:40 IST", [15], [0, 15, 30, 40], [1, 2, 3, 4, 5]),
+    ("Nifty scan — Tue/Thu 15:10 IST", [15], [10], [2, 4]),
 )
 RETIRED_TITLES = {
     OLD_TITLE,
     "Nifty scan — 09:30/09:45 IST",
     "Nifty scan — 10:00–14:45 IST",
     "Nifty scan — 15:00–15:40 IST",
+    "Nifty scan — MWF 09:30 IST",
+    "Nifty scan — MWF 10:00–14:30 IST",
+    "Nifty scan — MWF 15:00/15:30/15:40 IST",
+    "Nifty scan — Tue/Thu 09:30/09:45 IST",
+    "Nifty scan — Tue/Thu 10:00–14:45 IST",
+    "Nifty scan — Tue/Thu 15:00–15:40 IST",
 }
 
 
@@ -169,8 +172,8 @@ def main() -> None:
     for title, hours, minutes, wdays in SPECS:
         upsert(key, token, existing, title, hours, minutes, wdays)
         existing = request("GET", "/jobs", key).get("jobs") or []
-    print("Tue/Thu: every 15 min including 15:10 and 15:15, plus 15:40")
-    print("Mon/Wed/Fri: every 30 min from 09:30–15:30, plus 15:40")
+    print("Every weekday: 09:30–15:30 every 15 min, plus 15:40")
+    print("Tue/Thu also 15:10")
     print(f"Target:   POST {DISPATCH_URL} event_type=nifty-scan")
 
 

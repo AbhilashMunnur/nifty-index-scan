@@ -1,0 +1,36 @@
+name: Keep the twin scan repo in sync
+
+# Repo 1 is nifty-index-trade. Repo 2 is nifty-index-scan.
+# Every real push is copied across. Repo 2 also merges hourly, because repo 1
+# cannot run this workflow once its Actions minutes or spending limit are gone.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'schedule' && github.repository == 'AbhilashMunnur/nifty-index-scan') ||
+      (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: twin-sync-${{ github.repository }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror the other scan repo
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+        run: python3 scripts/sync_twin.py

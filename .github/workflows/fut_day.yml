@@ -1,6 +1,6 @@
 name: Futures day summary
 
-# Around 16:00 IST. Separate from the 15-minute futures alerts and the option scan.
+# Around 16:00 IST. Repo 2 sends this only when repo 1's Actions job was refused.
 # 16:00 and 16:15 IST (10:30 and 10:45 UTC). The day tag lets only one of them text.
 on:
   schedule:
@@ -12,7 +12,7 @@ on:
 jobs:
   fut-day:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     concurrency:
       group: fut-day
       cancel-in-progress: false
@@ -32,8 +32,15 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Repo 2 stands down while repo 1 can scan
+        id: twin
+        env:
+          GH_TOKEN: ${{ secrets.TWIN_TOKEN }}
+        run: python3 scripts/twin_host.py --workflow fut_day.yml
+
       - name: Trading day
         id: day
+        if: steps.twin.outputs.scan == 'true'
         run: |
           python3 - <<'PY'
           import json

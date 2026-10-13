@@ -29,24 +29,23 @@ def test_tuesday_keeps_the_15_minute_grid():
     assert len(stamps) == 27
 
 
-def test_monday_is_every_30_minutes_without_1510():
+def test_monday_is_every_15_minutes_without_1510():
     day = _at("2026-08-24 12:00:00")  # Monday
     stamps = [row.strftime("%H:%M") for row in iter_slots_for_day(day)]
     assert stamps[0] == "09:30"
-    assert stamps[1] == "10:00"
-    assert "09:45" not in stamps
+    assert stamps[1] == "09:45"
     assert "14:30" in stamps
     assert "15:00" in stamps
+    assert "15:15" in stamps
     assert "15:10" not in stamps
-    assert "15:15" not in stamps
     assert "15:30" in stamps
     assert stamps[-1] == "15:40"
-    assert len(stamps) == 14
+    assert len(stamps) == 26
 
 
 def test_active_slot_follows_the_day_grid():
     assert active_slot(_at("2026-08-24 09:37:00")).strftime("%H:%M") == "09:30"  # Monday
-    assert active_slot(_at("2026-08-24 09:45:00")).strftime("%H:%M") == "09:30"
+    assert active_slot(_at("2026-08-24 09:45:00")).strftime("%H:%M") == "09:45"
     assert active_slot(_at("2026-08-25 09:45:00")).strftime("%H:%M") == "09:45"  # Tuesday
     assert active_slot(_at("2026-08-24 15:12:00")).strftime("%H:%M") == "15:00"
     assert active_slot(_at("2026-08-25 15:08:00")).strftime("%H:%M") == "15:00"

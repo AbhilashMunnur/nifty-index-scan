@@ -1,8 +1,7 @@
 """IST scan slots for GitHub Actions (stdlib only — slot guard runs before pip).
 
-Tuesday and Thursday: every 15 minutes, including 15:10 and 15:15.
-Monday, Wednesday, and Friday: every 30 minutes. No 15:10 or 15:15.
-Every weekday ends with the 15:40 close scan.
+Every trading day: 09:30–15:30 every 15 minutes, then the 15:40 close.
+Tuesday and Thursday also run 15:10.
 """
 
 from __future__ import annotations
@@ -53,22 +52,21 @@ def is_trading_day(as_of: date) -> bool:
 
 
 def is_quarter_hour_day(as_of: date) -> bool:
-    """Tuesday and Thursday keep the 15-minute grid, including 15:10 and 15:15."""
+    """Tuesday and Thursday add the 15:10 scan on top of the 15-minute grid."""
     return as_of.weekday() in (1, 3)
 
 
 def iter_slots_for_day(day: datetime) -> list[datetime]:
-    """Weekday scan times. Tue/Thu every 15 min; Mon/Wed/Fri every 30 min; 15:40 close."""
+    """Every weekday, 09:30–15:30 every 15 minutes, then 15:40. Tue/Thu also 15:10."""
     day = now_ist(day)
-    step = 15 if is_quarter_hour_day(day.date()) else 30
     slots: list[datetime] = []
     cursor = day.replace(hour=9, minute=30, second=0, microsecond=0)
     last_regular = day.replace(hour=15, minute=30, second=0, microsecond=0)
     while cursor <= last_regular:
         slots.append(cursor)
-        if step == 15 and cursor.time() == time(15, 0):
+        if is_quarter_hour_day(day.date()) and cursor.time() == time(15, 0):
             slots.append(day.replace(hour=15, minute=10, second=0, microsecond=0))
-        cursor += timedelta(minutes=step)
+        cursor += timedelta(minutes=15)
     slots.append(day.replace(hour=15, minute=40, second=0, microsecond=0))
     return slots
 

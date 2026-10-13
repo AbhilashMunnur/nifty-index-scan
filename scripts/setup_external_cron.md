@@ -1,5 +1,12 @@
 # Live scan kick (Mac does not need to stay awake)
 
+Repo 1 is `nifty-index-trade` (private). Repo 2 is `nifty-index-scan` (public).
+Repo 1 scans while GitHub still accepts its Actions jobs. After the monthly
+minutes are used up, or the spending limit blocks new jobs, repo 2 scans the
+same slots. A push on either repo is copied to the other, and repo 2 also
+merges the two trees every hour so they stay aligned while repo 1 cannot run
+workflows.
+
 GitHub Free private repos share **2,000 Actions minutes/month**. Every
 workflow run is billed at least 1 minute, even a 3-second skip.
 
@@ -27,7 +34,7 @@ python3 scripts/provision_cronjob_org.py
 
 That creates POSTs at **09:30, 09:45, … 15:30, 15:40 IST, Mon–Fri** to:
 
-`https://api.github.com/repos/AbhilashMunnur/nifty-index-scan/dispatches`
+`https://api.github.com/repos/AbhilashMunnur/nifty-index-trade/dispatches`
 
 Body: `{"event_type":"nifty-scan"}`. Auth is your current `gh` token (`repo` scope).
 

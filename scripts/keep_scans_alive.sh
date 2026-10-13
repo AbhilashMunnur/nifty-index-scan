@@ -11,34 +11,17 @@ if [[ "$DOW" -ge 6 ]]; then
   exit 0
 fi
 
-# Tue=2 and Thu=4 keep 15-minute slots, including 15:10 and 15:15.
-# Mon=1, Wed=3, Fri=5 are every 30 minutes. 15:40 close is every weekday.
-quarter=0
-if [[ "$DOW" -eq 2 || "$DOW" -eq 4 ]]; then
-  quarter=1
-fi
-
+# Every weekday: 09:30–15:30 every 15 minutes, plus 15:40.
+# Tue=2 and Thu=4 also ping 15:10.
 slot=0
-if [[ "$HOUR" -eq 15 && "$MINUTE" -eq 40 ]]; then
+if [[ "$HOUR" -eq 9 && ( "$MINUTE" -eq 30 || "$MINUTE" -eq 45 ) ]]; then
   slot=1
-elif [[ "$quarter" -eq 1 && "$HOUR" -eq 15 && ( "$MINUTE" -eq 10 || "$MINUTE" -eq 15 ) ]]; then
+elif [[ "$HOUR" -ge 10 && "$HOUR" -le 14 && ( "$MINUTE" -eq 0 || "$MINUTE" -eq 15 || "$MINUTE" -eq 30 || "$MINUTE" -eq 45 ) ]]; then
   slot=1
-elif [[ "$HOUR" -ge 9 && "$HOUR" -le 15 ]]; then
-  if [[ "$quarter" -eq 1 ]]; then
-    if [[ "$MINUTE" -eq 0 || "$MINUTE" -eq 15 || "$MINUTE" -eq 30 || "$MINUTE" -eq 45 ]]; then
-      if [[ "$HOUR" -gt 9 || "$MINUTE" -ge 30 ]]; then
-        if [[ ! ( "$HOUR" -eq 15 && "$MINUTE" -eq 45 ) ]]; then
-          slot=1
-        fi
-      fi
-    fi
-  elif [[ "$HOUR" -eq 9 && "$MINUTE" -eq 30 ]]; then
-    slot=1
-  elif [[ "$HOUR" -ge 10 && "$HOUR" -le 14 && ( "$MINUTE" -eq 0 || "$MINUTE" -eq 30 ) ]]; then
-    slot=1
-  elif [[ "$HOUR" -eq 15 && ( "$MINUTE" -eq 0 || "$MINUTE" -eq 30 ) ]]; then
-    slot=1
-  fi
+elif [[ "$HOUR" -eq 15 && ( "$MINUTE" -eq 0 || "$MINUTE" -eq 15 || "$MINUTE" -eq 30 || "$MINUTE" -eq 40 ) ]]; then
+  slot=1
+elif [[ ( "$DOW" -eq 2 || "$DOW" -eq 4 ) && "$HOUR" -eq 15 && "$MINUTE" -eq 10 ]]; then
+  slot=1
 fi
 
 if [[ "$slot" -ne 1 ]]; then
@@ -50,6 +33,6 @@ if ! command -v gh >/dev/null; then
   exit 1
 fi
 
-REPO="${GITHUB_REPOSITORY:-AbhilashMunnur/nifty-index-scan}"
+REPO="${GITHUB_REPOSITORY:-AbhilashMunnur/nifty-index-trade}"
 gh api --method POST "repos/${REPO}/dispatches" -f event_type='nifty-scan'
 echo "$(date '+%Y-%m-%d %H:%M:%S') dispatched nifty-scan"
