@@ -83,6 +83,25 @@ function oiCard(card, last) {
     </article>`;
 }
 
+function dayCard(card) {
+  const lines = card.lines || [];
+  const title = lines[0] || card.name;
+  const contract = lines[1] || "";
+  const windowLine = lines[2] || "";
+  const lots = lines[3] || "";
+  const price = lines[4] || "";
+  const note = lines[5] || "";
+  return `
+    <article class="card">
+      <header><div class="day-title">${title}</div></header>
+      <p class="meta">${contract}</p>
+      <p class="totals ${flowClass(card.label)}">${windowLine}</p>
+      <p>${lots}</p>
+      <p>${price}</p>
+      <p class="meta">${note}</p>
+    </article>`;
+}
+
 function futCard(card, last) {
   const badge = last ? `<span class="badge">Last scan</span>` : "";
   const since = card.since
@@ -98,7 +117,7 @@ function futCard(card, last) {
     </article>`;
 }
 
-function listPage(title, cards, render) {
+function listPage(title, cards, render, preface) {
   let day = "";
   const body = cards.length
     ? cards.map((card, index) => {
@@ -112,6 +131,7 @@ function listPage(title, cards, render) {
   return `
     <a class="back" href="#">&larr; Landing</a>
     <h1>${title}</h1>
+    ${preface || ""}
     ${body}`;
 }
 
@@ -166,6 +186,11 @@ function latestClock(cards) {
   return "Last scan " + cards[0].clock;
 }
 
+function sessionBlock(days) {
+  if (!days || !days.length) return "";
+  return `<section class="session"><h2 class="day">Futures day</h2>${days.map(dayCard).join("")}</section>`;
+}
+
 function landing(desk) {
   const tiles = [
     ["nifty-oi", "Nifty OI Scan", latestClock(desk.nifty_oi), ""],
@@ -177,6 +202,7 @@ function landing(desk) {
   return `
     <h1>Scan desk</h1>
     <p class="lede">Newest reading at the top of each page. A scan drops off after two days. Updated ${desk.generated_at}.</p>
+    ${sessionBlock(desk.fut_days)}
     <nav class="tiles">
       ${tiles.map(([id, title, sub, extra]) => `
         <a class="tile ${extra}" href="#${id}"><strong>${title}</strong><span>${sub}</span></a>
@@ -193,7 +219,11 @@ function render(desk) {
   }
   if (page.kind === "positions") app.innerHTML = positionsPage(desk);
   else if (page.kind === "oi") app.innerHTML = listPage(page.title, desk[page.key] || [], oiCard);
-  else app.innerHTML = listPage(page.title, desk[page.key] || [], futCard);
+  else {
+    const days = (desk.fut_days || []).filter((card) => card.name === page.title.split(" ")[0].toUpperCase());
+    const preface = days.length ? `<h2 class="day">Whole session</h2>${days.map(dayCard).join("")}` : "";
+    app.innerHTML = listPage(page.title, desk[page.key] || [], futCard, preface);
+  }
   window.scrollTo(0, 0);
 }
 

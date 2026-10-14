@@ -7,15 +7,25 @@ from datetime import date, datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from src.fut_flow import classify_fut_flow
+from src.fut_flow import (
+    DAY_LABELS,
+    classify_fut_flow,
+    day_open_path,
+    format_fut_day_alert,
+    mark_path,
+    reading_from_mark,
+)
 from src.oi_flow import classify_band_flow, interval_totals_line
 from src.paths import ROOT
 from src.pcr import BandPcr, StrikePcr
 from src.power_hour import is_report_slot
 from src.scan_history import day_is_current, prune_old_scans, _parse_day
+from src.scan_slots import IST
 
 HISTORY_KEYS = ("nifty_oi", "sensex_oi", "nifty_fut", "sensex_fut")
 BOOKS = {"nifty": "nifty_paper_book.json", "sensex": "sensex_paper_book.json"}
+SESSIONS = "fut_sessions.json"
+SESSION_NAMES = ("NIFTY", "SENSEX")
 
 
 def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
@@ -32,8 +42,111 @@ def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
             "nifty": _book(root / "data" / BOOKS["nifty"]),
             "sensex": _book(root / "data" / BOOKS["sensex"]),
         },
+        "fut_days": _fut_days(root, today),
     }
     return _strip_tokens(desk)
+
+
+def session_card(
+    name: str,
+    opened: dict,
+    closed: dict,
+    *,
+    when: datetime | None = None,
+) -> dict | None:
+    """The whole-session futures alert, or None when the day is not closed yet."""
+    start_at = str(opened.get("updated_at") or "")
+    end_at = str(closed.get("updated_at") or "")
+    if len(start_at) < 16 or len(end_at) < 16:
+        return None
+    if start_at[:10] != end_at[:10] or end_at[11:16] < "15:00":
+        return None
+    try:
+        reading = reading_from_mark(
+            opened,
+            price=float(closed["price"]),
+            oi=int(closed["oi"]),
+            lot_size=int(closed["lot_size"]),
+            tradingsymbol=str(closed["tradingsymbol"]),
+            expiry=str(closed["expiry"]),
+        )
+    except (KeyError, TypeError, ValueError):
+        return None
+    if reading.prev_price is None or reading.prev_oi is None:
+        return None
+    if when is None:
+        when = datetime.strptime(end_at, "%Y-%m-%d %H:%M:%S").replace(tzinfo=IST)
+    lines = format_fut_day_alert(
+        reading,
+        when=when,
+        name=name,
+        start_at=start_at,
+        end_at=end_at,
+    ).split("\n")
+    return {
+        "name": name.strip().upper(),
+        "day": start_at[:10],
+        "label": DAY_LABELS.get(reading.label, reading.label),
+        "lines": lines,
+    }
+
+
+def save_session(root: Path, card: dict) -> None:
+    """Keep the last two sessions so tomorrow morning still shows today's alert."""
+    path = root / "data" / SESSIONS
+    sessions = [
+        row
+        for row in _load_sessions(path)
+        if (row.get("name"), row.get("day")) != (card.get("name"), card.get("day"))
+    ]
+    sessions.append(card)
+    anchor = _parse_day(str(card.get("day") or "")) or date.today()
+    sessions = [row for row in sessions if _session_visible(row, anchor)]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"sessions": sessions}, indent=2) + "\n", encoding="utf-8")
+
+
+def _fut_days(root: Path, today: date | None) -> list[dict]:
+    cards: dict[tuple[str, str], dict] = {}
+    for row in _load_sessions(root / "data" / SESSIONS):
+        if _session_visible(row, today):
+            cards[(str(row.get("name")), str(row.get("day")))] = row
+    for name in SESSION_NAMES:
+        opened = _read_json(root / day_open_path(name))
+        closed = _read_json(root / mark_path(name))
+        if not opened or not closed:
+            continue
+        card = session_card(name, opened, closed)
+        if card and _session_visible(card, today):
+            cards.setdefault((card["name"], card["day"]), card)
+    return sorted(
+        cards.values(),
+        key=lambda row: (str(row.get("day")), 0 if row.get("name") == "SENSEX" else 1),
+        reverse=True,
+    )
+
+
+def _session_visible(row: dict, today: date | None) -> bool:
+    scanned = _parse_day(str(row.get("day") or ""))
+    return scanned is not None and day_is_current(scanned, today)
+
+
+def _load_sessions(path: Path) -> list[dict]:
+    body = _read_json(path)
+    rows = body.get("sessions") if isinstance(body, dict) else None
+    if not isinstance(rows, list):
+        return []
+    return [row for row in rows if isinstance(row, dict) and row.get("lines")]
+
+
+def _read_json(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    try:
+        body = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return body if isinstance(body, dict) else {}
 
 
 def _load_history(directory: Path, today: date | None = None) -> dict[str, list]:

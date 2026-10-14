@@ -99,12 +99,50 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Send day summary
+        id: summary
         if: steps.day.outputs.run == 'true' && steps.claim.outputs.owned == 'true'
         timeout-minutes: 5
         run: python -u fut_day.py
 
+      - name: Publish the day on the scan desk
+        if: steps.summary.outcome == 'success'
+        env:
+          DESK_DEPLOY_KEY: ${{ secrets.DESK_DEPLOY_KEY }}
+        run: python scripts/publish_desk.py --push
+
+      - name: Save the futures day
+        if: steps.summary.outcome == 'success'
+        run: |
+          mkdir -p /tmp/kept-data data
+          cp -a data/. /tmp/kept-data/
+          git reset --hard
+          git clean -fd
+          git fetch origin main
+          git checkout -B main origin/main
+          git reset --hard origin/main
+          python3 scripts/keep_ledger.py /tmp/kept-data data
+          git add data/fut_sessions.json
+          if git diff --cached --quiet; then
+            echo "Futures day already saved."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Save the futures day summary"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git reset --hard origin/main
+            python3 scripts/keep_ledger.py /tmp/kept-data data
+            git add data/fut_sessions.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Save the futures day summary"
+          done
+          echo "Could not save the futures day."
+          exit 1
+
       - name: Release the day if the summary failed
-        if: failure() && steps.claim.outputs.owned == 'true'
+        if: steps.summary.outcome == 'failure' && steps.claim.outputs.owned == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

@@ -6,15 +6,16 @@ from __future__ import annotations
 import sys
 import traceback
 
+from src.desk import save_session, session_card
 from src.fut_flow import (
     FUTURES_SYMBOLS,
     day_open_path,
-    format_fut_day_alert,
     format_fut_day_alert_html,
     load_mark,
     mark_path,
     reading_from_mark,
 )
+from src.paths import ROOT
 from src.scan_slots import is_trading_day, now_ist
 from src.telegram_client import TelegramClient, TelegramError
 
@@ -44,6 +45,15 @@ def run_day() -> bool:
             print(f"{symbol}: closing futures mark is missing")
             delivered_ok = False
             continue
+        card = session_card(symbol, opened, closed, when=now)
+        if card is None:
+            print(f"{symbol}: session is not closed yet")
+            delivered_ok = False
+            continue
+        save_session(ROOT, card)
+        text = "\n".join(card["lines"])
+        print(text)
+        print()
         reading = reading_from_mark(
             opened,
             price=float(closed["price"]),
@@ -52,15 +62,6 @@ def run_day() -> bool:
             tradingsymbol=str(closed["tradingsymbol"]),
             expiry=str(closed["expiry"]),
         )
-        text = format_fut_day_alert(
-            reading,
-            when=now,
-            name=symbol,
-            start_at=str(opened["updated_at"]),
-            end_at=str(closed["updated_at"]),
-        )
-        print(text)
-        print()
         delivered = client.send_message(
             format_fut_day_alert_html(
                 reading,

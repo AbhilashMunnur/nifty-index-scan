@@ -92,6 +92,8 @@ h1 {
 
 .clock { font-size: 28px; letter-spacing: -0.03em; }
 
+.day-title { font-size: 22px; letter-spacing: -0.03em; font-weight: 650; }
+
 .badge {
   font-size: 13px;
   border: 1px solid var(--ink);
@@ -115,9 +117,9 @@ h1 {
   font-variant-numeric: tabular-nums;
 }
 
-.flow-BUY, .flow-NEW-BUYING { color: var(--buy); }
-.flow-WRITE, .flow-NEW-SELLING { color: var(--write); }
-.flow-LONG-EXIT { color: var(--exit); }
+.flow-BUY, .flow-NEW-BUYING, .flow-LONG-BUILDUP { color: var(--buy); }
+.flow-WRITE, .flow-NEW-SELLING, .flow-SHORT-BUILDUP { color: var(--write); }
+.flow-LONG-EXIT, .flow-LONG-UNWIND { color: var(--exit); }
 .flow-SHORT-COVER, .flow-SHORT-COVERING { color: var(--cover); }
 .flow-OI-BUILD, .flow-OI-FALL, .flow-FLAT, .flow-BASELINE, .flow-UNCHANGED,
 .flow-PRICE-UP, .flow-PRICE-DOWN, .flow-N-A { color: var(--flat); }

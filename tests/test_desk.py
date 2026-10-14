@@ -49,6 +49,52 @@ def test_desk_lists_newest_first_and_drops_tokens(tmp_path):
     assert desk["nifty_fut"][1]["label"] == "BASELINE"
     assert desk["positions"]["nifty"]["flat"] is True
     assert desk["positions"]["sensex"]["saved"] is False
+    assert desk["fut_days"] == []
+
+
+def test_futures_day_matches_the_telegram_and_stays_for_two_days(tmp_path):
+    data = tmp_path / "data"
+    data.mkdir()
+    (data / "nifty_fut_day_open.json").write_text(
+        json.dumps(_session_mark("2026-10-14 09:33:12", 22726.50, 285686 * 65)),
+        encoding="utf-8",
+    )
+    (data / "nifty_fut_flow_mark.json").write_text(
+        json.dumps(_session_mark("2026-10-14 15:33:20", 22658.90, 287622 * 65)),
+        encoding="utf-8",
+    )
+    (data / "sensex_fut_day_open.json").write_text(
+        json.dumps(_session_mark("2026-10-14 09:33:13", 73082.55, 4967 * 20, "SENSEX26OCTFUT", "2026-10-29", 20)),
+        encoding="utf-8",
+    )
+    (data / "sensex_fut_flow_mark.json").write_text(
+        json.dumps(_session_mark("2026-10-14 15:33:20", 72959.00, 5028 * 20, "SENSEX26OCTFUT", "2026-10-29", 20)),
+        encoding="utf-8",
+    )
+
+    desk = build_desk(tmp_path, today=date(2026, 10, 14))
+    nifty, sensex = desk["fut_days"]
+    assert nifty["name"] == "NIFTY"
+    assert nifty["label"] == "SHORT BUILDUP"
+    assert "NIFTY FUT DAY" in nifty["lines"][0]
+    assert "285,686 → 287,622" in nifty["lines"][3]
+    assert "+0.68%" in nifty["lines"][3]
+    assert "22,726.50 → 22,658.90" in nifty["lines"][4]
+    assert sensex["label"] == "SHORT BUILDUP"
+    assert "4,967 → 5,028" in sensex["lines"][3]
+    assert "token" not in json.dumps(desk["fut_days"])
+
+    from src.desk import save_session
+
+    save_session(tmp_path, nifty)
+    save_session(tmp_path, sensex)
+    (data / "nifty_fut_day_open.json").write_text(
+        json.dumps(_session_mark("2026-10-15 09:33:00", 22800.0, 1000)),
+        encoding="utf-8",
+    )
+    next_day = build_desk(tmp_path, today=date(2026, 10, 15))
+    assert [card["day"] for card in next_day["fut_days"]] == ["2026-10-14", "2026-10-14"]
+    assert build_desk(tmp_path, today=date(2026, 10, 16))["fut_days"] == []
 
 
 def test_scans_older_than_two_days_are_removed_and_the_book_stays(tmp_path):
@@ -99,6 +145,18 @@ def _oi(updated: str, slot: str, call_oi: int) -> dict:
                 "put_ltp": 8.0,
             }
         ],
+    }
+
+
+def _session_mark(updated, price, oi, symbol="NIFTY27OCT26FUT", expiry="2026-10-27", lot_size=65) -> dict:
+    return {
+        "updated_at": updated,
+        "tradingsymbol": symbol,
+        "token": "secret-instrument",
+        "expiry": expiry,
+        "lot_size": lot_size,
+        "price": price,
+        "oi": oi,
     }
 
 
