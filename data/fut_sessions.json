@@ -25,6 +25,32 @@
         "Price 73,082.55 \u2192 72,959.00  (-123.55)",
         "Whole session. Futures price and futures open interest."
       ]
+    },
+    {
+      "name": "NIFTY",
+      "day": "2026-10-15",
+      "label": "SHORT COVERING",
+      "lines": [
+        "NIFTY FUT DAY \u2014 15 Oct 2026 16:03",
+        "NIFTY27OCT26FUT  expiry 2026-10-27",
+        "2026-10-15 09:33:10 \u2192 2026-10-15 15:33:15  SHORT COVERING",
+        "Lots 282,393 \u2192 274,312  (-8,081, -2.86%)",
+        "Price 22,774.00 \u2192 22,998.00  (+224.00)",
+        "Whole session. Futures price and futures open interest."
+      ]
+    },
+    {
+      "name": "SENSEX",
+      "day": "2026-10-15",
+      "label": "SHORT COVERING",
+      "lines": [
+        "SENSEX FUT DAY \u2014 15 Oct 2026 16:03",
+        "SENSEX26OCTFUT  expiry 2026-10-29",
+        "2026-10-15 09:33:11 \u2192 2026-10-15 15:33:16  SHORT COVERING",
+        "Lots 4,946 \u2192 4,924  (-22, -0.44%)",
+        "Price 73,400.00 \u2192 74,105.05  (+705.05)",
+        "Whole session. Futures price and futures open interest."
+      ]
     }
   ]
 }
