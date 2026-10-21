@@ -1,26 +1,7 @@
 {
-  "updated_at": "2026-10-21 14:18:42",
-  "realised_pnl": -45780.92,
-  "position": {
-    "direction": "SHORT",
-    "tradingsymbol": "NIFTY23NOV26FUT",
-    "expiry": "2026-11-23",
-    "token": "61471",
-    "lot_size": 65,
-    "lots": 2,
-    "scale_lot_open": true,
-    "rsi_lot_open": true,
-    "first_target_pct": 1.5,
-    "first_target_price": 22751.53,
-    "stop_loss_pct": 0.75,
-    "stop_loss_price": 23271.24,
-    "entry_time": "2026-10-15 11:39:58",
-    "entry_price": 23098.0,
-    "entry_rsi": 70.7,
-    "pcr": 0.84,
-    "change_pcr": -19.14,
-    "reason": "1H RSI 70.7 >= 70 and \u0394PCR -19.14 < 0.8 (PCR 0.84)"
-  },
+  "updated_at": "2026-10-21 14:23:09",
+  "realised_pnl": -4713.92,
+  "position": null,
   "closed": [
     {
       "direction": "LONG",
@@ -47,6 +28,19 @@
       "exit_price": 23165.94,
       "pnl": -22757.47,
       "exit_reason": "SL 0.75% against entry"
+    },
+    {
+      "direction": "SHORT",
+      "tradingsymbol": "NIFTY23NOV26FUT",
+      "expiry": "2026-11-23",
+      "lots": 2,
+      "entry_time": "2026-10-15 11:39:58",
+      "entry_price": 23098.0,
+      "entry_rsi": 70.7,
+      "exit_time": "2026-10-21 14:23:09",
+      "exit_price": 22782.1,
+      "pnl": 41067.0,
+      "exit_reason": "1H RSI 34.8 in 30-35 and ATM \u0394PCR 2.50 > 1"
     }
   ]
 }
