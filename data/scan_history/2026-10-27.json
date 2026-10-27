@@ -26,50 +26,50 @@
   ],
   "sensex_oi": [
     {
-      "updated_at": "2026-10-27 09:34:42",
+      "updated_at": "2026-10-27 09:39:02",
       "expiry": "2026-10-29",
-      "atm": 73400.0,
+      "atm": 73500.0,
       "lot_size": 20,
       "strikes": [
         {
           "label": "ITM2",
-          "strike": 73200.0,
-          "call_oi": 165840,
-          "put_oi": 338080,
-          "call_ltp": 684.6,
-          "put_ltp": 391.7
+          "strike": 73300.0,
+          "call_oi": 250500,
+          "put_oi": 341340,
+          "call_ltp": 654.95,
+          "put_ltp": 404.0
         },
         {
           "label": "ITM1",
-          "strike": 73300.0,
-          "call_oi": 245740,
-          "put_oi": 334740,
-          "call_ltp": 626.05,
-          "put_ltp": 430.65
+          "strike": 73400.0,
+          "call_oi": 367660,
+          "put_oi": 394000,
+          "call_ltp": 597.7,
+          "put_ltp": 445.65
         },
         {
           "label": "ATM",
-          "strike": 73400.0,
-          "call_oi": 343140,
-          "put_oi": 376600,
-          "call_ltp": 568.3,
-          "put_ltp": 476.95
+          "strike": 73500.0,
+          "call_oi": 931040,
+          "put_oi": 531760,
+          "call_ltp": 543.35,
+          "put_ltp": 492.95
         },
         {
           "label": "OTM1",
-          "strike": 73500.0,
-          "call_oi": 766700,
-          "put_oi": 528140,
-          "call_ltp": 516.95,
-          "put_ltp": 523.05
+          "strike": 73600.0,
+          "call_oi": 325520,
+          "put_oi": 234940,
+          "call_ltp": 489.8,
+          "put_ltp": 539.45
         },
         {
           "label": "OTM2",
-          "strike": 73600.0,
-          "call_oi": 302500,
-          "put_oi": 235540,
-          "call_ltp": 465.0,
-          "put_ltp": 572.15
+          "strike": 73700.0,
+          "call_oi": 295200,
+          "put_oi": 158740,
+          "call_ltp": 443.1,
+          "put_ltp": 592.75
         }
       ],
       "slot": "2026-10-27 09:30"
@@ -77,50 +77,50 @@
   ],
   "nifty_oi": [
     {
-      "updated_at": "2026-10-27 09:33:48",
+      "updated_at": "2026-10-27 09:38:40",
       "expiry": "2026-10-27",
-      "atm": 22700.0,
+      "atm": 22750.0,
       "lot_size": 65,
       "strikes": [
         {
           "label": "ITM2",
-          "strike": 22600.0,
-          "call_oi": 5746650,
-          "put_oi": 17759560,
-          "call_ltp": 151.95,
-          "put_ltp": 43.15
+          "strike": 22650.0,
+          "call_oi": 5595980,
+          "put_oi": 12507755,
+          "call_ltp": 130.35,
+          "put_ltp": 48.45
         },
         {
           "label": "ITM1",
-          "strike": 22650.0,
-          "call_oi": 5218525,
-          "put_oi": 12342005,
-          "call_ltp": 119.95,
-          "put_ltp": 59.55
+          "strike": 22700.0,
+          "call_oi": 18927220,
+          "put_oi": 21105435,
+          "call_ltp": 99.95,
+          "put_ltp": 68.25
         },
         {
           "label": "ATM",
-          "strike": 22700.0,
-          "call_oi": 17617795,
-          "put_oi": 21129940,
-          "call_ltp": 91.45,
-          "put_ltp": 81.25
+          "strike": 22750.0,
+          "call_oi": 13875030,
+          "put_oi": 7810010,
+          "call_ltp": 74.55,
+          "put_ltp": 92.7
         },
         {
           "label": "OTM1",
-          "strike": 22750.0,
-          "call_oi": 12241515,
-          "put_oi": 7821385,
-          "call_ltp": 67.7,
-          "put_ltp": 108.95
+          "strike": 22800.0,
+          "call_oi": 18559645,
+          "put_oi": 6762600,
+          "call_ltp": 54.25,
+          "put_ltp": 122.25
         },
         {
           "label": "OTM2",
-          "strike": 22800.0,
-          "call_oi": 17476355,
-          "put_oi": 6840990,
-          "call_ltp": 48.75,
-          "put_ltp": 140.35
+          "strike": 22850.0,
+          "call_oi": 8926450,
+          "put_oi": 1260480,
+          "call_ltp": 38.55,
+          "put_ltp": 154.75
         }
       ],
       "slot": "2026-10-27 09:30"
