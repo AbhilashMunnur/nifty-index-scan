@@ -1199,50 +1199,50 @@
       "slot": "2026-11-02 13:30"
     },
     {
-      "updated_at": "2026-11-02 13:49:03",
+      "updated_at": "2026-11-02 13:53:11",
       "expiry": "2026-11-05",
-      "atm": 75000.0,
+      "atm": 75100.0,
       "lot_size": 20,
       "strikes": [
         {
           "label": "ITM2",
-          "strike": 74800.0,
-          "call_oi": 118420,
-          "put_oi": 263260,
-          "call_ltp": 594.9,
-          "put_ltp": 406.0
+          "strike": 74900.0,
+          "call_oi": 100420,
+          "put_oi": 212720,
+          "call_ltp": 555.7,
+          "put_ltp": 430.9
         },
         {
           "label": "ITM1",
-          "strike": 74900.0,
-          "call_oi": 101620,
-          "put_oi": 209660,
-          "call_ltp": 537.35,
-          "put_ltp": 449.25
+          "strike": 75000.0,
+          "call_oi": 651600,
+          "put_oi": 720100,
+          "call_ltp": 501.6,
+          "put_ltp": 478.15
         },
         {
           "label": "ATM",
-          "strike": 75000.0,
-          "call_oi": 647020,
-          "put_oi": 729680,
-          "call_ltp": 484.95,
-          "put_ltp": 494.7
+          "strike": 75100.0,
+          "call_oi": 351300,
+          "put_oi": 268500,
+          "call_ltp": 450.35,
+          "put_ltp": 525.3
         },
         {
           "label": "OTM1",
-          "strike": 75100.0,
-          "call_oi": 344780,
-          "put_oi": 266300,
-          "call_ltp": 435.8,
-          "put_ltp": 546.2
+          "strike": 75200.0,
+          "call_oi": 433180,
+          "put_oi": 283580,
+          "call_ltp": 403.6,
+          "put_ltp": 579.75
         },
         {
           "label": "OTM2",
-          "strike": 75200.0,
-          "call_oi": 419840,
-          "put_oi": 289780,
-          "call_ltp": 388.8,
-          "put_ltp": 599.8
+          "strike": 75300.0,
+          "call_oi": 497820,
+          "put_oi": 272720,
+          "call_ltp": 359.7,
+          "put_ltp": 635.6
         }
       ],
       "slot": "2026-11-02 13:45"
@@ -2083,50 +2083,50 @@
       "slot": "2026-11-02 13:30"
     },
     {
-      "updated_at": "2026-11-02 13:48:26",
+      "updated_at": "2026-11-02 13:52:35",
       "expiry": "2026-11-03",
-      "atm": 23200.0,
+      "atm": 23250.0,
       "lot_size": 65,
       "strikes": [
         {
           "label": "ITM2",
-          "strike": 23100.0,
-          "call_oi": 3714425,
-          "put_oi": 9610185,
-          "call_ltp": 160.25,
-          "put_ltp": 43.0
+          "strike": 23150.0,
+          "call_oi": 3906695,
+          "put_oi": 7528755,
+          "call_ltp": 124.85,
+          "put_ltp": 58.1
         },
         {
           "label": "ITM1",
-          "strike": 23150.0,
-          "call_oi": 3855865,
-          "put_oi": 7348705,
-          "call_ltp": 125.5,
-          "put_ltp": 58.25
+          "strike": 23200.0,
+          "call_oi": 15235025,
+          "put_oi": 17732780,
+          "call_ltp": 95.05,
+          "put_ltp": 78.15
         },
         {
           "label": "ATM",
-          "strike": 23200.0,
-          "call_oi": 15215525,
-          "put_oi": 17504695,
-          "call_ltp": 95.25,
-          "put_ltp": 78.3
+          "strike": 23250.0,
+          "call_oi": 13990275,
+          "put_oi": 8791510,
+          "call_ltp": 70.6,
+          "put_ltp": 103.7
         },
         {
           "label": "OTM1",
-          "strike": 23250.0,
-          "call_oi": 14071135,
-          "put_oi": 8900840,
-          "call_ltp": 70.65,
-          "put_ltp": 103.95
+          "strike": 23300.0,
+          "call_oi": 25738375,
+          "put_oi": 8814065,
+          "call_ltp": 51.2,
+          "put_ltp": 134.4
         },
         {
           "label": "OTM2",
-          "strike": 23300.0,
-          "call_oi": 25974585,
-          "put_oi": 8860150,
-          "call_ltp": 51.5,
-          "put_ltp": 134.15
+          "strike": 23350.0,
+          "call_oi": 15910310,
+          "put_oi": 2680990,
+          "call_ltp": 36.35,
+          "put_ltp": 169.35
         }
       ],
       "slot": "2026-11-02 13:45"
