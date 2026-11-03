@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03 15:03:36",
+  "updated_at": "2026-11-03 15:07:26",
   "expiry": "2026-11-03",
   "atm": 23700.0,
   "lot_size": 65,
@@ -7,106 +7,106 @@
     {
       "label": "ITM6",
       "strike": 23400.0,
-      "call_oi": 1625845,
-      "put_oi": 8751990,
-      "call_ltp": 307.8,
-      "put_ltp": 0.4
+      "call_oi": 1516060,
+      "put_oi": 8650265,
+      "call_ltp": 303.2,
+      "put_ltp": 0.45
     },
     {
       "label": "ITM5",
       "strike": 23450.0,
-      "call_oi": 1029925,
-      "put_oi": 7246850,
-      "call_ltp": 257.75,
-      "put_ltp": 0.5
+      "call_oi": 1014715,
+      "put_oi": 7247175,
+      "call_ltp": 252.25,
+      "put_ltp": 0.55
     },
     {
       "label": "ITM4",
       "strike": 23500.0,
-      "call_oi": 2858180,
-      "put_oi": 19842030,
-      "call_ltp": 207.6,
-      "put_ltp": 0.6
+      "call_oi": 2768870,
+      "put_oi": 19248710,
+      "call_ltp": 203.0,
+      "put_ltp": 0.7
     },
     {
       "label": "ITM3",
       "strike": 23550.0,
-      "call_oi": 2636270,
-      "put_oi": 16518580,
-      "call_ltp": 157.9,
-      "put_ltp": 0.75
+      "call_oi": 2555930,
+      "put_oi": 16300765,
+      "call_ltp": 154.0,
+      "put_ltp": 1.05
     },
     {
       "label": "ITM2",
       "strike": 23600.0,
-      "call_oi": 7255950,
-      "put_oi": 34145020,
-      "call_ltp": 109.45,
-      "put_ltp": 2.45
+      "call_oi": 7120360,
+      "put_oi": 34850010,
+      "call_ltp": 105.55,
+      "put_ltp": 3.0
     },
     {
       "label": "ITM1",
       "strike": 23650.0,
-      "call_oi": 11784305,
-      "put_oi": 32806865,
-      "call_ltp": 65.2,
-      "put_ltp": 8.15
+      "call_oi": 11097515,
+      "put_oi": 32136845,
+      "call_ltp": 61.6,
+      "put_ltp": 9.5
     },
     {
       "label": "ATM",
       "strike": 23700.0,
-      "call_oi": 34345350,
-      "put_oi": 31393050,
-      "call_ltp": 31.0,
-      "put_ltp": 23.9
+      "call_oi": 32930235,
+      "put_oi": 31292365,
+      "call_ltp": 28.05,
+      "put_ltp": 25.7
     },
     {
       "label": "OTM1",
       "strike": 23750.0,
-      "call_oi": 32721260,
-      "put_oi": 8699470,
-      "call_ltp": 11.25,
-      "put_ltp": 54.15
+      "call_oi": 29446755,
+      "put_oi": 8645000,
+      "call_ltp": 9.1,
+      "put_ltp": 57.3
     },
     {
       "label": "OTM2",
       "strike": 23800.0,
-      "call_oi": 33395310,
-      "put_oi": 5320900,
-      "call_ltp": 3.15,
-      "put_ltp": 96.3
+      "call_oi": 31851755,
+      "put_oi": 5059795,
+      "call_ltp": 2.2,
+      "put_ltp": 100.05
     },
     {
       "label": "OTM3",
       "strike": 23850.0,
-      "call_oi": 20046065,
-      "put_oi": 1201655,
-      "call_ltp": 0.85,
-      "put_ltp": 143.65
+      "call_oi": 19734065,
+      "put_oi": 1103050,
+      "call_ltp": 0.6,
+      "put_ltp": 148.1
     },
     {
       "label": "OTM4",
       "strike": 23900.0,
-      "call_oi": 12466025,
-      "put_oi": 705900,
-      "call_ltp": 0.35,
-      "put_ltp": 193.15
+      "call_oi": 11801790,
+      "put_oi": 665080,
+      "call_ltp": 0.3,
+      "put_ltp": 197.7
     },
     {
       "label": "OTM5",
       "strike": 23950.0,
-      "call_oi": 5494580,
-      "put_oi": 127595,
-      "call_ltp": 0.3,
-      "put_ltp": 243.0
+      "call_oi": 5320770,
+      "put_oi": 119145,
+      "call_ltp": 0.25,
+      "put_ltp": 247.9
     },
     {
       "label": "OTM6",
       "strike": 24000.0,
-      "call_oi": 14488045,
-      "put_oi": 562640,
-      "call_ltp": 0.3,
-      "put_ltp": 293.6
+      "call_oi": 14149590,
+      "put_oi": 450710,
+      "call_ltp": 0.2,
+      "put_ltp": 297.25
     }
   ]
 }
