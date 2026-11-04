@@ -1,7 +1,26 @@
 {
-  "updated_at": "2026-10-21 14:23:09",
+  "updated_at": "2026-11-04 09:34:41",
   "realised_pnl": -4713.92,
-  "position": null,
+  "position": {
+    "direction": "SHORT",
+    "tradingsymbol": "NIFTY23NOV26FUT",
+    "expiry": "2026-11-23",
+    "token": "61471",
+    "lot_size": 65,
+    "lots": 2,
+    "scale_lot_open": true,
+    "rsi_lot_open": true,
+    "first_target_pct": 1.5,
+    "first_target_price": 23604.34,
+    "stop_loss_pct": 0.75,
+    "stop_loss_price": 24143.53,
+    "entry_time": "2026-11-04 09:34:41",
+    "entry_price": 23963.8,
+    "entry_rsi": 85.9,
+    "pcr": 0.45,
+    "change_pcr": 0.77,
+    "reason": "1H RSI 85.9 >= 70 and \u0394PCR 0.77 < 0.8 (PCR 0.45)"
+  },
   "closed": [
     {
       "direction": "LONG",

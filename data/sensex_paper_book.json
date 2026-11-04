@@ -1,0 +1,25 @@
+{
+  "updated_at": "2026-11-04 09:34:59",
+  "realised_pnl": 0.0,
+  "position": {
+    "direction": "SHORT",
+    "tradingsymbol": "SENSEX26NOVFUT",
+    "expiry": "2026-11-26",
+    "token": "1100929",
+    "lot_size": 20,
+    "lots": 2,
+    "scale_lot_open": true,
+    "rsi_lot_open": true,
+    "first_target_pct": 1.5,
+    "first_target_price": 76337.5,
+    "stop_loss_pct": 0.75,
+    "stop_loss_price": 78081.25,
+    "entry_time": "2026-11-04 09:34:59",
+    "entry_price": 77500.0,
+    "entry_rsi": 85.3,
+    "pcr": 0.36,
+    "change_pcr": 0.71,
+    "reason": "1H RSI 85.3 >= 70 and \u0394PCR 0.71 < 0.8 (PCR 0.36)"
+  },
+  "closed": []
+}
