@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-06 09:39:41",
-  "realised_pnl": -23250.0,
+  "updated_at": "2026-11-06 09:53:04",
+  "realised_pnl": -46972.36,
   "position": {
     "direction": "SHORT",
     "tradingsymbol": "SENSEX26NOVFUT",
@@ -11,15 +11,15 @@
     "scale_lot_open": true,
     "rsi_lot_open": true,
     "first_target_pct": 1.5,
-    "first_target_price": 77888.43,
+    "first_target_price": 78688.69,
     "stop_loss_pct": 0.75,
-    "stop_loss_price": 79667.61,
-    "entry_time": "2026-11-05 12:41:54",
-    "entry_price": 79074.55,
-    "entry_rsi": 85.1,
-    "pcr": 0.61,
-    "change_pcr": 0.72,
-    "reason": "1H RSI 85.1 >= 70 and \u0394PCR 0.72 < 0.8 (PCR 0.61)"
+    "stop_loss_price": 80486.15,
+    "entry_time": "2026-11-06 09:53:04",
+    "entry_price": 79887.0,
+    "entry_rsi": 87.5,
+    "pcr": 0.33,
+    "change_pcr": 0.49,
+    "reason": "1H RSI 87.5 >= 70 and \u0394PCR 0.49 < 0.8 (PCR 0.33)"
   },
   "closed": [
     {
@@ -33,6 +33,19 @@
       "exit_time": "2026-11-05 09:49:59",
       "exit_price": 78081.25,
       "pnl": -23250.0,
+      "exit_reason": "SL 0.75% against entry"
+    },
+    {
+      "direction": "SHORT",
+      "tradingsymbol": "SENSEX26NOVFUT",
+      "expiry": "2026-11-26",
+      "lots": 2,
+      "entry_time": "2026-11-05 12:41:54",
+      "entry_price": 79074.55,
+      "entry_rsi": 85.1,
+      "exit_time": "2026-11-06 09:53:04",
+      "exit_price": 79667.61,
+      "pnl": -23722.36,
       "exit_reason": "SL 0.75% against entry"
     }
   ]
