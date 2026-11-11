@@ -2,27 +2,27 @@
   "sessions": [
     {
       "name": "NIFTY",
-      "day": "2026-11-11",
-      "label": "LONG UNWIND",
+      "day": "2026-10-14",
+      "label": "SHORT BUILDUP",
       "lines": [
-        "NIFTY FUT DAY \u2014 11 Nov 2026 16:03",
-        "NIFTY23NOV26FUT  expiry 2026-11-23",
-        "2026-11-11 09:33:17 \u2192 2026-11-11 15:33:12  LONG UNWIND",
-        "Lots 188,790 \u2192 187,845  (-945, -0.50%)",
-        "Price 25,391.20 \u2192 25,253.00  (-138.20)",
+        "NIFTY FUT DAY \u2014 14 Oct 2026 16:02",
+        "NIFTY27OCT26FUT  expiry 2026-10-27",
+        "2026-10-14 09:33:12 \u2192 2026-10-14 15:33:20  SHORT BUILDUP",
+        "Lots 285,686 \u2192 287,622  (+1,936, +0.68%)",
+        "Price 22,726.50 \u2192 22,658.90  (-67.60)",
         "Whole session. Futures price and futures open interest."
       ]
     },
     {
       "name": "SENSEX",
-      "day": "2026-11-11",
+      "day": "2026-10-14",
       "label": "SHORT BUILDUP",
       "lines": [
-        "SENSEX FUT DAY \u2014 11 Nov 2026 16:03",
-        "SENSEX26NOVFUT  expiry 2026-11-26",
-        "2026-11-11 09:33:23 \u2192 2026-11-11 15:33:13  SHORT BUILDUP",
-        "Lots 2,175 \u2192 2,250  (+75, +3.45%)",
-        "Price 82,390.00 \u2192 81,900.00  (-490.00)",
+        "SENSEX FUT DAY \u2014 14 Oct 2026 16:02",
+        "SENSEX26OCTFUT  expiry 2026-10-29",
+        "2026-10-14 09:33:13 \u2192 2026-10-14 15:33:20  SHORT BUILDUP",
+        "Lots 4,967 \u2192 5,028  (+61, +1.23%)",
+        "Price 73,082.55 \u2192 72,959.00  (-123.55)",
         "Whole session. Futures price and futures open interest."
       ]
     }
