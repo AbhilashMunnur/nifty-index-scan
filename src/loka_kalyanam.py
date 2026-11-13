@@ -201,6 +201,12 @@ class LokaBook:
             + "\n",
             encoding="utf-8",
         )
+        try:
+            from src.loka_journal import write_journal
+
+            write_journal(self)
+        except Exception as exc:
+            print(f"Loka Kalyanam journal was not written ({exc})")
 
     @property
     def is_open(self) -> bool:

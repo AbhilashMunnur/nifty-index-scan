@@ -58,6 +58,40 @@ def test_first_sheet_trade_points_and_capital(tmp_path):
     assert "111" in (tmp_path / "book.json").read_text(encoding="utf-8")
 
 
+def test_journal_uses_the_page_lines(tmp_path):
+    from openpyxl import load_workbook
+
+    book = LokaBook(tmp_path / "book.json")
+    book.enter(
+        side="Short",
+        day=date(2026, 11, 12),
+        nifty=25980,
+        call_symbol="C",
+        call_token="1",
+        call_entry=110,
+        put_symbol="P",
+        put_token="2",
+        put_entry=90,
+        strike=25900,
+        expiry="2026-11-17",
+        lot_size=65,
+    )
+    book.close(
+        exit_on=date(2026, 11, 13),
+        nifty_exit=25840,
+        call_exit=40,
+        put_exit=110,
+        quote="Market",
+    )
+    sheet = load_workbook(tmp_path / "loka_kalyanam_journal.xlsx")["Journal"]
+    assert sheet["A2"].value == "entry 15:00 -- 12-11-2026"
+    assert sheet["A3"].value == "exit 14:00 -- 13-11-2026"
+    assert sheet["B3"].value == "entry 12-11-2026 · closed 13-11-2026 · Short · Nifty 25,840.00"
+    assert sheet["C3"].value == "Buy 25900 call @ 40.00"
+    assert sheet["D3"].value == "Sell 25900 put @ 110.00"
+    assert sheet["H3"].value == book.capital
+
+
 def test_short_waits_until_the_next_session_at_14():
     position = {"entry_date": "2026-11-13", "exit_clock": "14:00"}
     assert not exit_due(position, datetime(2026, 11, 13, 15, 1))
