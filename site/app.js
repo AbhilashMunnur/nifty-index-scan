@@ -169,7 +169,8 @@ function bookBlock(name, book) {
 
 function lokaRow(row) {
   const exit = row.event === "Exit";
-  const when = exit && row.exit_date ? ` · closed ${row.exit_date}` : "";
+  const shownDate = exit && row.exit_date ? row.exit_date : row.date;
+  const closed = exit && row.exit_date ? ` · closed ${row.exit_date}` : "";
   const pending = row.exit_clock
     ? `<p class="meta">Open. Closes at ${row.exit_clock} on the next session.</p>`
     : "";
@@ -179,8 +180,8 @@ function lokaRow(row) {
     : `<p class="meta">${row.lots} lots · capital before ${inr(row.capital_before)} · used ${inr(row.capital_used)}</p>`;
   return `
     <article class="card ${exit ? "loka-exit" : ""}">
-      <header><div class="clock">${row.time}</div><span class="badge">${row.event}</span></header>
-      <p>${row.date}${when} · ${row.side} · Nifty ${px(row.nifty)}</p>
+      <header><div class="day-title">${row.time} -- ${shownDate}</div></header>
+      <p>entry ${row.date}${closed} · ${row.side} · Nifty ${px(row.nifty)}</p>
       <p>${row.call} ${row.call_strike} @ ${px(row.call_price)}</p>
       <p>${row.put} ${row.put_strike} @ ${px(row.put_price)}</p>
       ${pending}
