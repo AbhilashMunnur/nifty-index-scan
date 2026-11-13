@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-13",
+  "sensex_fut": [
+    {
+      "updated_at": "2026-11-13 09:33:12",
+      "tradingsymbol": "SENSEX26NOVFUT",
+      "token": "1100929",
+      "expiry": "2026-11-26",
+      "lot_size": 20,
+      "price": 81445.85,
+      "oi": 42260,
+      "slot": "2026-11-13 09:30"
+    }
+  ],
+  "nifty_fut": [
+    {
+      "updated_at": "2026-11-13 09:33:12",
+      "tradingsymbol": "NIFTY23NOV26FUT",
+      "token": "61471",
+      "expiry": "2026-11-23",
+      "lot_size": 65,
+      "price": 25150.0,
+      "oi": 12136800,
+      "slot": "2026-11-13 09:30"
+    }
+  ]
+}
