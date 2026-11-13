@@ -180,7 +180,7 @@ function lokaRow(row) {
     : `<p class="meta">${row.lots} lots · capital before ${inr(row.capital_before)} · used ${inr(row.capital_used)}</p>`;
   return `
     <article class="card ${exit ? "loka-exit" : ""}">
-      <header><div class="day-title">${row.time} -- ${shownDate}</div></header>
+      <header><div class="day-title">${exit ? "exit" : "entry"} ${row.time} -- ${shownDate}</div></header>
       <p>entry ${row.date}${closed} · ${row.side} · Nifty ${px(row.nifty)}</p>
       <p>${row.call} ${row.call_strike} @ ${px(row.call_price)}</p>
       <p>${row.put} ${row.put_strike} @ ${px(row.put_price)}</p>
