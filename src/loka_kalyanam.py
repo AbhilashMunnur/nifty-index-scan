@@ -157,9 +157,10 @@ def _iso(day: date) -> str:
 
 
 class LokaBook:
-    def __init__(self, path: Path | None = None):
+    def __init__(self, path: Path | None = None, *, name: str | None = None, journal_name: str | None = None):
         self.path = path or BOOK_PATH
-        self.name = NAME
+        self.name = name or NAME
+        self.journal_name = journal_name
         self.started_on = "2026-11-13"
         self.starting_capital = STARTING_CAPITAL
         self.capital = STARTING_CAPITAL
@@ -173,6 +174,7 @@ class LokaBook:
         if not self.path.exists():
             return
         raw = json.loads(self.path.read_text(encoding="utf-8"))
+        self.name = str(raw.get("name") or self.name)
         self.started_on = str(raw.get("started_on") or self.started_on)
         self.starting_capital = float(raw.get("starting_capital") or STARTING_CAPITAL)
         self.capital = float(raw.get("capital") or self.starting_capital)
@@ -212,6 +214,12 @@ class LokaBook:
     def is_open(self) -> bool:
         return isinstance(self.position, dict) and int(self.position.get("lots") or 0) > 0
 
+    def mark_checked(self) -> None:
+        """The morning check was not in profit, so the close waits for 14:00."""
+        if self.position is not None:
+            self.position["checked"] = True
+            self.save()
+
     def entered_on(self, day: date) -> bool:
         if self.is_open and self.position.get("entry_date") == _iso(day):
             return True
@@ -232,16 +240,27 @@ class LokaBook:
         strike: int,
         expiry: str,
         lot_size: int,
+        signal: str = "",
+        pcr: float | None = None,
+        pcr_rank: float | None = None,
+        check_clock: str = "",
+        fallback_clock: str = "",
     ) -> str:
         call_action, put_action = opening_orders(side)
         lots = lots_for(self.capital)
         if lots < 1 or lot_size < 1:
-            return "Loka Kalyanam: capital does not cover one lot."
+            return f"{self.name}: capital does not cover one lot."
         self.position = {
             "side": side,
             "entry_date": _iso(day),
             "entry_time": ENTRY_CLOCK,
-            "exit_clock": exit_clock(side),
+            "exit_clock": check_clock or exit_clock(side),
+            "signal": signal,
+            "pcr": None if pcr is None else round(float(pcr), 3),
+            "pcr_rank": None if pcr_rank is None else round(float(pcr_rank), 1),
+            "check_clock": check_clock,
+            "fallback_clock": fallback_clock,
+            "checked": False,
             "nifty_entry": round(float(nifty), 2),
             "call_action": call_action,
             "call_symbol": call_symbol,
@@ -261,8 +280,9 @@ class LokaBook:
             "entry_stamp": _now(),
         }
         self.save()
+        marked = f", {signal}" if signal else ""
         return (
-            f"Loka Kalyanam entry {day.strftime('%d-%m-%Y')} 15:00 {side}: "
+            f"{self.name} entry {day.strftime('%d-%m-%Y')} 15:00 {side}{marked}: "
             f"{call_action.lower()} {strike} call @ {call_entry:,.2f}, "
             f"{put_action.lower()} {strike} put @ {put_entry:,.2f}, "
             f"{lots} lots, Nifty {nifty:,.2f}"
@@ -276,10 +296,12 @@ class LokaBook:
         call_exit: float,
         put_exit: float,
         quote: str,
+        exit_clock_used: str = "",
+        reason: str = "",
     ) -> str:
         pos = self.position
         if not pos:
-            return "Loka Kalyanam: nothing open."
+            return f"{self.name}: nothing open."
         side = str(pos["side"])
         points = pair_points(
             side,
@@ -308,7 +330,8 @@ class LokaBook:
             {
                 **pos,
                 "exit_date": _iso(exit_on),
-                "exit_time": pos["exit_clock"],
+                "exit_time": exit_clock_used or pos["exit_clock"],
+                "exit_reason": reason,
                 "nifty_exit": round(float(nifty_exit), 2),
                 "call_exit_action": call_close,
                 "call_exit": round(float(call_exit), 2),
@@ -331,8 +354,9 @@ class LokaBook:
         self.realised_pnl = _money(self.capital - self.starting_capital)
         self.position = None
         self.save()
+        used = exit_clock_used or pos["exit_clock"]
         return (
-            f"Loka Kalyanam exit {exit_on.strftime('%d-%m-%Y')} {pos['exit_clock']} {side}: "
+            f"{self.name} exit {exit_on.strftime('%d-%m-%Y')} {used} {side}: "
             f"{points:+.2f} pts, profit {gross:,.2f}, charges {costs['total']:,.2f}, "
             f"capital {capital_after:,.2f}"
         )

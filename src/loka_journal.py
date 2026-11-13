@@ -8,8 +8,6 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
-from src.loka_kalyanam import NAME
-
 JOURNAL_NAME = "loka_kalyanam_journal.xlsx"
 HEADERS = (
     "When",
@@ -32,7 +30,8 @@ def journal_path_for(book_path: Path) -> Path:
 
 def write_journal(book) -> Path:
     """Rewrite the workbook from the paper book. Closed trades, then the open entry."""
-    path = journal_path_for(book.path)
+    filename = getattr(book, "journal_name", None) or JOURNAL_NAME
+    path = book.path.with_name(filename)
     path.parent.mkdir(parents=True, exist_ok=True)
     rows = _rows(book)
     wb = Workbook()
@@ -60,7 +59,7 @@ def _entry(trade: dict) -> dict:
     nifty = _num(trade.get("nifty_entry"))
     return {
         "when": f"entry {trade.get('entry_time') or '15:00'} -- {day}",
-        "detail": f"entry {day} · {trade.get('side')} · Nifty {_grouped(nifty)}",
+        "detail": f"entry {day} · {_side_label(trade)} · Nifty {_grouped(nifty)}",
         "call": _leg(trade.get("call_action"), trade.get("call_strike"), "call", trade.get("call_entry")),
         "put": _leg(trade.get("put_action"), trade.get("put_strike"), "put", trade.get("put_entry")),
         "profit": None,
@@ -81,7 +80,7 @@ def _exit(trade: dict) -> dict:
     return {
         "when": f"exit {trade.get('exit_time') or ''} -- {closed}",
         "detail": (
-            f"entry {entered} · closed {closed} · {trade.get('side')} · Nifty {_grouped(nifty)}"
+            f"entry {entered} · closed {closed} · {_side_label(trade)} · Nifty {_grouped(nifty)}"
         ),
         "call": _leg(trade.get("call_exit_action"), trade.get("call_strike"), "call", trade.get("call_exit")),
         "put": _leg(trade.get("put_exit_action"), trade.get("put_strike"), "put", trade.get("put_exit")),
@@ -94,6 +93,12 @@ def _exit(trade: dict) -> dict:
         "used": None,
         "exit": True,
     }
+
+
+def _side_label(trade: dict) -> str:
+    signal = str(trade.get("signal") or "")
+    side = str(trade.get("side") or "")
+    return f"{side} · {signal}" if signal else side
 
 
 def _leg(action, strike, kind: str, price) -> str:
@@ -199,7 +204,7 @@ def _write_book(sheet, book, trades: int) -> None:
         cell.fill = header_fill
         cell.font = header_font
     lines = (
-        ("Name", NAME),
+        ("Name", book.name),
         ("Started", _dmy(book.started_on)),
         ("Starting capital", book.starting_capital),
         ("Capital", book.capital),

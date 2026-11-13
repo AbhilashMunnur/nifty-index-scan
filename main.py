@@ -464,6 +464,14 @@ def _run_loka(market) -> None:
     except Exception:
         traceback.print_exc()
         print("Loka Kalyanam paper step failed. The other scans still stand.")
+    try:
+        from src.loka_oi_live import run_loka_oi
+
+        for line in run_loka_oi(market, now_ist()):
+            print(line)
+    except Exception:
+        traceback.print_exc()
+        print("Loka open-interest paper step failed. The other scans still stand.")
 
 
 def run_strategy(config, args, slot=None) -> bool:

@@ -17,6 +17,7 @@ from src.fut_flow import (
 )
 from src.oi_flow import classify_band_flow, interval_totals_line
 from src.loka_kalyanam import NAME
+from src.loka_oi import VARIANTS
 from src.paths import ROOT
 from src.pcr import BandPcr, StrikePcr
 from src.power_hour import is_report_slot
@@ -44,6 +45,7 @@ def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
             "sensex": _book(root / "data" / BOOKS["sensex"]),
         },
         "loka_kalyanam": _loka(root / "data" / "loka_kalyanam_book.json"),
+        **{variant.key: _loka(root / "data" / variant.book_name) for variant in VARIANTS},
         "fut_days": _fut_days(root, today),
     }
     return _strip_tokens(desk)
@@ -322,6 +324,10 @@ def _loka_row(trade: dict, event: str) -> dict:
         "put_strike": _strike_name(trade.get("put_strike"), "put"),
         "put_price": trade.get("put_entry") if entry else trade.get("put_exit"),
         "exit_quote": "" if entry else trade.get("exit_quote"),
+        "exit_reason": "" if entry else (trade.get("exit_reason") or ""),
+        "signal": trade.get("signal") or "",
+        "pcr": trade.get("pcr"),
+        "pcr_rank": trade.get("pcr_rank"),
         "points": None if entry else trade.get("points"),
         "lots": trade.get("lots"),
         "capital_before": trade.get("capital_before"),
@@ -358,6 +364,8 @@ def _loka(path: Path) -> dict:
     if position and int(position.get("lots") or 0) > 0:
         open_row = _loka_row(position, "Entry")
         open_row["exit_clock"] = position.get("exit_clock")
+        open_row["check_clock"] = position.get("check_clock") or ""
+        open_row["fallback_clock"] = position.get("fallback_clock") or ""
         open_row["expiry"] = position.get("expiry")
     rows: list[dict] = []
     if open_row:

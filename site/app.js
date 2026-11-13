@@ -4,7 +4,15 @@ const PAGES = {
   "nifty-fut": { title: "Nifty future Scan", key: "nifty_fut", kind: "fut" },
   "sensex-fut": { title: "Sensex future Scan", key: "sensex_fut", kind: "fut" },
   "positions": { title: "Model positions", kind: "positions" },
-  "loka": { title: "Loka Kalyanam", kind: "loka" },
+  "loka": { title: "Loka Kalyanam", kind: "loka", key: "loka_kalyanam" },
+  "loka-oi-120": { title: "Loka OI 120", kind: "loka", key: "loka_oi_120" },
+  "loka-oi-60": { title: "Loka OI 60", kind: "loka", key: "loka_oi_60" },
+};
+
+const LOKA_LEDE = {
+  loka_kalyanam: "Paper from this date. A strong close buys the call and sells the put, and that pair closes at 09:15. A weak close sells the call and buys the put, and that pair closes at 14:00. Live orders stay off.",
+  loka_oi_120: "Paper from this date. A put-call ratio in the lowest 20% of 120 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:00 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
+  loka_oi_60: "Paper from this date. A put-call ratio in the lowest 30% of 60 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:15 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
 };
 
 const app = document.querySelector("#app");
@@ -171,9 +179,15 @@ function lokaRow(row) {
   const exit = row.event === "Exit";
   const shownDate = exit && row.exit_date ? row.exit_date : row.date;
   const closed = exit && row.exit_date ? ` · closed ${row.exit_date}` : "";
-  const pending = row.exit_clock
-    ? `<p class="meta">Open. Closes at ${row.exit_clock} on the next session.</p>`
+  const pending = row.check_clock
+    ? `<p class="meta">Open. Next session, close at ${row.check_clock} if the pair is in profit, otherwise at ${row.fallback_clock}.</p>`
+    : (row.exit_clock
+      ? `<p class="meta">Open. Closes at ${row.exit_clock} on the next session.</p>`
+      : "");
+  const signal = row.signal
+    ? `<p class="meta">${row.signal}${row.pcr == null ? "" : ` · put-call ratio ${row.pcr}`}${row.pcr_rank == null ? "" : ` · rank ${row.pcr_rank}%`}</p>`
     : "";
+  const reason = exit && row.exit_reason ? `<p class="meta">${row.exit_reason}</p>` : "";
   const result = exit
     ? `<p class="${moneyClass(row.profit)}">${inr(row.profit)}</p>
        <p class="meta">${row.points} pts · charges ${inr(row.charges)} · capital ${inr(row.capital_after)}</p>`
@@ -184,31 +198,33 @@ function lokaRow(row) {
       <p>entry ${row.date}${closed} · ${row.side} · Nifty ${px(row.nifty)}</p>
       <p>${row.call} ${row.call_strike} @ ${px(row.call_price)}</p>
       <p>${row.put} ${row.put_strike} @ ${px(row.put_price)}</p>
+      ${signal}
+      ${reason}
       ${pending}
       ${result}
     </article>`;
 }
 
-function lokaPage(desk) {
-  const book = desk.loka_kalyanam || {};
+function lokaPage(desk, key, title) {
+  const book = desk[key] || {};
   if (!book.saved) {
     return `
       <a class="back" href="#">&larr; Landing</a>
-      <h1>Loka Kalyanam</h1>
+      <h1>${title}</h1>
       <p class="status">The paper book is not on this page yet.</p>`;
   }
-  const rows = (book.rows || []).map(lokaRow).join("") || `<p class="status">No trade yet. The first one is the 15:00 close today.</p>`;
+  const lede = (LOKA_LEDE[key] || "").replace("this date", book.started_on || "today");
+  const rows = (book.rows || []).map(lokaRow).join("") || `<p class="status">No trade yet. The first one is the 15:00 close.</p>`;
   return `
     <a class="back" href="#">&larr; Landing</a>
-    <h1>Loka Kalyanam</h1>
-    <p class="lede">Paper from ${book.started_on}. A strong close buys the call and sells the put, and that pair closes at 09:15. A weak close sells the call and buys the put, and that pair closes at 14:00. Live orders stay off.</p>
+    <h1>${title}</h1>
+    <p class="lede">${lede}</p>
     <p class="${moneyClass(book.realised)}">${inr(book.realised)}</p>
     <p class="meta">Profit and loss · capital ${inr(book.capital)} from ${inr(book.starting_capital)} · saved ${book.updated_at || ""}</p>
     ${rows}`;
 }
 
-function lokaLabel(desk) {
-  const book = desk.loka_kalyanam;
+function lokaLabel(book) {
   if (!book || !book.saved) return "Paper book";
   if (!book.flat && book.open) return "Open " + book.open.side;
   return inr(book.realised);
@@ -246,7 +262,9 @@ function landing(desk) {
     ["nifty-fut", "Nifty future Scan", latestClock(desk.nifty_fut), ""],
     ["sensex-fut", "Sensex future Scan", latestClock(desk.sensex_fut), ""],
     ["positions", "Model positions", positionLabel(desk), "wide"],
-    ["loka", "Loka Kalyanam", lokaLabel(desk), "wide"],
+    ["loka", "Loka Kalyanam", lokaLabel(desk.loka_kalyanam), "wide"],
+    ["loka-oi-120", "Loka OI 120", lokaLabel(desk.loka_oi_120), "wide"],
+    ["loka-oi-60", "Loka OI 60", lokaLabel(desk.loka_oi_60), "wide"],
   ];
   return `
     <h1>Scan desk</h1>
@@ -267,7 +285,7 @@ function render(desk) {
     return;
   }
   if (page.kind === "positions") app.innerHTML = positionsPage(desk);
-  else if (page.kind === "loka") app.innerHTML = lokaPage(desk);
+  else if (page.kind === "loka") app.innerHTML = lokaPage(desk, page.key, page.title);
   else if (page.kind === "oi") app.innerHTML = listPage(page.title, desk[page.key] || [], oiCard);
   else {
     const days = (desk.fut_days || []).filter((card) => card.name === page.title.split(" ")[0].toUpperCase());
