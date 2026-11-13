@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import time
 from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 from SmartApi import SmartConnect
@@ -24,6 +25,25 @@ CANDLE_INTERVAL_SECONDS = 1.1
 RETRY_BACKOFF_SECONDS = (2, 5, 10)
 RATE_LIMIT_BACKOFF_SECONDS = (20, 45, 90)
 STRIKE_DIVISOR = 100.0
+
+
+def _candle_stamp(value) -> datetime | None:
+    text = str(value).strip()
+    try:
+        stamp = datetime.fromisoformat(text)
+    except ValueError:
+        stamp = None
+    if stamp is not None:
+        if stamp.tzinfo is not None:
+            stamp = stamp.astimezone(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
+        return stamp
+    plain = text.replace("T", " ")
+    for size, pattern in ((19, "%Y-%m-%d %H:%M:%S"), (16, "%Y-%m-%d %H:%M")):
+        try:
+            return datetime.strptime(plain[:size], pattern)
+        except ValueError:
+            continue
+    return None
 
 
 class Throttle:
@@ -539,3 +559,87 @@ class IndexMarket:
             max_put_token=max_put_token,
             legs_by_strike=legs_by_strike,
         )
+
+    def candles(
+        self,
+        exchange: str,
+        token: str,
+        start: datetime,
+        end: datetime,
+        interval: str = "FIFTEEN_MINUTE",
+    ) -> list[dict]:
+        """15-minute bars as stamp/open/high/low/close. Empty when the feed has none."""
+        try:
+            response = self._call(
+                self._candle_throttle,
+                "getCandleData",
+                {
+                    "exchange": exchange,
+                    "symboltoken": str(token),
+                    "interval": interval,
+                    "fromdate": start.strftime("%Y-%m-%d %H:%M"),
+                    "todate": end.strftime("%Y-%m-%d %H:%M"),
+                },
+            )
+        except Exception as exc:
+            print(f"  candles unavailable for {token} ({exc})")
+            return []
+        bars: list[dict] = []
+        for row in (response or {}).get("data") or []:
+            if not isinstance(row, (list, tuple)) or len(row) < 5:
+                continue
+            stamp = _candle_stamp(row[0])
+            if stamp is None:
+                continue
+            bars.append(
+                {
+                    "stamp": stamp,
+                    "open": float(row[1]),
+                    "high": float(row[2]),
+                    "low": float(row[3]),
+                    "close": float(row[4]),
+                }
+            )
+        return bars
+
+    def option_expiries(self, symbol: str, on: date) -> list[date]:
+        """Listed index-option expiries on or after `on`."""
+        spec = require_index(symbol)
+        self._load_instruments()
+        found: set[date] = set()
+        for row in (self._option_rows or {}).get(spec.symbol) or []:
+            try:
+                expiry = datetime.strptime(str(row["expiry"]), "%d%b%Y").date()
+            except (KeyError, ValueError):
+                continue
+            if expiry >= on:
+                found.add(expiry)
+        return sorted(found)
+
+    def option_contract(self, symbol: str, expiry: date, strike: float, right: str) -> dict | None:
+        """One CE or PE. Strike is in index points, matching the scrip master divided by 100."""
+        spec = require_index(symbol)
+        self._load_instruments()
+        wanted = "CE" if str(right).upper().startswith("C") else "PE"
+        expiry_text = expiry.strftime("%d%b%Y").upper()
+        target = round(float(strike) * STRIKE_DIVISOR)
+        for row in (self._option_rows or {}).get(spec.symbol) or []:
+            name = str(row.get("symbol") or "")
+            if not name.endswith(wanted):
+                continue
+            if str(row.get("expiry") or "").upper() != expiry_text:
+                continue
+            try:
+                listed = round(float(row.get("strike") or 0))
+            except (TypeError, ValueError):
+                continue
+            if listed != target:
+                continue
+            return {
+                "tradingsymbol": name,
+                "token": str(row["token"]),
+                "strike": float(strike),
+                "expiry": expiry.isoformat(),
+                "lot_size": int(float(row.get("lotsize") or 0)),
+            }
+        return None

@@ -453,6 +453,19 @@ def scan_one_index(config, args, market, symbol: str, ltp: float | None) -> Inde
     )
 
 
+def _run_loka(market) -> None:
+    """Paper the Loka Kalyanam pair. A miss here does not fail the other scans."""
+    try:
+        from src.loka_kalyanam import LokaBook
+        from src.loka_live import run_loka_kalyanam
+
+        for line in run_loka_kalyanam(market, LokaBook(), now_ist()):
+            print(line)
+    except Exception:
+        traceback.print_exc()
+        print("Loka Kalyanam paper step failed. The other scans still stand.")
+
+
 def run_strategy(config, args, slot=None) -> bool:
     symbols = list(config.strategy_symbols)
     rules = config.rules
@@ -495,6 +508,8 @@ def run_strategy(config, args, slot=None) -> bool:
             sensex=sensex.band if sensex and sensex.ok else None,
             sensex_spot=sensex.ltp if sensex and sensex.ok else None,
         )
+        if config.mode == "paper" and not args.no_paper:
+            _run_loka(market)
         return any(row.ok for row in results)
     finally:
         market.close()

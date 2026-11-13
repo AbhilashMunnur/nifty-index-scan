@@ -16,6 +16,7 @@ from src.fut_flow import (
     reading_from_mark,
 )
 from src.oi_flow import classify_band_flow, interval_totals_line
+from src.loka_kalyanam import NAME
 from src.paths import ROOT
 from src.pcr import BandPcr, StrikePcr
 from src.power_hour import is_report_slot
@@ -42,6 +43,7 @@ def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
             "nifty": _book(root / "data" / BOOKS["nifty"]),
             "sensex": _book(root / "data" / BOOKS["sensex"]),
         },
+        "loka_kalyanam": _loka(root / "data" / "loka_kalyanam_book.json"),
         "fut_days": _fut_days(root, today),
     }
     return _strip_tokens(desk)
@@ -287,6 +289,96 @@ def _future_cards(rows: list[dict]) -> list[dict]:
         previous = row
     cards.reverse()
     return cards
+
+
+def _dmy(value: str) -> str:
+    text = str(value or "")
+    if len(text) >= 10 and text[4] == "-" and text[7] == "-":
+        return f"{text[8:10]}-{text[5:7]}-{text[0:4]}"
+    return text
+
+
+def _strike_name(strike, kind: str) -> str:
+    try:
+        number = int(float(strike))
+    except (TypeError, ValueError):
+        return str(strike or "")
+    return f"{number} {kind}"
+
+
+def _loka_row(trade: dict, event: str) -> dict:
+    entry = event == "Entry"
+    return {
+        "date": _dmy(trade.get("entry_date")),
+        "event": event,
+        "time": trade.get("entry_time") if entry else trade.get("exit_time"),
+        "exit_date": "" if entry else _dmy(trade.get("exit_date")),
+        "nifty": trade.get("nifty_entry") if entry else trade.get("nifty_exit"),
+        "side": trade.get("side"),
+        "call": trade.get("call_action") if entry else trade.get("call_exit_action"),
+        "call_strike": _strike_name(trade.get("call_strike"), "call"),
+        "call_price": trade.get("call_entry") if entry else trade.get("call_exit"),
+        "put": trade.get("put_action") if entry else trade.get("put_exit_action"),
+        "put_strike": _strike_name(trade.get("put_strike"), "put"),
+        "put_price": trade.get("put_entry") if entry else trade.get("put_exit"),
+        "exit_quote": "" if entry else trade.get("exit_quote"),
+        "points": None if entry else trade.get("points"),
+        "lots": trade.get("lots"),
+        "capital_before": trade.get("capital_before"),
+        "capital_used": trade.get("capital_used") if entry else None,
+        "profit": None if entry else trade.get("profit"),
+        "charges": None if entry else trade.get("charges"),
+        "capital_after": None if entry else trade.get("capital_after"),
+    }
+
+
+def _loka(path: Path) -> dict:
+    empty = {
+        "name": NAME,
+        "saved": False,
+        "started_on": "",
+        "starting_capital": None,
+        "capital": None,
+        "realised": None,
+        "updated_at": None,
+        "flat": True,
+        "open": None,
+        "rows": [],
+    }
+    if not path.exists():
+        return empty
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return empty
+    if not isinstance(raw, dict):
+        return empty
+    position = raw.get("position") if isinstance(raw.get("position"), dict) else None
+    open_row = None
+    if position and int(position.get("lots") or 0) > 0:
+        open_row = _loka_row(position, "Entry")
+        open_row["exit_clock"] = position.get("exit_clock")
+        open_row["expiry"] = position.get("expiry")
+    rows: list[dict] = []
+    if open_row:
+        rows.append(open_row)
+    for trade in reversed(list(raw.get("closed") or [])):
+        if not isinstance(trade, dict):
+            continue
+        rows.append(_loka_row(trade, "Entry"))
+        rows.append(_loka_row(trade, "Exit"))
+    return {
+        "name": str(raw.get("name") or NAME),
+        "saved": True,
+        "started_on": _dmy(raw.get("started_on")),
+        "starting_capital": raw.get("starting_capital"),
+        "capital": raw.get("capital"),
+        "realised": raw.get("realised_pnl"),
+        "updated_at": raw.get("updated_at"),
+        "flat": open_row is None,
+        "open": open_row,
+        "rows": rows,
+    }
 
 
 def _book(path: Path) -> dict:
