@@ -13,10 +13,6 @@ import json
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
-from openpyxl import Workbook
-from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from openpyxl.utils import get_column_letter
-
 from src.loka_kalyanam import CAPITAL_PER_LOT, STARTING_CAPITAL, _money, lots_for
 from src.paths import ROOT
 
@@ -339,6 +335,10 @@ def _dmy(value) -> str:
 
 
 def _write_journal(book: LokaFuturesBook) -> Path:
+    from openpyxl import Workbook
+    from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+    from openpyxl.utils import get_column_letter
+
     path = book.path.with_name(book.journal_name)
     path.parent.mkdir(parents=True, exist_ok=True)
     headers = [
