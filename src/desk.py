@@ -17,6 +17,8 @@ from src.fut_flow import (
 )
 from src.oi_flow import classify_band_flow, interval_totals_line
 from src.loka_kalyanam import NAME
+from src.loka_fut import BOOK_PATH as FUT_BOOK_PATH
+from src.loka_fut import NAME as FUT_NAME
 from src.loka_oi import VARIANTS
 from src.paths import ROOT
 from src.pcr import BandPcr, StrikePcr
@@ -46,6 +48,7 @@ def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
         },
         "loka_kalyanam": _loka(root / "data" / "loka_kalyanam_book.json"),
         **{variant.key: _loka(root / "data" / variant.book_name) for variant in VARIANTS},
+        "loka_oi_60_futures": _loka_futures(root / "data" / FUT_BOOK_PATH.name),
         "fut_days": _fut_days(root, today),
     }
     return _strip_tokens(desk)
@@ -377,6 +380,77 @@ def _loka(path: Path) -> dict:
         rows.append(_loka_row(trade, "Exit"))
     return {
         "name": str(raw.get("name") or NAME),
+        "saved": True,
+        "started_on": _dmy(raw.get("started_on")),
+        "starting_capital": raw.get("starting_capital"),
+        "capital": raw.get("capital"),
+        "realised": raw.get("realised_pnl"),
+        "updated_at": raw.get("updated_at"),
+        "flat": open_row is None,
+        "open": open_row,
+        "rows": rows,
+    }
+
+
+def _loka_futures_row(trade: dict, event: str) -> dict:
+    entry = event == "Entry"
+    return {
+        "date": _dmy(trade.get("entry_date")),
+        "event": event,
+        "time": trade.get("entry_time") if entry else trade.get("exit_time"),
+        "exit_date": "" if entry else _dmy(trade.get("exit_date")),
+        "side": trade.get("side"),
+        "signal": trade.get("signal") or "",
+        "pcr": trade.get("pcr"),
+        "pcr_rank": trade.get("pcr_rank"),
+        "contract": trade.get("tradingsymbol") or "",
+        "price": trade.get("price") if entry else trade.get("exit_price"),
+        "points": None if entry else trade.get("points"),
+        "lots": trade.get("lots"),
+        "capital_before": trade.get("capital_before"),
+        "capital_used": trade.get("capital_used") if entry else None,
+        "profit": None if entry else trade.get("profit"),
+        "charges": None if entry else trade.get("charges"),
+        "capital_after": None if entry else trade.get("capital_after"),
+    }
+
+
+def _loka_futures(path: Path) -> dict:
+    empty = {
+        "name": FUT_NAME,
+        "saved": False,
+        "started_on": "",
+        "starting_capital": None,
+        "capital": None,
+        "realised": None,
+        "updated_at": None,
+        "flat": True,
+        "open": None,
+        "rows": [],
+    }
+    if not path.exists():
+        return empty
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return empty
+    if not isinstance(raw, dict):
+        return empty
+    position = raw.get("position") if isinstance(raw.get("position"), dict) else None
+    open_row = None
+    if position and int(position.get("lots") or 0) > 0:
+        open_row = _loka_futures_row(position, "Entry")
+        open_row["exit_clock"] = position.get("exit_clock")
+    rows: list[dict] = []
+    if open_row:
+        rows.append(open_row)
+    for trade in reversed(list(raw.get("closed") or [])):
+        if not isinstance(trade, dict):
+            continue
+        rows.append(_loka_futures_row(trade, "Entry"))
+        rows.append(_loka_futures_row(trade, "Exit"))
+    return {
+        "name": str(raw.get("name") or FUT_NAME),
         "saved": True,
         "started_on": _dmy(raw.get("started_on")),
         "starting_capital": raw.get("starting_capital"),

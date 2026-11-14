@@ -7,12 +7,14 @@ const PAGES = {
   "loka": { title: "Loka Kalyanam", kind: "loka", key: "loka_kalyanam" },
   "loka-oi-120": { title: "Loka OI 120", kind: "loka", key: "loka_oi_120" },
   "loka-oi-60": { title: "Loka OI 60", kind: "loka", key: "loka_oi_60" },
+  "loka-oi-60-fut": { title: "Loka OI 60 futures", kind: "loka-fut", key: "loka_oi_60_futures" },
 };
 
 const LOKA_LEDE = {
   loka_kalyanam: "Paper from this date. A strong close buys the call and sells the put, and that pair closes at 09:15. A weak close sells the call and buys the put, and that pair closes at 14:00. Live orders stay off.",
   loka_oi_120: "Paper from this date. A put-call ratio in the lowest 20% of 120 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:00 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
   loka_oi_60: "Paper from this date. A put-call ratio in the lowest 30% of 60 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:15 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
+  loka_oi_60_futures: "Paper from this date. The decision is the same as Loka OI 60. The trade is the Nifty future. A buy closes at 09:15 and a short closes at 14:00. Two points of slippage and the futures charges are taken out. Live orders stay off.",
 };
 
 const app = document.querySelector("#app");
@@ -205,6 +207,29 @@ function lokaRow(row) {
     </article>`;
 }
 
+function futLokaRow(row) {
+  const exit = row.event === "Exit";
+  const shownDate = exit && row.exit_date ? row.exit_date : row.date;
+  const pending = !exit && row.exit_clock
+    ? `<p class="meta">Open. Closes at ${row.exit_clock} on the next session.</p>`
+    : "";
+  const signal = row.signal
+    ? `<p class="meta">${row.signal}${row.pcr == null ? "" : ` · put-call ratio ${row.pcr}`}${row.pcr_rank == null ? "" : ` · rank ${row.pcr_rank}%`}</p>`
+    : "";
+  const result = exit
+    ? `<p class="${moneyClass(row.profit)}">${inr(row.profit)}</p>
+       <p class="meta">${row.points} pts · charges ${inr(row.charges)} · capital ${inr(row.capital_after)}</p>`
+    : `<p class="meta">${row.lots} lots · capital before ${inr(row.capital_before)} · used ${inr(row.capital_used)}</p>`;
+  return `
+    <article class="card ${exit ? "loka-exit" : ""}">
+      <header><div class="day-title">${exit ? "exit" : "entry"} ${row.time} -- ${shownDate}</div></header>
+      <p>entry ${row.date}${exit && row.exit_date ? ` · closed ${row.exit_date}` : ""} · ${row.side} · ${row.contract || "Nifty future"} @ ${px(row.price)}</p>
+      ${signal}
+      ${pending}
+      ${result}
+    </article>`;
+}
+
 function lokaPage(desk, key, title) {
   const book = desk[key] || {};
   if (!book.saved) {
@@ -215,6 +240,25 @@ function lokaPage(desk, key, title) {
   }
   const lede = (LOKA_LEDE[key] || "").replace("this date", book.started_on || "today");
   const rows = (book.rows || []).map(lokaRow).join("") || `<p class="status">No trade yet. The first one is the 15:00 close.</p>`;
+  return `
+    <a class="back" href="#">&larr; Landing</a>
+    <h1>${title}</h1>
+    <p class="lede">${lede}</p>
+    <p class="${moneyClass(book.realised)}">${inr(book.realised)}</p>
+    <p class="meta">Profit and loss · capital ${inr(book.capital)} from ${inr(book.starting_capital)} · saved ${book.updated_at || ""}</p>
+    ${rows}`;
+}
+
+function futLokaPage(desk, key, title) {
+  const book = desk[key] || {};
+  if (!book.saved) {
+    return `
+      <a class="back" href="#">&larr; Landing</a>
+      <h1>${title}</h1>
+      <p class="status">The paper book is not on this page yet.</p>`;
+  }
+  const lede = (LOKA_LEDE[key] || "").replace("this date", book.started_on || "today");
+  const rows = (book.rows || []).map(futLokaRow).join("") || `<p class="status">No trade yet. The first one is the 15:00 close.</p>`;
   return `
     <a class="back" href="#">&larr; Landing</a>
     <h1>${title}</h1>
@@ -265,6 +309,7 @@ function landing(desk) {
     ["loka", "Loka Kalyanam", lokaLabel(desk.loka_kalyanam), "wide"],
     ["loka-oi-120", "Loka OI 120", lokaLabel(desk.loka_oi_120), "wide"],
     ["loka-oi-60", "Loka OI 60", lokaLabel(desk.loka_oi_60), "wide"],
+    ["loka-oi-60-fut", "Loka OI 60 futures", lokaLabel(desk.loka_oi_60_futures), "wide"],
   ];
   return `
     <h1>Scan desk</h1>
@@ -286,6 +331,7 @@ function render(desk) {
   }
   if (page.kind === "positions") app.innerHTML = positionsPage(desk);
   else if (page.kind === "loka") app.innerHTML = lokaPage(desk, page.key, page.title);
+  else if (page.kind === "loka-fut") app.innerHTML = futLokaPage(desk, page.key, page.title);
   else if (page.kind === "oi") app.innerHTML = listPage(page.title, desk[page.key] || [], oiCard);
   else {
     const days = (desk.fut_days || []).filter((card) => card.name === page.title.split(" ")[0].toUpperCase());
