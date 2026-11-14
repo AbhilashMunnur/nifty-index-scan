@@ -14,7 +14,7 @@ const LOKA_LEDE = {
   loka_kalyanam: "Paper from this date. A strong close buys the call and sells the put, and that pair closes at 09:15. A weak close sells the call and buys the put, and that pair closes at 14:00. Live orders stay off.",
   loka_oi_120: "Paper from this date. A put-call ratio in the lowest 20% of 120 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:00 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
   loka_oi_60: "Paper from this date. A put-call ratio in the lowest 30% of 60 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:15 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
-  loka_oi_60_futures: "Paper from this date. The decision is the same as Loka OI 60. The trade is the Nifty future. A long is sold at the next 09:15 open when that open is a profit, and otherwise held to 14:00 with a 200-point stop. A short is held to 14:00, and is bought back at 200 points only when the market trades through that price. A gap already past 200 is left until 14:00. Live orders stay off.",
+  loka_oi_60_futures: "Paper from this date. The decision is the same as Loka OI 60. The trade is the Nifty future. A long is sold at the next 09:15 open, whether that open is a profit or a loss. It is not held to 14:00. A short is held to 14:00, and is bought back at 200 points only when the market trades through that price. A gap already past 200 is left until 14:00. Live orders stay off.",
 };
 
 const app = document.querySelector("#app");
@@ -213,7 +213,7 @@ function futLokaRow(row) {
   const pending = !exit && row.side === "Short"
     ? `<p class="meta">Open. Held to 14:00. Bought back at 200 points only if the market trades through that price. A gap already past 200 is left until 14:00.</p>`
     : (!exit
-      ? `<p class="meta">Open. Sold at the next 09:15 open if that open is a profit, otherwise held to 14:00 with a 200-point stop.</p>`
+      ? `<p class="meta">Open. Sold at the next 09:15 open, whether that open is a profit or a loss.</p>`
       : "");
   const reason = exit && row.exit_reason ? `<p class="meta">${row.exit_reason}</p>` : "";
   const signal = row.signal

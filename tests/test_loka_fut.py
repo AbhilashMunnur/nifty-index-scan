@@ -113,25 +113,27 @@ def _bar(day, hour, minute, **fields):
     return {"stamp": datetime(day.year, day.month, day.day, hour, minute), **fields}
 
 
-def test_a_losing_long_waits_for_1400_and_keeps_the_stop():
+def test_a_losing_long_is_sold_at_the_0915_open():
     entry_day = date(2026, 11, 16)
     exit_day = date(2026, 11, 17)
     bars = [
         _bar(exit_day, 9, 15, open=24950, high=24980, low=24920, close=24940),
         _bar(exit_day, 10, 0, open=24900, high=24910, low=24790, close=24800),
-    ]
-    assert manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 9, 30), entry_day) is None
-    stopped = manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 10, 15), entry_day)
-    assert stopped[:3] == (24800, "10:00", "Stop, the market traded through 200")
-    held = [
-        _bar(exit_day, 9, 15, open=24950, high=24980, low=24920, close=24940),
         _bar(exit_day, 14, 0, open=25120, high=25140, low=25080, close=25110),
     ]
-    assert manage_exit("Buy", 25000, held, datetime(2026, 11, 17, 14, 0), entry_day)[:3] == (
-        25120,
-        "14:00",
-        "14:00 open",
+    sold = manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 9, 30), entry_day)
+    assert sold[:3] == (24950, "09:15", "09:15 open")
+    assert manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 14, 0), entry_day)[:3] == (
+        24950,
+        "09:15",
+        "09:15 open",
     )
+    evening = [
+        _bar(entry_day, 15, 15, open=24920, high=24940, low=24780, close=24800),
+        _bar(exit_day, 9, 15, open=24850, high=24900, low=24820, close=24880),
+    ]
+    stopped = manage_exit("Buy", 25000, evening, datetime(2026, 11, 16, 15, 30), entry_day)
+    assert stopped[:3] == (24800, "15:15", "Stop, the market traded through 200")
 
 
 def test_a_long_that_opens_200_down_is_sold_at_the_open():

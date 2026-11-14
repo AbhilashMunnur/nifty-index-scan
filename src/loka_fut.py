@@ -1,10 +1,11 @@
 """200 SL , wait till 14:00 strategy. Paper book on the Nifty future. Live orders are never placed.
 
-The side is the Loka OI 60 decision. A long is sold at the next 09:15 open
-when that open is above the entry, and otherwise held to 14:00 with a
-200-point stop. A short is held to 14:00, and is bought back at 200 points
-only when a bar trades through that price. An open already past the stop is
-left until 14:00. Two points of slippage sit in the points.
+The side is the Loka OI 60 decision. A long is sold at the next 09:15 open,
+whether that open is a profit or a loss. It is not held to 14:00. A 200-point
+stop still sells the long if the market trades through it before that open.
+A short is held to 14:00, and is bought back at 200 points only when a bar
+trades through that price. An open already past the stop is left until 14:00.
+Two points of slippage sit in the points.
 """
 
 from __future__ import annotations
@@ -71,18 +72,16 @@ def manage_exit(
         clock = stamp.strftime("%H:%M")
         opened = _bar_value(bar, "open")
         complete = now >= stamp + timedelta(minutes=15)
+        if side == "Buy" and on_exit and clock == "09:15" and opened is not None:
+            if opened <= level:
+                return opened, "09:15", "Stop, the open was already past 200", stamp.date()
+            return opened, "09:15", "09:15 open", stamp.date()
+        if side == "Buy" and on_exit and clock > "09:15":
+            continue
         if on_exit and clock >= "14:00":
             if clock == "14:00" and opened is not None:
                 reason = "14:00 open, the opening gap was left alone" if side == "Short" and gap_left else "14:00 open"
                 return opened, "14:00", reason, stamp.date()
-            continue
-        if side == "Buy" and on_exit and clock == "09:15" and opened is not None:
-            if opened > entry:
-                return opened, "09:15", "09:15 open", stamp.date()
-            if opened <= level:
-                return opened, "09:15", "Stop, the open was already past 200", stamp.date()
-            if complete and _through("Buy", level, bar):
-                return level, "09:15", "Stop, the market traded through 200", stamp.date()
             continue
         if side == "Short" and opened is not None and opened >= level:
             gap_left = True
