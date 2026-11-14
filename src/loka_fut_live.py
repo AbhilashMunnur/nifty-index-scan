@@ -25,6 +25,7 @@ def run_loka_oi_futures(market, now: datetime) -> list[str]:
             name=style.name,
             journal_name=style.journal_name,
             mode=style.mode,
+            stop_pct=style.stop_pct,
         )
         try:
             notes.extend(note for note in _run(market, book, now) if note)
@@ -114,6 +115,7 @@ def _manage(market, book: LokaFuturesBook, now: datetime) -> str:
         now,
         entry_day,
         book.mode,
+        book.stop_pct,
     )
     if decision is None:
         return ""

@@ -1,11 +1,11 @@
-"""200 SL , wait till 14:00 strategy. Paper book on the Nifty future. Live orders are never placed.
+"""Percentage-stop paper books on the Nifty future. Live orders are never placed.
 
-The side is the Loka OI 60 decision. A long is sold at the next 09:15 open,
-whether that open is a profit or a loss. It is not held to 14:00. A 200-point
-stop still sells the long if the market trades through it before that open.
-A short is held to 14:00, and is bought back at 200 points only when a bar
-trades through that price. An open already past the stop is left until 14:00.
-Two points of slippage sit in the points.
+The side is the Loka OI 60 decision. A long is sold at the next 09:15 open
+when that open is a profit, and otherwise held to 14:00. A short is held to
+14:00. The stop is a percentage of the entry. It closes the trade only when a
+bar trades through that price. An open already past the stop is left until
+14:00 on a short, and sells a long at that open. Two points of slippage sit
+in the points.
 """
 
 from __future__ import annotations
@@ -19,11 +19,10 @@ from dataclasses import dataclass
 from src.loka_kalyanam import CAPITAL_PER_LOT, STARTING_CAPITAL, _money, lots_for
 from src.paths import ROOT
 
-NAME = "200 SL , wait till 14:00 strategy"
-BOOK_PATH = ROOT / "data" / "loka_oi_60_futures_book.json"
-JOURNAL_NAME = "loka_oi_60_futures_journal.xlsx"
+NAME = "1% SL"
+BOOK_PATH = ROOT / "data" / "loka_fut_sl_1pct_book.json"
+JOURNAL_NAME = "loka_fut_sl_1pct_journal.xlsx"
 SLIP_POINTS = 2.0
-STOP_POINTS = 200.0
 ENTRY_CLOCK = "15:00"
 BUY_EXIT = "09:15"
 SHORT_EXIT = "14:00"
@@ -40,39 +39,46 @@ class FuturesBookStyle:
     book_name: str
     journal_name: str
     mode: str
+    stop_pct: float | None = 0.01
 
 
-# One entry, four exits. The first book is already on the paper desk.
+# One entry, three stops. A losing long is held to 14:00. A short gap is left.
 FUTURES_BOOKS = (
     FuturesBookStyle(
-        "loka_oi_60_futures",
-        NAME,
-        "loka_oi_60_futures_book.json",
-        JOURNAL_NAME,
-        "gap_left",
-    ),
-    FuturesBookStyle(
-        "loka_fut_hold_long",
-        "Losing long held, short gap left",
-        "loka_fut_hold_long_book.json",
-        "loka_fut_hold_long_journal.xlsx",
+        "loka_fut_sl_1",
+        "1% SL",
+        "loka_fut_sl_1pct_book.json",
+        "loka_fut_sl_1pct_journal.xlsx",
         "hold_long",
+        0.01,
     ),
     FuturesBookStyle(
-        "loka_fut_gap_closed",
-        "Long at 09:15, short gap closed",
-        "loka_fut_gap_closed_book.json",
-        "loka_fut_gap_closed_journal.xlsx",
-        "gap_closed",
+        "loka_fut_sl_050",
+        "0.5% SL",
+        "loka_fut_sl_0_50pct_book.json",
+        "loka_fut_sl_0_50pct_journal.xlsx",
+        "hold_long",
+        0.005,
     ),
     FuturesBookStyle(
-        "loka_fut_no_stop",
-        "Loka OI 60 futures, no stop",
-        "loka_fut_no_stop_book.json",
-        "loka_fut_no_stop_journal.xlsx",
-        "no_stop",
+        "loka_fut_sl_075",
+        "0.75% SL",
+        "loka_fut_sl_0_75pct_book.json",
+        "loka_fut_sl_0_75pct_journal.xlsx",
+        "hold_long",
+        0.0075,
     ),
 )
+
+
+def sl_label(stop_pct: float) -> str:
+    """0.01 -> 1%, 0.005 -> 0.5%, 0.0075 -> 0.75%."""
+    text = f"{stop_pct * 100:.2f}".rstrip("0").rstrip(".")
+    return f"{text}%"
+
+
+def stop_distance(entry: float, stop_pct: float) -> float:
+    return round(float(entry) * float(stop_pct) + 1e-9, 2)
 
 
 def manage_exit(
@@ -81,7 +87,8 @@ def manage_exit(
     bars: list[dict],
     now: datetime,
     entry_day: date,
-    mode: str = "gap_left",
+    mode: str = "hold_long",
+    stop_pct: float | None = 0.01,
 ) -> tuple[float, str, str, date] | None:
     """Price, clock, reason and session for an exit, or None while the trade stays open.
 
@@ -90,7 +97,10 @@ def manage_exit(
     """
     if now.tzinfo is not None:
         now = now.replace(tzinfo=None)
-    level = entry - STOP_POINTS if side == "Buy" else entry + STOP_POINTS
+    use_stop = mode != "no_stop" and stop_pct is not None and stop_pct > 0
+    label = sl_label(stop_pct) if use_stop else ""
+    distance = stop_distance(entry, stop_pct) if use_stop else 0.0
+    level = round(entry - distance, 2) if side == "Buy" else round(entry + distance, 2)
     ordered: list[tuple[datetime, dict]] = []
     for bar in bars:
         stamp = bar.get("stamp")
@@ -117,33 +127,37 @@ def manage_exit(
         clock = stamp.strftime("%H:%M")
         opened = _bar_value(bar, "open")
         complete = now >= stamp + timedelta(minutes=15)
-        use_stop = mode != "no_stop"
         if side == "Buy" and on_exit and clock == "09:15" and opened is not None:
             if use_stop and opened <= level:
-                return opened, "09:15", "Stop, the open was already past 200", stamp.date()
+                return opened, "09:15", f"Hit SL {label} at the open, closed", stamp.date()
             if mode == "hold_long" and opened <= entry:
                 if complete and _through("Buy", level, bar):
-                    return level, "09:15", "Stop, the market traded through 200", stamp.date()
+                    return level, "09:15", f"Hit SL {label}, closed", stamp.date()
                 continue
-            return opened, "09:15", "09:15 open", stamp.date()
+            reason = "Closed at the 09:15 open, in profit" if opened > entry else "Closed at the 09:15 open"
+            return opened, "09:15", reason, stamp.date()
         if side == "Buy" and on_exit and clock > "09:15" and mode != "hold_long":
             continue
         if on_exit and clock >= "14:00":
             if side == "Buy" and mode != "hold_long":
                 continue
             if clock == "14:00" and opened is not None:
-                reason = "14:00 open, the opening gap was left alone" if side == "Short" and gap_left else "14:00 open"
+                reason = (
+                    "Closed at the 14:00 open, the opening gap was left alone"
+                    if side == "Short" and gap_left
+                    else "Closed at the 14:00 open"
+                )
                 return opened, "14:00", reason, stamp.date()
             continue
         if use_stop and side == "Short" and opened is not None and opened >= level:
             if mode == "gap_closed":
-                return opened, clock, "Stop, the open was already past 200", stamp.date()
+                return opened, clock, f"Hit SL {label} at the open, closed", stamp.date()
             gap_left = True
             continue
         if use_stop and side == "Buy" and opened is not None and opened <= level:
-            return opened, clock, "Stop, the open was already past 200", stamp.date()
+            return opened, clock, f"Hit SL {label} at the open, closed", stamp.date()
         if use_stop and complete and _through(side, level, bar) and not (side == "Short" and gap_left):
-            return level, clock, "Stop, the market traded through 200", stamp.date()
+            return level, clock, f"Hit SL {label}, closed", stamp.date()
     return None
 
 
@@ -223,12 +237,14 @@ class LokaFuturesBook:
         *,
         name: str | None = None,
         journal_name: str | None = None,
-        mode: str = "gap_left",
+        mode: str = "hold_long",
+        stop_pct: float | None = 0.01,
     ):
         self.path = path or BOOK_PATH
         self.name = name or NAME
         self.journal_name = journal_name or JOURNAL_NAME
         self.mode = mode
+        self.stop_pct = stop_pct
         self.started_on = "2026-11-14"
         self.starting_capital = STARTING_CAPITAL
         self.capital = STARTING_CAPITAL

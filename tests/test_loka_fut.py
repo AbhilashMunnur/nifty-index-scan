@@ -39,16 +39,16 @@ def test_book_compounds_the_future_and_hides_the_token(tmp_path):
     assert trade["stt"] == 22216.67
     assert trade["capital_after"] == round(trade["capital_before"] + trade["profit"] - trade["charges"], 2)
     assert "09:15" in note
-    assert (tmp_path / "loka_oi_60_futures_journal.xlsx").exists()
+    assert (tmp_path / "loka_fut_sl_1pct_journal.xlsx").exists()
 
     (tmp_path / "data").mkdir()
-    (tmp_path / "data" / "loka_oi_60_futures_book.json").write_text(
+    (tmp_path / "data" / "loka_fut_sl_1pct_book.json").write_text(
         (tmp_path / "book.json").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     desk = build_desk(tmp_path, today=date(2026, 11, 17))
     assert "SECRET" not in json.dumps(desk)
-    page = desk["loka_oi_60_futures"]
+    page = desk["loka_fut_sl_1"]
     assert page["saved"] is True
     assert page["flat"] is True
     assert page["rows"][1]["contract"] == "NIFTY26NOVFUT"
@@ -105,7 +105,7 @@ def test_live_step_buys_the_future_and_sells_it_at_the_0915_open(tmp_path, monke
     assert closed.position is None
     assert closed.closed[0]["exit_price"] == 25100.0
     assert closed.closed[0]["exit_time"] == "09:15"
-    assert closed.closed[0]["exit_reason"] == "09:15 open"
+    assert closed.closed[0]["exit_reason"] == "Closed at the 09:15 open, in profit"
     assert "09:15" in notes[-1]
 
 
@@ -113,39 +113,34 @@ def _bar(day, hour, minute, **fields):
     return {"stamp": datetime(day.year, day.month, day.day, hour, minute), **fields}
 
 
-def test_a_losing_long_is_sold_at_the_0915_open():
+def test_a_losing_long_is_held_to_1400_unless_one_percent_trades_through():
     entry_day = date(2026, 11, 16)
     exit_day = date(2026, 11, 17)
     bars = [
         _bar(exit_day, 9, 15, open=24950, high=24980, low=24920, close=24940),
-        _bar(exit_day, 10, 0, open=24900, high=24910, low=24790, close=24800),
         _bar(exit_day, 14, 0, open=25120, high=25140, low=25080, close=25110),
     ]
-    sold = manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 9, 30), entry_day)
-    assert sold[:3] == (24950, "09:15", "09:15 open")
-    assert manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 14, 0), entry_day)[:3] == (
-        24950,
-        "09:15",
-        "09:15 open",
-    )
+    assert manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 9, 30), entry_day) is None
+    held = manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 14, 0), entry_day)
+    assert held[:3] == (25120, "14:00", "Closed at the 14:00 open")
     evening = [
-        _bar(entry_day, 15, 15, open=24920, high=24940, low=24780, close=24800),
+        _bar(entry_day, 15, 15, open=24920, high=24940, low=24740, close=24800),
         _bar(exit_day, 9, 15, open=24850, high=24900, low=24820, close=24880),
     ]
     stopped = manage_exit("Buy", 25000, evening, datetime(2026, 11, 16, 15, 30), entry_day)
-    assert stopped[:3] == (24800, "15:15", "Stop, the market traded through 200")
+    assert stopped[:3] == (24750, "15:15", "Hit SL 1%, closed")
 
 
-def test_a_long_that_opens_200_down_is_sold_at_the_open():
+def test_a_long_that_opens_past_one_percent_is_sold_at_the_open():
     exit_day = date(2026, 11, 17)
     decision = manage_exit(
         "Buy",
         25000,
-        [_bar(exit_day, 9, 15, open=24750, high=24800, low=24700, close=24780)],
+        [_bar(exit_day, 9, 15, open=24740, high=24800, low=24700, close=24780)],
         datetime(2026, 11, 17, 9, 30),
         date(2026, 11, 16),
     )
-    assert decision[:3] == (24750, "09:15", "Stop, the open was already past 200")
+    assert decision[:3] == (24740, "09:15", "Hit SL 1% at the open, closed")
 
 
 def test_a_short_gap_is_left_until_1400_and_a_traded_stop_is_taken():
@@ -158,36 +153,27 @@ def test_a_short_gap_is_left_until_1400_and_a_traded_stop_is_taken():
     ]
     assert manage_exit("Short", 25000, gap, datetime(2026, 11, 17, 10, 15), entry_day) is None
     held = manage_exit("Short", 25000, gap, datetime(2026, 11, 17, 14, 0), entry_day)
-    assert held[:3] == (25150, "14:00", "14:00 open, the opening gap was left alone")
+    assert held[:3] == (25150, "14:00", "Closed at the 14:00 open, the opening gap was left alone")
     traded = [
         _bar(exit_day, 9, 15, open=25040, high=25080, low=25010, close=25050),
-        _bar(exit_day, 10, 0, open=25100, high=25240, low=25090, close=25210),
+        _bar(exit_day, 10, 0, open=25100, high=25260, low=25090, close=25210),
     ]
     stopped = manage_exit("Short", 25000, traded, datetime(2026, 11, 17, 10, 15), entry_day)
-    assert stopped[:3] == (25200, "10:00", "Stop, the market traded through 200")
+    assert stopped[:3] == (25250, "10:00", "Hit SL 1%, closed")
 
 
-def test_the_other_futures_exits_keep_their_own_rule():
+def test_the_three_stops_fire_at_their_own_percentage():
     entry_day = date(2026, 11, 16)
     exit_day = date(2026, 11, 17)
-    losing = [
-        _bar(exit_day, 9, 15, open=24950, high=24980, low=24920, close=24940),
-        _bar(exit_day, 14, 0, open=25120, high=25140, low=25080, close=25110),
-    ]
-    assert manage_exit("Buy", 25000, losing, datetime(2026, 11, 17, 9, 30), entry_day, "hold_long") is None
-    held = manage_exit("Buy", 25000, losing, datetime(2026, 11, 17, 14, 0), entry_day, "hold_long")
-    assert held[:3] == (25120, "14:00", "14:00 open")
-    gap = [
-        _bar(exit_day, 9, 15, open=25300, high=25340, low=25280, close=25310),
-        _bar(exit_day, 14, 0, open=25150, high=25180, low=25120, close=25140),
-    ]
-    closed = manage_exit("Short", 25000, gap, datetime(2026, 11, 17, 9, 30), entry_day, "gap_closed")
-    assert closed[:3] == (25300, "09:15", "Stop, the open was already past 200")
     traded = [
         _bar(exit_day, 9, 15, open=25040, high=25080, low=25010, close=25050),
-        _bar(exit_day, 10, 0, open=25100, high=25240, low=25090, close=25210),
-        _bar(exit_day, 14, 0, open=25280, high=25300, low=25260, close=25290),
+        _bar(exit_day, 10, 0, open=25100, high=25200, low=25090, close=25180),
+        _bar(exit_day, 14, 0, open=25140, high=25160, low=25120, close=25150),
     ]
-    assert manage_exit("Short", 25000, traded, datetime(2026, 11, 17, 10, 15), entry_day, "no_stop") is None
-    flat = manage_exit("Short", 25000, traded, datetime(2026, 11, 17, 14, 0), entry_day, "no_stop")
-    assert flat[:3] == (25280, "14:00", "14:00 open")
+    now = datetime(2026, 11, 17, 10, 15)
+    half = manage_exit("Short", 25000, traded, now, entry_day, "hold_long", 0.005)
+    three_quarters = manage_exit("Short", 25000, traded, now, entry_day, "hold_long", 0.0075)
+    one = manage_exit("Short", 25000, traded, now, entry_day, "hold_long", 0.01)
+    assert half[:3] == (25125, "10:00", "Hit SL 0.5%, closed")
+    assert three_quarters[:3] == (25187.5, "10:00", "Hit SL 0.75%, closed")
+    assert one is None
