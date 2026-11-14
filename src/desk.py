@@ -17,7 +17,7 @@ from src.fut_flow import (
 )
 from src.oi_flow import classify_band_flow, interval_totals_line
 from src.loka_kalyanam import NAME
-from src.loka_fut import BOOK_PATH as FUT_BOOK_PATH
+from src.loka_fut import FUTURES_BOOKS
 from src.loka_fut import NAME as FUT_NAME
 from src.loka_oi import VARIANTS
 from src.paths import ROOT
@@ -48,7 +48,7 @@ def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
         },
         "loka_kalyanam": _loka(root / "data" / "loka_kalyanam_book.json"),
         **{variant.key: _loka(root / "data" / variant.book_name) for variant in VARIANTS},
-        "loka_oi_60_futures": _loka_futures(root / "data" / FUT_BOOK_PATH.name),
+        **{style.key: _loka_futures(root / "data" / style.book_name, style.name) for style in FUTURES_BOOKS},
         "fut_days": _fut_days(root, today),
     }
     return _strip_tokens(desk)
@@ -416,9 +416,9 @@ def _loka_futures_row(trade: dict, event: str) -> dict:
     }
 
 
-def _loka_futures(path: Path) -> dict:
+def _loka_futures(path: Path, name: str = FUT_NAME) -> dict:
     empty = {
-        "name": FUT_NAME,
+        "name": name,
         "saved": False,
         "started_on": "",
         "starting_capital": None,
@@ -451,7 +451,7 @@ def _loka_futures(path: Path) -> dict:
         rows.append(_loka_futures_row(trade, "Entry"))
         rows.append(_loka_futures_row(trade, "Exit"))
     return {
-        "name": str(raw.get("name") or FUT_NAME),
+        "name": str(raw.get("name") or name),
         "saved": True,
         "started_on": _dmy(raw.get("started_on")),
         "starting_capital": raw.get("starting_capital"),

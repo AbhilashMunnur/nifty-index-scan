@@ -8,6 +8,9 @@ const PAGES = {
   "loka-oi-120": { title: "Loka OI 120", kind: "loka", key: "loka_oi_120" },
   "loka-oi-60": { title: "Loka OI 60", kind: "loka", key: "loka_oi_60" },
   "loka-oi-60-fut": { title: "200 SL , wait till 14:00 strategy", kind: "loka-fut", key: "loka_oi_60_futures" },
+  "loka-fut-hold-long": { title: "Losing long held, short gap left", kind: "loka-fut", key: "loka_fut_hold_long" },
+  "loka-fut-gap-closed": { title: "Long at 09:15, short gap closed", kind: "loka-fut", key: "loka_fut_gap_closed" },
+  "loka-fut-no-stop": { title: "Loka OI 60 futures, no stop", kind: "loka-fut", key: "loka_fut_no_stop" },
 };
 
 const LOKA_LEDE = {
@@ -15,6 +18,28 @@ const LOKA_LEDE = {
   loka_oi_120: "Paper from this date. A put-call ratio in the lowest 20% of 120 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:00 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
   loka_oi_60: "Paper from this date. A put-call ratio in the lowest 30% of 60 sessions follows the day against yesterday's close. Every other day uses the Loka close. The next session closes at 10:15 if the pair is in profit, otherwise at 14:00. Live orders stay off.",
   loka_oi_60_futures: "Paper from this date. The decision is the same as Loka OI 60. The trade is the Nifty future. A long is sold at the next 09:15 open, whether that open is a profit or a loss. It is not held to 14:00. A short is held to 14:00, and is bought back at 200 points only when the market trades through that price. A gap already past 200 is left until 14:00. Live orders stay off.",
+  loka_fut_hold_long: "Paper from this date. The same Loka OI 60 decision on the Nifty future. A long is sold at the 09:15 open when that open is a profit, and otherwise held to 14:00 with a 200-point stop. A short is held to 14:00, and a gap already past 200 is left until then. Live orders stay off.",
+  loka_fut_gap_closed: "Paper from this date. The same Loka OI 60 decision on the Nifty future. A long is sold at the next 09:15 open, profit or loss. A short is held to 14:00, and is bought back at 200 points when the market trades through that price or when the open is already past it. Live orders stay off.",
+  loka_fut_no_stop: "Paper from this date. The same Loka OI 60 decision on the Nifty future. A long is sold at the next 09:15 open and a short is bought back at the next 14:00 open. There is no stop. Live orders stay off.",
+};
+
+const FUT_PENDING = {
+  loka_oi_60_futures: {
+    Short: "Open. Held to 14:00. Bought back at 200 points only if the market trades through that price. A gap already past 200 is left until 14:00.",
+    Buy: "Open. Sold at the next 09:15 open, whether that open is a profit or a loss.",
+  },
+  loka_fut_hold_long: {
+    Short: "Open. Held to 14:00. Bought back at 200 points only if the market trades through that price. A gap already past 200 is left until 14:00.",
+    Buy: "Open. Sold at the 09:15 open if that open is a profit, otherwise held to 14:00 with a 200-point stop.",
+  },
+  loka_fut_gap_closed: {
+    Short: "Open. Held to 14:00. Bought back at 200 points if the market trades through that price, or at the open if the open is already past 200.",
+    Buy: "Open. Sold at the next 09:15 open, whether that open is a profit or a loss.",
+  },
+  loka_fut_no_stop: {
+    Short: "Open. Bought back at the next 14:00 open. No stop.",
+    Buy: "Open. Sold at the next 09:15 open. No stop.",
+  },
 };
 
 const app = document.querySelector("#app");
@@ -207,14 +232,11 @@ function lokaRow(row) {
     </article>`;
 }
 
-function futLokaRow(row) {
+function futLokaRow(row, key) {
   const exit = row.event === "Exit";
   const shownDate = exit && row.exit_date ? row.exit_date : row.date;
-  const pending = !exit && row.side === "Short"
-    ? `<p class="meta">Open. Held to 14:00. Bought back at 200 points only if the market trades through that price. A gap already past 200 is left until 14:00.</p>`
-    : (!exit
-      ? `<p class="meta">Open. Sold at the next 09:15 open, whether that open is a profit or a loss.</p>`
-      : "");
+  const pendingText = !exit && FUT_PENDING[key] ? FUT_PENDING[key][row.side] || FUT_PENDING[key].Buy : "";
+  const pending = pendingText ? `<p class="meta">${pendingText}</p>` : "";
   const reason = exit && row.exit_reason ? `<p class="meta">${row.exit_reason}</p>` : "";
   const signal = row.signal
     ? `<p class="meta">${row.signal}${row.pcr == null ? "" : ` · put-call ratio ${row.pcr}`}${row.pcr_rank == null ? "" : ` · rank ${row.pcr_rank}%`}</p>`
@@ -262,7 +284,7 @@ function futLokaPage(desk, key, title) {
       <p class="status">The paper book is not on this page yet.</p>`;
   }
   const lede = (LOKA_LEDE[key] || "").replace("this date", book.started_on || "today");
-  const rows = (book.rows || []).map(futLokaRow).join("") || `<p class="status">No trade yet. The first one is the 15:00 close.</p>`;
+  const rows = (book.rows || []).map((row) => futLokaRow(row, key)).join("") || `<p class="status">No trade yet. The first one is the 15:00 close.</p>`;
   return `
     <a class="back" href="#">&larr; Landing</a>
     <h1>${title}</h1>
@@ -314,6 +336,9 @@ function landing(desk) {
     ["loka-oi-120", "Loka OI 120", lokaLabel(desk.loka_oi_120), "wide"],
     ["loka-oi-60", "Loka OI 60", lokaLabel(desk.loka_oi_60), "wide"],
     ["loka-oi-60-fut", "200 SL , wait till 14:00 strategy", lokaLabel(desk.loka_oi_60_futures), "wide"],
+    ["loka-fut-hold-long", "Losing long held, short gap left", lokaLabel(desk.loka_fut_hold_long), "wide"],
+    ["loka-fut-gap-closed", "Long at 09:15, short gap closed", lokaLabel(desk.loka_fut_gap_closed), "wide"],
+    ["loka-fut-no-stop", "Loka OI 60 futures, no stop", lokaLabel(desk.loka_fut_no_stop), "wide"],
   ];
   return `
     <h1>Scan desk</h1>

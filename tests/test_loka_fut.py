@@ -165,3 +165,29 @@ def test_a_short_gap_is_left_until_1400_and_a_traded_stop_is_taken():
     ]
     stopped = manage_exit("Short", 25000, traded, datetime(2026, 11, 17, 10, 15), entry_day)
     assert stopped[:3] == (25200, "10:00", "Stop, the market traded through 200")
+
+
+def test_the_other_futures_exits_keep_their_own_rule():
+    entry_day = date(2026, 11, 16)
+    exit_day = date(2026, 11, 17)
+    losing = [
+        _bar(exit_day, 9, 15, open=24950, high=24980, low=24920, close=24940),
+        _bar(exit_day, 14, 0, open=25120, high=25140, low=25080, close=25110),
+    ]
+    assert manage_exit("Buy", 25000, losing, datetime(2026, 11, 17, 9, 30), entry_day, "hold_long") is None
+    held = manage_exit("Buy", 25000, losing, datetime(2026, 11, 17, 14, 0), entry_day, "hold_long")
+    assert held[:3] == (25120, "14:00", "14:00 open")
+    gap = [
+        _bar(exit_day, 9, 15, open=25300, high=25340, low=25280, close=25310),
+        _bar(exit_day, 14, 0, open=25150, high=25180, low=25120, close=25140),
+    ]
+    closed = manage_exit("Short", 25000, gap, datetime(2026, 11, 17, 9, 30), entry_day, "gap_closed")
+    assert closed[:3] == (25300, "09:15", "Stop, the open was already past 200")
+    traded = [
+        _bar(exit_day, 9, 15, open=25040, high=25080, low=25010, close=25050),
+        _bar(exit_day, 10, 0, open=25100, high=25240, low=25090, close=25210),
+        _bar(exit_day, 14, 0, open=25280, high=25300, low=25260, close=25290),
+    ]
+    assert manage_exit("Short", 25000, traded, datetime(2026, 11, 17, 10, 15), entry_day, "no_stop") is None
+    flat = manage_exit("Short", 25000, traded, datetime(2026, 11, 17, 14, 0), entry_day, "no_stop")
+    assert flat[:3] == (25280, "14:00", "14:00 open")

@@ -5,7 +5,8 @@ from __future__ import annotations
 import traceback
 from datetime import date, datetime, timedelta
 
-from src.loka_fut import LokaFuturesBook, manage_exit
+from src.loka_fut import FUTURES_BOOKS, LokaFuturesBook, manage_exit
+from src.paths import ROOT
 from src.loka_kalyanam import classify_close, entry_window
 from src.loka_live import _field, _index_bars
 from src.loka_oi import choose_side, load_pcr, pcr_percentile, remember_pcr, series_ending
@@ -17,12 +18,20 @@ OI_60 = next(variant for variant in VARIANTS if variant.key == "loka_oi_60")
 
 
 def run_loka_oi_futures(market, now: datetime) -> list[str]:
-    book = LokaFuturesBook()
-    try:
-        return [note for note in _run(market, book, now) if note]
-    except Exception:
-        traceback.print_exc()
-        return [f"{book.name} paper step failed. The other books still stand."]
+    notes: list[str] = []
+    for style in FUTURES_BOOKS:
+        book = LokaFuturesBook(
+            ROOT / "data" / style.book_name,
+            name=style.name,
+            journal_name=style.journal_name,
+            mode=style.mode,
+        )
+        try:
+            notes.extend(note for note in _run(market, book, now) if note)
+        except Exception:
+            traceback.print_exc()
+            notes.append(f"{book.name} paper step failed. The other books still stand.")
+    return notes
 
 
 def _run(market, book: LokaFuturesBook, now: datetime) -> list[str]:
@@ -98,7 +107,14 @@ def _manage(market, book: LokaFuturesBook, now: datetime) -> str:
         bars = market.candles(contract.exchange, contract.token, start, now)
     except Exception as exc:
         return f"{book.name}: the future candles are missing ({exc}). The position stays open."
-    decision = manage_exit(str(pos.get("side")), float(pos.get("price")), bars or [], now, entry_day)
+    decision = manage_exit(
+        str(pos.get("side")),
+        float(pos.get("price")),
+        bars or [],
+        now,
+        entry_day,
+        book.mode,
+    )
     if decision is None:
         return ""
     price, clock, reason, exit_day = decision

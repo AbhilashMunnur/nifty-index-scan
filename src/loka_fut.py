@@ -14,6 +14,8 @@ import json
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
+from dataclasses import dataclass
+
 from src.loka_kalyanam import CAPITAL_PER_LOT, STARTING_CAPITAL, _money, lots_for
 from src.paths import ROOT
 
@@ -31,12 +33,55 @@ def exit_clock(side: str) -> str:
     return BUY_EXIT if side == "Buy" else SHORT_EXIT
 
 
+@dataclass(frozen=True)
+class FuturesBookStyle:
+    key: str
+    name: str
+    book_name: str
+    journal_name: str
+    mode: str
+
+
+# One entry, four exits. The first book is already on the paper desk.
+FUTURES_BOOKS = (
+    FuturesBookStyle(
+        "loka_oi_60_futures",
+        NAME,
+        "loka_oi_60_futures_book.json",
+        JOURNAL_NAME,
+        "gap_left",
+    ),
+    FuturesBookStyle(
+        "loka_fut_hold_long",
+        "Losing long held, short gap left",
+        "loka_fut_hold_long_book.json",
+        "loka_fut_hold_long_journal.xlsx",
+        "hold_long",
+    ),
+    FuturesBookStyle(
+        "loka_fut_gap_closed",
+        "Long at 09:15, short gap closed",
+        "loka_fut_gap_closed_book.json",
+        "loka_fut_gap_closed_journal.xlsx",
+        "gap_closed",
+    ),
+    FuturesBookStyle(
+        "loka_fut_no_stop",
+        "Loka OI 60 futures, no stop",
+        "loka_fut_no_stop_book.json",
+        "loka_fut_no_stop_journal.xlsx",
+        "no_stop",
+    ),
+)
+
+
 def manage_exit(
     side: str,
     entry: float,
     bars: list[dict],
     now: datetime,
     entry_day: date,
+    mode: str = "gap_left",
 ) -> tuple[float, str, str, date] | None:
     """Price, clock, reason and session for an exit, or None while the trade stays open.
 
@@ -72,23 +117,32 @@ def manage_exit(
         clock = stamp.strftime("%H:%M")
         opened = _bar_value(bar, "open")
         complete = now >= stamp + timedelta(minutes=15)
+        use_stop = mode != "no_stop"
         if side == "Buy" and on_exit and clock == "09:15" and opened is not None:
-            if opened <= level:
+            if use_stop and opened <= level:
                 return opened, "09:15", "Stop, the open was already past 200", stamp.date()
+            if mode == "hold_long" and opened <= entry:
+                if complete and _through("Buy", level, bar):
+                    return level, "09:15", "Stop, the market traded through 200", stamp.date()
+                continue
             return opened, "09:15", "09:15 open", stamp.date()
-        if side == "Buy" and on_exit and clock > "09:15":
+        if side == "Buy" and on_exit and clock > "09:15" and mode != "hold_long":
             continue
         if on_exit and clock >= "14:00":
+            if side == "Buy" and mode != "hold_long":
+                continue
             if clock == "14:00" and opened is not None:
                 reason = "14:00 open, the opening gap was left alone" if side == "Short" and gap_left else "14:00 open"
                 return opened, "14:00", reason, stamp.date()
             continue
-        if side == "Short" and opened is not None and opened >= level:
+        if use_stop and side == "Short" and opened is not None and opened >= level:
+            if mode == "gap_closed":
+                return opened, clock, "Stop, the open was already past 200", stamp.date()
             gap_left = True
             continue
-        if side == "Buy" and opened is not None and opened <= level:
+        if use_stop and side == "Buy" and opened is not None and opened <= level:
             return opened, clock, "Stop, the open was already past 200", stamp.date()
-        if complete and _through(side, level, bar) and not (side == "Short" and gap_left):
+        if use_stop and complete and _through(side, level, bar) and not (side == "Short" and gap_left):
             return level, clock, "Stop, the market traded through 200", stamp.date()
     return None
 
@@ -163,10 +217,18 @@ def _iso(day: date) -> str:
 
 
 class LokaFuturesBook:
-    def __init__(self, path: Path | None = None):
+    def __init__(
+        self,
+        path: Path | None = None,
+        *,
+        name: str | None = None,
+        journal_name: str | None = None,
+        mode: str = "gap_left",
+    ):
         self.path = path or BOOK_PATH
-        self.name = NAME
-        self.journal_name = JOURNAL_NAME
+        self.name = name or NAME
+        self.journal_name = journal_name or JOURNAL_NAME
+        self.mode = mode
         self.started_on = "2026-11-14"
         self.starting_capital = STARTING_CAPITAL
         self.capital = STARTING_CAPITAL
