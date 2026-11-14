@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import traceback
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 
 from src.loka_fut import LokaFuturesBook
 from src.loka_kalyanam import classify_close, entry_window
