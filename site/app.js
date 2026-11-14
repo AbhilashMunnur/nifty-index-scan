@@ -288,6 +288,37 @@ function futLokaPage(desk, key, title) {
     ${rows}`;
 }
 
+function lokaLabel(book) {
+  if (!book || !book.saved) return "Paper book";
+  if (!book.flat && book.open) return "Open " + book.open.side;
+  return inr(book.realised);
+}
+
+function positionsPage(desk) {
+  return `
+    <a class="back" href="#">&larr; Landing</a>
+    <h1>Model positions</h1>
+    <p class="lede">Paper book. Live orders stay off.</p>
+    ${bookBlock("Nifty", desk.positions.nifty)}
+    ${bookBlock("Sensex", desk.positions.sensex)}`;
+}
+
+function positionLabel(desk) {
+  const books = [desk.positions && desk.positions.nifty, desk.positions && desk.positions.sensex];
+  if (books.some((book) => book && book.saved && !book.flat)) return "Open";
+  return "Flat";
+}
+
+function latestClock(cards) {
+  if (!cards || !cards.length) return "No scan yet";
+  return "Last scan " + cards[0].clock;
+}
+
+function sessionBlock(days) {
+  if (!days || !days.length) return "";
+  return `<section class="session"><h2 class="day">Futures day</h2>${days.map(dayCard).join("")}</section>`;
+}
+
 function landing(desk) {
   const tiles = [
     ["nifty-oi", "Nifty OI Scan", latestClock(desk.nifty_oi), ""],
