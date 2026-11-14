@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import traceback
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, timedelta
 
-from src.loka_fut import LokaFuturesBook
+from src.loka_fut import LokaFuturesBook, manage_exit
 from src.loka_kalyanam import classify_close, entry_window
 from src.loka_live import _field, _index_bars
 from src.loka_oi import choose_side, load_pcr, pcr_percentile, remember_pcr, series_ending
@@ -27,8 +27,8 @@ def run_loka_oi_futures(market, now: datetime) -> list[str]:
 
 def _run(market, book: LokaFuturesBook, now: datetime) -> list[str]:
     notes: list[str] = []
-    if book.is_open and _later_session(book.position or {}, now):
-        notes.append(_exit(market, book, now))
+    if book.is_open:
+        notes.append(_manage(market, book, now))
     if book.is_open or book.entered_on(now.date()) or not entry_window(now):
         return notes
     notes.append(_enter(market, book, now))
@@ -79,11 +79,9 @@ def _enter(market, book: LokaFuturesBook, now: datetime) -> str:
     return note + missing
 
 
-def _exit(market, book: LokaFuturesBook, now: datetime) -> str:
+def _manage(market, book: LokaFuturesBook, now: datetime) -> str:
     pos = book.position or {}
-    clock = str(pos.get("exit_clock") or "")
-    if now.time().replace(second=0, microsecond=0) < _clock(clock):
-        return ""
+    entry_day = date.fromisoformat(str(pos.get("entry_date")))
     contract = FutureContract(
         symbol="NIFTY",
         tradingsymbol=str(pos.get("tradingsymbol") or ""),
@@ -93,10 +91,18 @@ def _exit(market, book: LokaFuturesBook, now: datetime) -> str:
         trading_days_left=0,
         exchange="NFO",
     )
-    price = _future_price(market, contract, now, clock, "open")
-    if price is None:
-        return f"{book.name}: the {clock} future price is missing. The position stays open."
-    return book.close(exit_on=now.date(), price=price)
+    if not contract.token:
+        return f"{book.name}: the future is missing, so the position stays open."
+    start = datetime.combine(entry_day, datetime.min.time())
+    try:
+        bars = market.candles(contract.exchange, contract.token, start, now)
+    except Exception as exc:
+        return f"{book.name}: the future candles are missing ({exc}). The position stays open."
+    decision = manage_exit(str(pos.get("side")), float(pos.get("price")), bars or [], now, entry_day)
+    if decision is None:
+        return ""
+    price, clock, reason, exit_day = decision
+    return book.close(exit_on=exit_day, price=price, exit_time=clock, reason=reason)
 
 
 def _ratio(market, now: datetime, spot: float) -> tuple[float | None, float | None]:
@@ -117,12 +123,3 @@ def _future_price(market, contract: FutureContract, now: datetime, clock: str, f
     start = datetime.combine(now.date(), datetime.min.time())
     bars = market.candles(contract.exchange, contract.token, start, now)
     return _field(bars, now.date(), clock, field)
-
-
-def _later_session(position: dict, now: datetime) -> bool:
-    return now.date() > date.fromisoformat(str(position.get("entry_date")))
-
-
-def _clock(value: str) -> time:
-    hour, minute = (value or "00:00").split(":")
-    return time(int(hour), int(minute))

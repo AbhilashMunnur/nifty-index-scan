@@ -404,6 +404,7 @@ def _loka_futures_row(trade: dict, event: str) -> dict:
         "pcr": trade.get("pcr"),
         "pcr_rank": trade.get("pcr_rank"),
         "contract": trade.get("tradingsymbol") or "",
+        "exit_reason": "" if entry else (trade.get("exit_reason") or ""),
         "price": trade.get("price") if entry else trade.get("exit_price"),
         "points": None if entry else trade.get("points"),
         "lots": trade.get("lots"),

@@ -2,7 +2,7 @@ import json
 from datetime import date, datetime
 
 from src.desk import build_desk
-from src.loka_fut import LokaFuturesBook, futures_charges, futures_points
+from src.loka_fut import LokaFuturesBook, futures_charges, futures_points, manage_exit
 from src.loka_fut_live import _run
 from src.models import FutureContract
 
@@ -105,4 +105,61 @@ def test_live_step_buys_the_future_and_sells_it_at_the_0915_open(tmp_path, monke
     assert closed.position is None
     assert closed.closed[0]["exit_price"] == 25100.0
     assert closed.closed[0]["exit_time"] == "09:15"
+    assert closed.closed[0]["exit_reason"] == "09:15 open"
     assert "09:15" in notes[-1]
+
+
+def _bar(day, hour, minute, **fields):
+    return {"stamp": datetime(day.year, day.month, day.day, hour, minute), **fields}
+
+
+def test_a_losing_long_waits_for_1400_and_keeps_the_stop():
+    entry_day = date(2026, 11, 16)
+    exit_day = date(2026, 11, 17)
+    bars = [
+        _bar(exit_day, 9, 15, open=24950, high=24980, low=24920, close=24940),
+        _bar(exit_day, 10, 0, open=24900, high=24910, low=24790, close=24800),
+    ]
+    assert manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 9, 30), entry_day) is None
+    stopped = manage_exit("Buy", 25000, bars, datetime(2026, 11, 17, 10, 15), entry_day)
+    assert stopped[:3] == (24800, "10:00", "Stop, the market traded through 200")
+    held = [
+        _bar(exit_day, 9, 15, open=24950, high=24980, low=24920, close=24940),
+        _bar(exit_day, 14, 0, open=25120, high=25140, low=25080, close=25110),
+    ]
+    assert manage_exit("Buy", 25000, held, datetime(2026, 11, 17, 14, 0), entry_day)[:3] == (
+        25120,
+        "14:00",
+        "14:00 open",
+    )
+
+
+def test_a_long_that_opens_200_down_is_sold_at_the_open():
+    exit_day = date(2026, 11, 17)
+    decision = manage_exit(
+        "Buy",
+        25000,
+        [_bar(exit_day, 9, 15, open=24750, high=24800, low=24700, close=24780)],
+        datetime(2026, 11, 17, 9, 30),
+        date(2026, 11, 16),
+    )
+    assert decision[:3] == (24750, "09:15", "Stop, the open was already past 200")
+
+
+def test_a_short_gap_is_left_until_1400_and_a_traded_stop_is_taken():
+    entry_day = date(2026, 11, 16)
+    exit_day = date(2026, 11, 17)
+    gap = [
+        _bar(exit_day, 9, 15, open=25300, high=25340, low=25280, close=25310),
+        _bar(exit_day, 10, 0, open=25320, high=25400, low=25300, close=25380),
+        _bar(exit_day, 14, 0, open=25150, high=25180, low=25120, close=25140),
+    ]
+    assert manage_exit("Short", 25000, gap, datetime(2026, 11, 17, 10, 15), entry_day) is None
+    held = manage_exit("Short", 25000, gap, datetime(2026, 11, 17, 14, 0), entry_day)
+    assert held[:3] == (25150, "14:00", "14:00 open, the opening gap was left alone")
+    traded = [
+        _bar(exit_day, 9, 15, open=25040, high=25080, low=25010, close=25050),
+        _bar(exit_day, 10, 0, open=25100, high=25240, low=25090, close=25210),
+    ]
+    stopped = manage_exit("Short", 25000, traded, datetime(2026, 11, 17, 10, 15), entry_day)
+    assert stopped[:3] == (25200, "10:00", "Stop, the market traded through 200")

@@ -1,14 +1,16 @@
-"""Loka OI 60 paper book on the Nifty future. Live orders are never placed.
+"""200 SL , wait till 14:00 strategy. Paper book on the Nifty future. Live orders are never placed.
 
-The side is the Loka OI 60 decision. A buy closes at the next session's
-09:15 open. A short closes at the next session's 14:00 open. Two points
-of slippage sit in the points, and the futures charge schedule is applied.
+The side is the Loka OI 60 decision. A long is sold at the next 09:15 open
+when that open is above the entry, and otherwise held to 14:00 with a
+200-point stop. A short is held to 14:00, and is bought back at 200 points
+only when a bar trades through that price. An open already past the stop is
+left until 14:00. Two points of slippage sit in the points.
 """
 
 from __future__ import annotations
 
 import json
-from datetime import date, datetime
+from datetime import date, datetime, time, timedelta
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -18,10 +20,11 @@ from openpyxl.utils import get_column_letter
 from src.loka_kalyanam import CAPITAL_PER_LOT, STARTING_CAPITAL, _money, lots_for
 from src.paths import ROOT
 
-NAME = "Loka OI 60 futures"
+NAME = "200 SL , wait till 14:00 strategy"
 BOOK_PATH = ROOT / "data" / "loka_oi_60_futures_book.json"
 JOURNAL_NAME = "loka_oi_60_futures_journal.xlsx"
 SLIP_POINTS = 2.0
+STOP_POINTS = 200.0
 ENTRY_CLOCK = "15:00"
 BUY_EXIT = "09:15"
 SHORT_EXIT = "14:00"
@@ -29,6 +32,85 @@ SHORT_EXIT = "14:00"
 
 def exit_clock(side: str) -> str:
     return BUY_EXIT if side == "Buy" else SHORT_EXIT
+
+
+def manage_exit(
+    side: str,
+    entry: float,
+    bars: list[dict],
+    now: datetime,
+    entry_day: date,
+) -> tuple[float, str, str, date] | None:
+    """Price, clock, reason and session for an exit, or None while the trade stays open.
+
+    A bar's open counts once its stamp has arrived. Its high and low count
+    once the bar has finished. The entry evening is the 15:00 bar onward.
+    """
+    if now.tzinfo is not None:
+        now = now.replace(tzinfo=None)
+    level = entry - STOP_POINTS if side == "Buy" else entry + STOP_POINTS
+    ordered: list[tuple[datetime, dict]] = []
+    for bar in bars:
+        stamp = bar.get("stamp")
+        if not isinstance(stamp, datetime):
+            continue
+        if stamp.tzinfo is not None:
+            stamp = stamp.replace(tzinfo=None)
+        if stamp > now or stamp.date() < entry_day:
+            continue
+        if stamp.date() == entry_day and stamp.time() < time(15, 0):
+            continue
+        ordered.append((stamp, bar))
+    ordered.sort(key=lambda item: item[0])
+
+    exit_day: date | None = None
+    gap_left = False
+    for stamp, bar in ordered:
+        if stamp.date() > entry_day:
+            if exit_day is None:
+                exit_day = stamp.date()
+            elif stamp.date() != exit_day:
+                break
+        on_exit = exit_day is not None and stamp.date() == exit_day
+        clock = stamp.strftime("%H:%M")
+        opened = _bar_value(bar, "open")
+        complete = now >= stamp + timedelta(minutes=15)
+        if on_exit and clock >= "14:00":
+            if clock == "14:00" and opened is not None:
+                reason = "14:00 open, the opening gap was left alone" if side == "Short" and gap_left else "14:00 open"
+                return opened, "14:00", reason, stamp.date()
+            continue
+        if side == "Buy" and on_exit and clock == "09:15" and opened is not None:
+            if opened > entry:
+                return opened, "09:15", "09:15 open", stamp.date()
+            if opened <= level:
+                return opened, "09:15", "Stop, the open was already past 200", stamp.date()
+            if complete and _through("Buy", level, bar):
+                return level, "09:15", "Stop, the market traded through 200", stamp.date()
+            continue
+        if side == "Short" and opened is not None and opened >= level:
+            gap_left = True
+            continue
+        if side == "Buy" and opened is not None and opened <= level:
+            return opened, clock, "Stop, the open was already past 200", stamp.date()
+        if complete and _through(side, level, bar) and not (side == "Short" and gap_left):
+            return level, clock, "Stop, the market traded through 200", stamp.date()
+    return None
+
+
+def _bar_value(bar: dict, field: str) -> float | None:
+    value = bar.get(field)
+    if value is None:
+        return None
+    return float(value)
+
+
+def _through(side: str, level: float, bar: dict) -> bool:
+    if side == "Buy":
+        low = _bar_value(bar, "low")
+        return low is not None and low <= level
+    high = _bar_value(bar, "high")
+    return high is not None and high >= level
 
 
 def stt_rate(on: date) -> float:
@@ -188,7 +270,15 @@ class LokaFuturesBook:
             f"{tradingsymbol} @ {price:,.2f}, {lots} lots"
         )
 
-    def close(self, *, exit_on: date, price: float, quote: str = "Market") -> str:
+    def close(
+        self,
+        *,
+        exit_on: date,
+        price: float,
+        quote: str = "Market",
+        exit_time: str | None = None,
+        reason: str = "",
+    ) -> str:
         pos = self.position
         if not pos:
             return f"{self.name}: nothing open."
@@ -208,11 +298,13 @@ class LokaFuturesBook:
         )
         capital_before = float(pos["capital_before"])
         capital_after = _money(capital_before + gross - costs["total"])
+        used_clock = exit_time or str(pos["exit_clock"])
         self.closed.append(
             {
                 **pos,
                 "exit_date": _iso(exit_on),
-                "exit_time": pos["exit_clock"],
+                "exit_time": used_clock,
+                "exit_reason": reason,
                 "exit_price": round(float(price), 2),
                 "exit_quote": quote,
                 "points": points,
@@ -232,9 +324,10 @@ class LokaFuturesBook:
         self.position = None
         self.save()
         return (
-            f"{self.name} exit {exit_on.strftime('%d-%m-%Y')} {pos['exit_clock']} {side}: "
+            f"{self.name} exit {exit_on.strftime('%d-%m-%Y')} {used_clock} {side}: "
             f"{pos['tradingsymbol']} @ {price:,.2f}, {points:+.2f} pts, "
             f"charges {costs['total']:,.2f}, capital {capital_after:,.2f}"
+            + (f". {reason}" if reason else "")
         )
 
 
