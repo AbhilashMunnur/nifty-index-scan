@@ -1,509 +1,5 @@
 {
   "date": "2026-10-16",
-  "sensex_fut": [
-    {
-      "updated_at": "2026-10-16 09:33:07",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74110.0,
-      "oi": 98200,
-      "slot": "2026-10-16 09:30"
-    },
-    {
-      "updated_at": "2026-10-16 09:48:15",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74214.05,
-      "oi": 98360,
-      "slot": "2026-10-16 09:45"
-    },
-    {
-      "updated_at": "2026-10-16 10:03:12",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74525.0,
-      "oi": 95320,
-      "slot": "2026-10-16 10:00"
-    },
-    {
-      "updated_at": "2026-10-16 10:18:13",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74790.25,
-      "oi": 95420,
-      "slot": "2026-10-16 10:15"
-    },
-    {
-      "updated_at": "2026-10-16 10:33:09",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74813.0,
-      "oi": 93380,
-      "slot": "2026-10-16 10:30"
-    },
-    {
-      "updated_at": "2026-10-16 10:48:08",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74606.0,
-      "oi": 94020,
-      "slot": "2026-10-16 10:45"
-    },
-    {
-      "updated_at": "2026-10-16 11:03:07",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74688.6,
-      "oi": 94220,
-      "slot": "2026-10-16 11:00"
-    },
-    {
-      "updated_at": "2026-10-16 11:18:10",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74632.05,
-      "oi": 94380,
-      "slot": "2026-10-16 11:15"
-    },
-    {
-      "updated_at": "2026-10-16 11:33:06",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74651.35,
-      "oi": 94380,
-      "slot": "2026-10-16 11:30"
-    },
-    {
-      "updated_at": "2026-10-16 11:48:14",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74643.85,
-      "oi": 94480,
-      "slot": "2026-10-16 11:45"
-    },
-    {
-      "updated_at": "2026-10-16 12:03:12",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74626.75,
-      "oi": 94460,
-      "slot": "2026-10-16 12:00"
-    },
-    {
-      "updated_at": "2026-10-16 12:18:09",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74700.0,
-      "oi": 94480,
-      "slot": "2026-10-16 12:15"
-    },
-    {
-      "updated_at": "2026-10-16 12:33:14",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74678.25,
-      "oi": 94580,
-      "slot": "2026-10-16 12:30"
-    },
-    {
-      "updated_at": "2026-10-16 12:48:59",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74734.45,
-      "oi": 94900,
-      "slot": "2026-10-16 12:45"
-    },
-    {
-      "updated_at": "2026-10-16 13:03:16",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74649.9,
-      "oi": 94980,
-      "slot": "2026-10-16 13:00"
-    },
-    {
-      "updated_at": "2026-10-16 13:18:20",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74696.9,
-      "oi": 94980,
-      "slot": "2026-10-16 13:15"
-    },
-    {
-      "updated_at": "2026-10-16 13:33:16",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74730.0,
-      "oi": 95080,
-      "slot": "2026-10-16 13:30"
-    },
-    {
-      "updated_at": "2026-10-16 13:48:10",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74702.5,
-      "oi": 95340,
-      "slot": "2026-10-16 13:45"
-    },
-    {
-      "updated_at": "2026-10-16 14:04:06",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74680.0,
-      "oi": 95380,
-      "slot": "2026-10-16 14:00"
-    },
-    {
-      "updated_at": "2026-10-16 14:18:26",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74640.0,
-      "oi": 95140,
-      "slot": "2026-10-16 14:15"
-    },
-    {
-      "updated_at": "2026-10-16 14:33:37",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74600.0,
-      "oi": 95180,
-      "slot": "2026-10-16 14:30"
-    },
-    {
-      "updated_at": "2026-10-16 14:49:03",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74700.0,
-      "oi": 95040,
-      "slot": "2026-10-16 14:45"
-    },
-    {
-      "updated_at": "2026-10-16 15:03:53",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74670.0,
-      "oi": 95020,
-      "slot": "2026-10-16 15:00"
-    },
-    {
-      "updated_at": "2026-10-16 15:19:01",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74659.1,
-      "oi": 94740,
-      "slot": "2026-10-16 15:15"
-    },
-    {
-      "updated_at": "2026-10-16 15:33:24",
-      "tradingsymbol": "SENSEX26OCTFUT",
-      "token": "864571",
-      "expiry": "2026-10-29",
-      "lot_size": 20,
-      "price": 74673.75,
-      "oi": 94700,
-      "slot": "2026-10-16 15:30"
-    }
-  ],
-  "nifty_fut": [
-    {
-      "updated_at": "2026-10-16 09:33:06",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 22945.4,
-      "oi": 17022395,
-      "slot": "2026-10-16 09:30"
-    },
-    {
-      "updated_at": "2026-10-16 09:48:14",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 22949.4,
-      "oi": 17043390,
-      "slot": "2026-10-16 09:45"
-    },
-    {
-      "updated_at": "2026-10-16 10:03:11",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23064.7,
-      "oi": 17058795,
-      "slot": "2026-10-16 10:00"
-    },
-    {
-      "updated_at": "2026-10-16 10:18:13",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23130.6,
-      "oi": 17035850,
-      "slot": "2026-10-16 10:15"
-    },
-    {
-      "updated_at": "2026-10-16 10:33:08",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23144.0,
-      "oi": 17002375,
-      "slot": "2026-10-16 10:30"
-    },
-    {
-      "updated_at": "2026-10-16 10:48:07",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23087.9,
-      "oi": 17000360,
-      "slot": "2026-10-16 10:45"
-    },
-    {
-      "updated_at": "2026-10-16 11:03:06",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23110.2,
-      "oi": 17008160,
-      "slot": "2026-10-16 11:00"
-    },
-    {
-      "updated_at": "2026-10-16 11:18:10",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23085.0,
-      "oi": 16991910,
-      "slot": "2026-10-16 11:15"
-    },
-    {
-      "updated_at": "2026-10-16 11:33:06",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23117.2,
-      "oi": 17006080,
-      "slot": "2026-10-16 11:30"
-    },
-    {
-      "updated_at": "2026-10-16 11:48:13",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23123.9,
-      "oi": 16972020,
-      "slot": "2026-10-16 11:45"
-    },
-    {
-      "updated_at": "2026-10-16 12:03:11",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23110.0,
-      "oi": 16970005,
-      "slot": "2026-10-16 12:00"
-    },
-    {
-      "updated_at": "2026-10-16 12:18:08",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23123.0,
-      "oi": 16975530,
-      "slot": "2026-10-16 12:15"
-    },
-    {
-      "updated_at": "2026-10-16 12:33:13",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23122.5,
-      "oi": 16981315,
-      "slot": "2026-10-16 12:30"
-    },
-    {
-      "updated_at": "2026-10-16 12:48:59",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23140.0,
-      "oi": 16973190,
-      "slot": "2026-10-16 12:45"
-    },
-    {
-      "updated_at": "2026-10-16 13:03:16",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23119.0,
-      "oi": 16978455,
-      "slot": "2026-10-16 13:00"
-    },
-    {
-      "updated_at": "2026-10-16 13:18:20",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23130.0,
-      "oi": 16977740,
-      "slot": "2026-10-16 13:15"
-    },
-    {
-      "updated_at": "2026-10-16 13:33:15",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23139.0,
-      "oi": 16976570,
-      "slot": "2026-10-16 13:30"
-    },
-    {
-      "updated_at": "2026-10-16 13:48:09",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23135.0,
-      "oi": 16965975,
-      "slot": "2026-10-16 13:45"
-    },
-    {
-      "updated_at": "2026-10-16 14:04:05",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23129.1,
-      "oi": 16988920,
-      "slot": "2026-10-16 14:00"
-    },
-    {
-      "updated_at": "2026-10-16 14:18:25",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23112.8,
-      "oi": 17001595,
-      "slot": "2026-10-16 14:15"
-    },
-    {
-      "updated_at": "2026-10-16 14:33:36",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23098.0,
-      "oi": 16993795,
-      "slot": "2026-10-16 14:30"
-    },
-    {
-      "updated_at": "2026-10-16 14:49:02",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23130.6,
-      "oi": 16995810,
-      "slot": "2026-10-16 14:45"
-    },
-    {
-      "updated_at": "2026-10-16 15:03:53",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23111.1,
-      "oi": 16989050,
-      "slot": "2026-10-16 15:00"
-    },
-    {
-      "updated_at": "2026-10-16 15:19:01",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23122.0,
-      "oi": 17011475,
-      "slot": "2026-10-16 15:15"
-    },
-    {
-      "updated_at": "2026-10-16 15:33:24",
-      "tradingsymbol": "NIFTY27OCT26FUT",
-      "token": "48704",
-      "expiry": "2026-10-27",
-      "lot_size": 65,
-      "price": 23122.0,
-      "oi": 17014335,
-      "slot": "2026-10-16 15:30"
-    }
-  ],
   "nifty_oi": [
     {
       "updated_at": "2026-10-16 09:42:34",
@@ -1778,6 +1274,510 @@
         }
       ],
       "slot": "2026-10-16 15:40"
+    }
+  ],
+  "sensex_fut": [
+    {
+      "updated_at": "2026-10-16 09:33:07",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74110.0,
+      "oi": 98200,
+      "slot": "2026-10-16 09:30"
+    },
+    {
+      "updated_at": "2026-10-16 09:48:15",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74214.05,
+      "oi": 98360,
+      "slot": "2026-10-16 09:45"
+    },
+    {
+      "updated_at": "2026-10-16 10:03:12",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74525.0,
+      "oi": 95320,
+      "slot": "2026-10-16 10:00"
+    },
+    {
+      "updated_at": "2026-10-16 10:18:13",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74790.25,
+      "oi": 95420,
+      "slot": "2026-10-16 10:15"
+    },
+    {
+      "updated_at": "2026-10-16 10:33:09",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74813.0,
+      "oi": 93380,
+      "slot": "2026-10-16 10:30"
+    },
+    {
+      "updated_at": "2026-10-16 10:48:08",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74606.0,
+      "oi": 94020,
+      "slot": "2026-10-16 10:45"
+    },
+    {
+      "updated_at": "2026-10-16 11:03:07",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74688.6,
+      "oi": 94220,
+      "slot": "2026-10-16 11:00"
+    },
+    {
+      "updated_at": "2026-10-16 11:18:10",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74632.05,
+      "oi": 94380,
+      "slot": "2026-10-16 11:15"
+    },
+    {
+      "updated_at": "2026-10-16 11:33:06",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74651.35,
+      "oi": 94380,
+      "slot": "2026-10-16 11:30"
+    },
+    {
+      "updated_at": "2026-10-16 11:48:14",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74643.85,
+      "oi": 94480,
+      "slot": "2026-10-16 11:45"
+    },
+    {
+      "updated_at": "2026-10-16 12:03:12",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74626.75,
+      "oi": 94460,
+      "slot": "2026-10-16 12:00"
+    },
+    {
+      "updated_at": "2026-10-16 12:18:09",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74700.0,
+      "oi": 94480,
+      "slot": "2026-10-16 12:15"
+    },
+    {
+      "updated_at": "2026-10-16 12:33:14",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74678.25,
+      "oi": 94580,
+      "slot": "2026-10-16 12:30"
+    },
+    {
+      "updated_at": "2026-10-16 12:48:59",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74734.45,
+      "oi": 94900,
+      "slot": "2026-10-16 12:45"
+    },
+    {
+      "updated_at": "2026-10-16 13:03:16",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74649.9,
+      "oi": 94980,
+      "slot": "2026-10-16 13:00"
+    },
+    {
+      "updated_at": "2026-10-16 13:18:20",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74696.9,
+      "oi": 94980,
+      "slot": "2026-10-16 13:15"
+    },
+    {
+      "updated_at": "2026-10-16 13:33:16",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74730.0,
+      "oi": 95080,
+      "slot": "2026-10-16 13:30"
+    },
+    {
+      "updated_at": "2026-10-16 13:48:10",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74702.5,
+      "oi": 95340,
+      "slot": "2026-10-16 13:45"
+    },
+    {
+      "updated_at": "2026-10-16 14:04:06",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74680.0,
+      "oi": 95380,
+      "slot": "2026-10-16 14:00"
+    },
+    {
+      "updated_at": "2026-10-16 14:18:26",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74640.0,
+      "oi": 95140,
+      "slot": "2026-10-16 14:15"
+    },
+    {
+      "updated_at": "2026-10-16 14:33:37",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74600.0,
+      "oi": 95180,
+      "slot": "2026-10-16 14:30"
+    },
+    {
+      "updated_at": "2026-10-16 14:49:03",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74700.0,
+      "oi": 95040,
+      "slot": "2026-10-16 14:45"
+    },
+    {
+      "updated_at": "2026-10-16 15:03:53",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74670.0,
+      "oi": 95020,
+      "slot": "2026-10-16 15:00"
+    },
+    {
+      "updated_at": "2026-10-16 15:19:01",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74659.1,
+      "oi": 94740,
+      "slot": "2026-10-16 15:15"
+    },
+    {
+      "updated_at": "2026-10-16 15:33:24",
+      "tradingsymbol": "SENSEX26OCTFUT",
+      "token": "864571",
+      "expiry": "2026-10-29",
+      "lot_size": 20,
+      "price": 74673.75,
+      "oi": 94700,
+      "slot": "2026-10-16 15:30"
+    }
+  ],
+  "nifty_fut": [
+    {
+      "updated_at": "2026-10-16 09:33:06",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 22945.4,
+      "oi": 17022395,
+      "slot": "2026-10-16 09:30"
+    },
+    {
+      "updated_at": "2026-10-16 09:48:14",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 22949.4,
+      "oi": 17043390,
+      "slot": "2026-10-16 09:45"
+    },
+    {
+      "updated_at": "2026-10-16 10:03:11",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23064.7,
+      "oi": 17058795,
+      "slot": "2026-10-16 10:00"
+    },
+    {
+      "updated_at": "2026-10-16 10:18:13",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23130.6,
+      "oi": 17035850,
+      "slot": "2026-10-16 10:15"
+    },
+    {
+      "updated_at": "2026-10-16 10:33:08",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23144.0,
+      "oi": 17002375,
+      "slot": "2026-10-16 10:30"
+    },
+    {
+      "updated_at": "2026-10-16 10:48:07",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23087.9,
+      "oi": 17000360,
+      "slot": "2026-10-16 10:45"
+    },
+    {
+      "updated_at": "2026-10-16 11:03:06",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23110.2,
+      "oi": 17008160,
+      "slot": "2026-10-16 11:00"
+    },
+    {
+      "updated_at": "2026-10-16 11:18:10",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23085.0,
+      "oi": 16991910,
+      "slot": "2026-10-16 11:15"
+    },
+    {
+      "updated_at": "2026-10-16 11:33:06",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23117.2,
+      "oi": 17006080,
+      "slot": "2026-10-16 11:30"
+    },
+    {
+      "updated_at": "2026-10-16 11:48:13",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23123.9,
+      "oi": 16972020,
+      "slot": "2026-10-16 11:45"
+    },
+    {
+      "updated_at": "2026-10-16 12:03:11",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23110.0,
+      "oi": 16970005,
+      "slot": "2026-10-16 12:00"
+    },
+    {
+      "updated_at": "2026-10-16 12:18:08",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23123.0,
+      "oi": 16975530,
+      "slot": "2026-10-16 12:15"
+    },
+    {
+      "updated_at": "2026-10-16 12:33:13",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23122.5,
+      "oi": 16981315,
+      "slot": "2026-10-16 12:30"
+    },
+    {
+      "updated_at": "2026-10-16 12:48:59",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23140.0,
+      "oi": 16973190,
+      "slot": "2026-10-16 12:45"
+    },
+    {
+      "updated_at": "2026-10-16 13:03:16",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23119.0,
+      "oi": 16978455,
+      "slot": "2026-10-16 13:00"
+    },
+    {
+      "updated_at": "2026-10-16 13:18:20",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23130.0,
+      "oi": 16977740,
+      "slot": "2026-10-16 13:15"
+    },
+    {
+      "updated_at": "2026-10-16 13:33:15",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23139.0,
+      "oi": 16976570,
+      "slot": "2026-10-16 13:30"
+    },
+    {
+      "updated_at": "2026-10-16 13:48:09",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23135.0,
+      "oi": 16965975,
+      "slot": "2026-10-16 13:45"
+    },
+    {
+      "updated_at": "2026-10-16 14:04:05",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23129.1,
+      "oi": 16988920,
+      "slot": "2026-10-16 14:00"
+    },
+    {
+      "updated_at": "2026-10-16 14:18:25",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23112.8,
+      "oi": 17001595,
+      "slot": "2026-10-16 14:15"
+    },
+    {
+      "updated_at": "2026-10-16 14:33:36",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23098.0,
+      "oi": 16993795,
+      "slot": "2026-10-16 14:30"
+    },
+    {
+      "updated_at": "2026-10-16 14:49:02",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23130.6,
+      "oi": 16995810,
+      "slot": "2026-10-16 14:45"
+    },
+    {
+      "updated_at": "2026-10-16 15:03:53",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23111.1,
+      "oi": 16989050,
+      "slot": "2026-10-16 15:00"
+    },
+    {
+      "updated_at": "2026-10-16 15:19:01",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23122.0,
+      "oi": 17011475,
+      "slot": "2026-10-16 15:15"
+    },
+    {
+      "updated_at": "2026-10-16 15:33:24",
+      "tradingsymbol": "NIFTY27OCT26FUT",
+      "token": "48704",
+      "expiry": "2026-10-27",
+      "lot_size": 65,
+      "price": 23122.0,
+      "oi": 17014335,
+      "slot": "2026-10-16 15:30"
     }
   ],
   "sensex_oi": [
