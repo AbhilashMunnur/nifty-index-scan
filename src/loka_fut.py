@@ -40,6 +40,7 @@ class FuturesBookStyle:
     journal_name: str
     mode: str
     stop_pct: float | None = 0.01
+    weekly_weeks: int | None = None
 
 
 # One entry, three stops. A losing long is held to 14:00. A short gap is left.
@@ -68,7 +69,44 @@ FUTURES_BOOKS = (
         "hold_long",
         0.0075,
     ),
+    FuturesBookStyle(
+        "loka_fut_week40",
+        "1% 40-week",
+        "loka_fut_week40_book.json",
+        "loka_fut_week40_journal.xlsx",
+        "hold_long",
+        0.01,
+        40,
+    ),
 )
+
+
+def weekly_short_allowed(closes: list[tuple[date, float]], on: date, weeks: int = 40) -> tuple[bool, str]:
+    """Whether a new short may open. The week still in progress is not used.
+
+    Fewer than `weeks` completed weeks means the short is allowed. A completed
+    week ends on its last session, and that session must be before `on`.
+    """
+    by_week: dict[tuple[int, int], tuple[date, float]] = {}
+    for day, price in closes:
+        if day >= on:
+            continue
+        by_week[day.isocalendar()[:2]] = (day, float(price))
+    ordered = [by_week[key] for key in sorted(by_week)]
+    if len(ordered) < weeks:
+        return True, f"the {weeks}-week average is not ready, so the short is allowed"
+    used = ordered[-weeks:]
+    average = sum(price for _day, price in used) / weeks
+    last_day, last = used[-1]
+    if last < average:
+        return True, (
+            f"week of {last_day.strftime('%d-%m-%Y')} closed at {last:,.2f}, "
+            f"below the {weeks}-week average {average:,.2f}"
+        )
+    return False, (
+        f"week of {last_day.strftime('%d-%m-%Y')} closed at {last:,.2f}, "
+        f"above the {weeks}-week average {average:,.2f}"
+    )
 
 
 def sl_label(stop_pct: float) -> str:

@@ -2,7 +2,7 @@ import json
 from datetime import date, datetime
 
 from src.desk import build_desk
-from src.loka_fut import LokaFuturesBook, futures_charges, futures_points, manage_exit
+from src.loka_fut import LokaFuturesBook, futures_charges, futures_points, manage_exit, weekly_short_allowed
 from src.loka_fut_live import _run
 from src.models import FutureContract
 
@@ -177,3 +177,47 @@ def test_the_three_stops_fire_at_their_own_percentage():
     assert half[:3] == (25125, "10:00", "Hit SL 0.5%, closed")
     assert three_quarters[:3] == (25187.5, "10:00", "Hit SL 0.75%, closed")
     assert one is None
+
+
+def _fridays(count, start=date(2025, 11, 14), step=100.0):
+    closes = []
+    day = start
+    price = 20000.0
+    while len(closes) < count:
+        closes.append((day, price))
+        day = day.fromordinal(day.toordinal() + 7)
+        price += step
+    return closes
+
+
+def test_a_short_needs_the_completed_week_below_the_40_week_average():
+    rising = _fridays(40, step=100.0)
+    allowed, detail = weekly_short_allowed(rising, rising[-1][0].fromordinal(rising[-1][0].toordinal() + 3), 40)
+    assert allowed is False
+    assert "above" in detail
+    falling = _fridays(40, step=-100.0)
+    allowed, detail = weekly_short_allowed(falling, falling[-1][0].fromordinal(falling[-1][0].toordinal() + 3), 40)
+    assert allowed is True
+    assert "below" in detail
+    assert weekly_short_allowed(rising[:39], date(2026, 11, 16), 40)[0] is True
+
+
+def test_the_40_week_book_does_not_open_a_short_above_the_average(tmp_path, monkeypatch):
+    import src.loka_fut_live as live
+
+    monkeypatch.setattr(live, "_index_bars", lambda *args, **kwargs: [
+        {"stamp": datetime(2026, 11, 16, 9, 15), "open": 25200.0, "close": 25180.0},
+        {"stamp": datetime(2026, 11, 16, 14, 15), "close": 25100.0},
+        {"stamp": datetime(2026, 11, 16, 14, 45), "close": 25000.0},
+    ])
+    monkeypatch.setattr(live, "_ratio", lambda *args, **kwargs: (None, None))
+    monkeypatch.setattr(live, "_daily_closes", lambda *args, **kwargs: _fridays(40, step=100.0))
+    book = LokaFuturesBook(
+        tmp_path / "week.json",
+        name="1% 40-week",
+        journal_name="loka_fut_week40_journal.xlsx",
+    )
+    notes = live._run(_Market(), book, datetime(2026, 11, 16, 15, 0), 40)
+    assert book.position is None
+    assert "not taken" in notes[-1]
+    assert "SECRET" not in notes[-1]

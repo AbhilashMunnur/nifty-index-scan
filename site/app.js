@@ -10,6 +10,7 @@ const PAGES = {
   "loka-fut-sl-1": { title: "1% SL", kind: "loka-fut", key: "loka_fut_sl_1" },
   "loka-fut-sl-050": { title: "0.5% SL", kind: "loka-fut", key: "loka_fut_sl_050" },
   "loka-fut-sl-075": { title: "0.75% SL", kind: "loka-fut", key: "loka_fut_sl_075" },
+  "loka-fut-week40": { title: "1% 40-week", kind: "loka-fut", key: "loka_fut_week40" },
 };
 
 const LOKA_LEDE = {
@@ -19,6 +20,7 @@ const LOKA_LEDE = {
   loka_fut_sl_1: "Paper from this date. The same Loka OI 60 decision on the Nifty future. A long is sold at the 09:15 open when that open is a profit, and otherwise held to 14:00. The stop is 1% of the entry. A short is held to 14:00, and a gap already past the stop is left until then. Live orders stay off.",
   loka_fut_sl_050: "Paper from this date. The same Loka OI 60 decision on the Nifty future. A long is sold at the 09:15 open when that open is a profit, and otherwise held to 14:00. The stop is 0.5% of the entry. A short is held to 14:00, and a gap already past the stop is left until then. Live orders stay off.",
   loka_fut_sl_075: "Paper from this date. The same Loka OI 60 decision on the Nifty future. A long is sold at the 09:15 open when that open is a profit, and otherwise held to 14:00. The stop is 0.75% of the entry. A short is held to 14:00, and a gap already past the stop is left until then. Live orders stay off.",
+  loka_fut_week40: "Paper from this date. The 1% future, with one extra rule. A short is taken only when the last completed week closed below its 40-week average. A long is unchanged. Live orders stay off.",
 };
 
 const FUT_PENDING = {
@@ -33,6 +35,10 @@ const FUT_PENDING = {
   loka_fut_sl_075: {
     Short: "Open. Held to 14:00. Bought back at 0.75% of the entry only if the market trades through that price. A gap already past the stop is left until 14:00.",
     Buy: "Open. Sold at the 09:15 open if that open is a profit, otherwise held to 14:00. The stop is 0.75% of the entry.",
+  },
+  loka_fut_week40: {
+    Short: "Open. Held to 14:00. Bought back at 1% of the entry only if the market trades through that price. A gap already past the stop is left until 14:00.",
+    Buy: "Open. Sold at the 09:15 open if that open is a profit, otherwise held to 14:00. The stop is 1% of the entry.",
   },
 };
 
@@ -332,6 +338,7 @@ function landing(desk) {
     ["loka-fut-sl-1", "1% SL", lokaLabel(desk.loka_fut_sl_1), "wide"],
     ["loka-fut-sl-050", "0.5% SL", lokaLabel(desk.loka_fut_sl_050), "wide"],
     ["loka-fut-sl-075", "0.75% SL", lokaLabel(desk.loka_fut_sl_075), "wide"],
+    ["loka-fut-week40", "1% 40-week", lokaLabel(desk.loka_fut_week40), "wide"],
   ];
   return `
     <h1>Scan desk</h1>

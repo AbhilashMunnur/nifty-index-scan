@@ -5,10 +5,10 @@ from __future__ import annotations
 import traceback
 from datetime import date, datetime, timedelta
 
-from src.loka_fut import FUTURES_BOOKS, LokaFuturesBook, manage_exit
+from src.loka_fut import FUTURES_BOOKS, LokaFuturesBook, manage_exit, weekly_short_allowed
 from src.paths import ROOT
 from src.loka_kalyanam import classify_close, entry_window
-from src.loka_live import _field, _index_bars
+from src.loka_live import _field, _index_bars, require_index
 from src.loka_oi import choose_side, load_pcr, pcr_percentile, remember_pcr, series_ending
 from src.loka_oi import VARIANTS
 from src.loka_oi_live import _prev_close, band_pcr
@@ -28,24 +28,24 @@ def run_loka_oi_futures(market, now: datetime) -> list[str]:
             stop_pct=style.stop_pct,
         )
         try:
-            notes.extend(note for note in _run(market, book, now) if note)
+            notes.extend(note for note in _run(market, book, now, style.weekly_weeks) if note)
         except Exception:
             traceback.print_exc()
             notes.append(f"{book.name} paper step failed. The other books still stand.")
     return notes
 
 
-def _run(market, book: LokaFuturesBook, now: datetime) -> list[str]:
+def _run(market, book: LokaFuturesBook, now: datetime, weekly_weeks: int | None = None) -> list[str]:
     notes: list[str] = []
     if book.is_open:
         notes.append(_manage(market, book, now))
     if book.is_open or book.entered_on(now.date()) or not entry_window(now):
         return notes
-    notes.append(_enter(market, book, now))
+    notes.append(_enter(market, book, now, weekly_weeks))
     return notes
 
 
-def _enter(market, book: LokaFuturesBook, now: datetime) -> str:
+def _enter(market, book: LokaFuturesBook, now: datetime, weekly_weeks: int | None = None) -> str:
     bars = _index_bars(market, now - timedelta(days=10), now)
     day_open = _field(bars, now.date(), "09:15", "open")
     bar_1415 = _field(bars, now.date(), "14:15", "close")
@@ -62,6 +62,13 @@ def _enter(market, book: LokaFuturesBook, now: datetime) -> str:
             f"{book.name}: mixed close, no trade. "
             f"Nifty 09:15 {day_open:,.2f}, 14:15 {bar_1415:,.2f}, 15:00 {bar_1445:,.2f}"
         )
+    if weekly_weeks and side == "Short":
+        closes = _daily_closes(market, now)
+        if not closes:
+            return f"{book.name}: the weekly closes are missing, so the short was not taken."
+        allowed, detail = weekly_short_allowed(closes, now.date(), weekly_weeks)
+        if not allowed:
+            return f"{book.name}: {detail}, so the short was not taken."
     contract = market.tradeable_future("NIFTY", min_trading_days=2, as_of=now.date())
     if contract is None:
         return f"{book.name}: no Nifty future has two sessions left."
@@ -133,6 +140,29 @@ def _ratio(market, now: datetime, spot: float) -> tuple[float | None, float | No
         remember_pcr(now.date(), pcr)
     percentile = pcr_percentile(series_ending(load_pcr(), now.date(), pcr), OI_60.window)
     return pcr, percentile
+
+
+def _daily_closes(market, now: datetime) -> list[tuple[date, float]]:
+    """One close for each session before today, from the daily Nifty candles."""
+    spec = require_index("NIFTY")
+    market._load_instruments()
+    token = (market._index_tokens or {}).get("NIFTY")
+    if not token:
+        return []
+    start = now - timedelta(days=420)
+    bars = market.candles(spec.index_exchange, token, start, now, "ONE_DAY")
+    by_day: dict[date, float] = {}
+    today = now.date()
+    for bar in bars or []:
+        stamp = bar.get("stamp")
+        if not isinstance(stamp, datetime):
+            continue
+        if stamp.tzinfo is not None:
+            stamp = stamp.replace(tzinfo=None)
+        if stamp.date() >= today or bar.get("close") is None:
+            continue
+        by_day[stamp.date()] = float(bar["close"])
+    return sorted(by_day.items())
 
 
 def _future_price(market, contract: FutureContract, now: datetime, clock: str, field: str) -> float | None:
