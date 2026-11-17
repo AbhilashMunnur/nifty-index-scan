@@ -246,15 +246,20 @@ def _pair_ltp(market, pos: dict) -> tuple[float, float] | None:
 
 
 def _candle_open(market, token, now: datetime, clock: str) -> float | None:
+    return _candle_field(market, token, now, clock, "open")
+
+
+def _candle_field(market, token, now: datetime, clock: str, field: str) -> float | None:
     if not token:
         return None
     start = datetime.combine(now.date(), datetime.min.time())
     bars = market.candles("NFO", str(token), start, now)
-    return _field(bars, now.date(), clock, "open")
+    return _field(bars, now.date(), clock, field)
 
 
 def _candle_or_ltp(market, contract: dict, day: date, clock: str, now: datetime) -> float | None:
-    price = _candle_open(market, contract.get("token"), now, clock)
+    # The 14:45 bar's close is the 15:00 price. Its open is 14:45.
+    price = _candle_field(market, contract.get("token"), now, clock, "close")
     if price is not None and price >= 0:
         return price
     return _ltp(market, contract)
