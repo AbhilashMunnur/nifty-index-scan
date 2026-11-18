@@ -4,8 +4,25 @@
   "starting_capital": 10000000.0,
   "capital": 9349333.38,
   "realised_pnl": -650666.62,
-  "updated_at": "2026-11-18 13:41:39",
-  "position": null,
+  "updated_at": "2026-11-18 15:09:54",
+  "position": {
+    "side": "Short",
+    "entry_date": "2026-11-18",
+    "entry_time": "15:00",
+    "exit_clock": "14:00",
+    "signal": "Loka",
+    "pcr": 1.031,
+    "pcr_rank": 52.5,
+    "tradingsymbol": "NIFTY23NOV26FUT",
+    "token": "61471",
+    "expiry": "2026-11-23",
+    "price": 25254.4,
+    "lots": 34,
+    "lot_size": 65,
+    "capital_before": 9349333.38,
+    "capital_used": 9129612.0,
+    "entry_stamp": "2026-11-18 15:09:54"
+  },
   "closed": [
     {
       "side": "Buy",
