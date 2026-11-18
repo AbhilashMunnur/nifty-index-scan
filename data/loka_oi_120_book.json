@@ -4,15 +4,15 @@
   "starting_capital": 10000000.0,
   "capital": 9585437.21,
   "realised_pnl": -414562.79,
-  "updated_at": "2026-11-18 15:09:08",
+  "updated_at": "2026-11-18 15:14:58",
   "position": {
     "side": "Short",
     "entry_date": "2026-11-18",
     "entry_time": "15:00",
     "exit_clock": "10:00",
     "signal": "Loka",
-    "pcr": 1.031,
-    "pcr_rank": 55.5,
+    "pcr": 1.002,
+    "pcr_rank": 51.3,
     "check_clock": "10:00",
     "fallback_clock": "14:00",
     "checked": false,
@@ -32,7 +32,7 @@
     "lot_size": 65,
     "capital_before": 9585437.21,
     "capital_used": 9398130.0,
-    "entry_stamp": "2026-11-18 15:09:08"
+    "entry_stamp": "2026-11-18 15:14:58"
   },
   "closed": [
     {
