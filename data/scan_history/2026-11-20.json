@@ -1780,7 +1780,7 @@
       "slot": "2026-11-20 15:30"
     },
     {
-      "updated_at": "2026-11-20 15:40:11",
+      "updated_at": "2026-11-20 15:45:14",
       "expiry": "2026-11-23",
       "atm": 25800.0,
       "lot_size": 65,
@@ -1790,8 +1790,8 @@
           "strike": 25700.0,
           "call_oi": 4824560,
           "put_oi": 6922175,
-          "call_ltp": 130.55,
-          "put_ltp": 90.0
+          "call_ltp": 131.55,
+          "put_ltp": 89.45
         },
         {
           "label": "ITM1",
@@ -3105,7 +3105,7 @@
       "slot": "2026-11-20 15:30"
     },
     {
-      "updated_at": "2026-11-20 15:41:24",
+      "updated_at": "2026-11-20 15:46:11",
       "expiry": "2026-11-26",
       "atm": 83900.0,
       "lot_size": 20,
@@ -3113,40 +3113,40 @@
         {
           "label": "ITM2",
           "strike": 83700.0,
-          "call_oi": 101840,
-          "put_oi": 171200,
+          "call_oi": 102080,
+          "put_oi": 171120,
           "call_ltp": 720.0,
           "put_ltp": 583.65
         },
         {
           "label": "ITM1",
           "strike": 83800.0,
-          "call_oi": 166260,
-          "put_oi": 198700,
+          "call_oi": 166460,
+          "put_oi": 199440,
           "call_ltp": 675.6,
           "put_ltp": 625.0
         },
         {
           "label": "ATM",
           "strike": 83900.0,
-          "call_oi": 174800,
-          "put_oi": 200480,
+          "call_oi": 175400,
+          "put_oi": 199960,
           "call_ltp": 625.8,
           "put_ltp": 680.0
         },
         {
           "label": "OTM1",
           "strike": 84000.0,
-          "call_oi": 381760,
-          "put_oi": 200020,
+          "call_oi": 377040,
+          "put_oi": 199760,
           "call_ltp": 575.6,
           "put_ltp": 721.5
         },
         {
           "label": "OTM2",
           "strike": 84100.0,
-          "call_oi": 95680,
-          "put_oi": 26480,
+          "call_oi": 94480,
+          "put_oi": 26440,
           "call_ltp": 522.85,
           "put_ltp": 815.45
         }
