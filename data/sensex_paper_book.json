@@ -1,7 +1,26 @@
 {
-  "updated_at": "2026-11-19 12:43:02",
+  "updated_at": "2026-11-20 11:50:05",
   "realised_pnl": -119959.09,
-  "position": null,
+  "position": {
+    "direction": "SHORT",
+    "tradingsymbol": "SENSEX26DECFUT",
+    "expiry": "2026-12-31",
+    "token": "1145756",
+    "lot_size": 20,
+    "lots": 2,
+    "scale_lot_open": true,
+    "rsi_lot_open": true,
+    "first_target_pct": 1.5,
+    "first_target_price": 82346.0,
+    "stop_loss_pct": 0.75,
+    "stop_loss_price": 84227.0,
+    "entry_time": "2026-11-20 11:50:05",
+    "entry_price": 83600.0,
+    "entry_rsi": 70.1,
+    "pcr": 0.69,
+    "change_pcr": 0.72,
+    "reason": "1H RSI 70.1 >= 70 and \u0394PCR 0.72 < 0.8 (PCR 0.69)"
+  },
   "closed": [
     {
       "direction": "SHORT",
