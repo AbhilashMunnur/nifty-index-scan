@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-20 13:05:45",
+  "updated_at": "2026-11-20 13:10:40",
   "realised_pnl": -145039.09,
   "position": {
     "direction": "SHORT",
@@ -11,15 +11,15 @@
     "scale_lot_open": true,
     "rsi_lot_open": true,
     "first_target_pct": 1.5,
-    "first_target_price": 82997.48,
+    "first_target_price": 82958.67,
     "stop_loss_pct": 0.75,
-    "stop_loss_price": 84893.36,
-    "entry_time": "2026-11-20 13:05:45",
-    "entry_price": 84261.4,
-    "entry_rsi": 76.6,
-    "pcr": 0.42,
-    "change_pcr": 0.52,
-    "reason": "1H RSI 76.6 >= 70 and \u0394PCR 0.52 < 0.8 (PCR 0.42)"
+    "stop_loss_price": 84853.67,
+    "entry_time": "2026-11-20 13:10:40",
+    "entry_price": 84222.0,
+    "entry_rsi": 76.8,
+    "pcr": 0.48,
+    "change_pcr": 0.62,
+    "reason": "1H RSI 76.8 >= 70 and \u0394PCR 0.62 < 0.8 (PCR 0.48)"
   },
   "closed": [
     {
