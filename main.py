@@ -9,7 +9,7 @@ import sys
 import time
 import traceback
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, time as clock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -441,6 +441,16 @@ def run_strategy(config, args, slot=None) -> bool:
 
     market = IndexMarket()
     try:
+        if config.mode == "paper" and not args.no_paper:
+            # Fill before the OI scan. A 14:05 entry or 15:00 exit should not
+            # wait for the rest of the slot.
+            at = now_ist()
+            critical = (clock(14, 0) <= at.time() <= clock(14, 25)) or (
+                clock(15, 0) <= at.time() <= clock(15, 10)
+            )
+            if not critical:
+                _seed_pcr_once()
+            _run_master_desks(market)
         prices = market.get_ltps(symbols)
         results: list[IndexScanResult] = []
         for symbol in symbols:
@@ -463,9 +473,6 @@ def run_strategy(config, args, slot=None) -> bool:
             sensex=sensex.band if sensex and sensex.ok else None,
             sensex_spot=sensex.ltp if sensex and sensex.ok else None,
         )
-        if config.mode == "paper" and not args.no_paper:
-            _seed_pcr_once()
-            _run_master_desks(market)
         return any(row.ok for row in results)
     finally:
         market.close()

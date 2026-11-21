@@ -40,7 +40,7 @@ from src.master_strategy import (
     synth_exit_fills,
 )
 from src.paths import ROOT
-from src.universe import ALLOWED_SYMBOLS
+from src.universe import ALLOWED_SYMBOLS, require_index
 
 IST = ZoneInfo("Asia/Kolkata")
 PENDING_PATH = ROOT / "data" / "master_pending_signal.json"
@@ -82,9 +82,9 @@ def _save_pending(sig: dict | None) -> None:
     PENDING_PATH.write_text(json.dumps(sig, indent=2) + "\n", encoding="utf-8")
 
 
-def _atm_legs(market, symbol: str, spot: float) -> dict | None:
-    """Nearest-expiry ATM CE/PE tokens + LTP for synthetic."""
-    band = market.get_atm_band_pcr(symbol, spot, wings=WINGS)
+def _atm_legs(market, symbol: str, spot: float, *, after: date | None = None) -> dict | None:
+    """ATM CE/PE for a new entry. `after` skips an expiry that dies the same day."""
+    band = market.get_atm_band_pcr(symbol, spot, wings=WINGS, after=after)
     if not band:
         return None
     atm = next((s for s in band.strikes if s.label == "ATM"), None)
@@ -122,6 +122,27 @@ def _band_pcr(band) -> float | None:
     if ce <= 0:
         return None
     return pe / ce
+
+
+def _position_marks(market, pos: dict) -> tuple[float, float] | None:
+    """LTP of the entered call and put, not whatever strike is ATM now."""
+    spec = require_index(pos["script"])
+    call_token = str(pos.get("call_token") or "")
+    put_token = str(pos.get("put_token") or "")
+    if call_token in ("", "hist") or put_token in ("", "hist"):
+        expiry = date.fromisoformat(str(pos["expiry"])[:10])
+        strike = float(pos["strike"])
+        call = market.option_contract(pos["script"], expiry, strike, "CE")
+        put = market.option_contract(pos["script"], expiry, strike, "PE")
+        if not call or not put:
+            return None
+        call_token, put_token = call["token"], put["token"]
+    quotes = market._fetch_option_quotes(spec.fno_exchange, [call_token, put_token])
+    call_px = (quotes.get(call_token) or {}).get("ltp")
+    put_px = (quotes.get(put_token) or {}).get("ltp")
+    if call_px is None or put_px is None:
+        return None
+    return float(call_px), float(put_px)
 
 
 def _emit_orders(broker, side: str, legs: dict, qty: int, note: str) -> None:
@@ -207,15 +228,11 @@ def run_master_tick(
         pos = book.position
         sym = pos["script"]
         try:
-            prices = market.get_ltps([sym])
-            spot = prices.get(sym) or float(pos.get("spot_entry") or 0)
-            legs = _atm_legs(market, sym, spot)
-            # Prefer same strike/expiry tokens from position when possible
-            call_px = put_px = None
-            if legs and int(legs["strike"]) == int(pos["strike"]):
-                call_px, put_px = legs["call_ltp"], legs["put_ltp"]
-            elif legs:
-                call_px, put_px = legs["call_ltp"], legs["put_ltp"]
+            marks = _position_marks(market, pos)
+            if marks is None:
+                call_px = put_px = None
+            else:
+                call_px, put_px = marks
             if call_px is None or put_px is None:
                 lines.append(f"  open {sym}: option marks unavailable")
             else:
@@ -294,7 +311,7 @@ def run_master_tick(
             lines.append("  entry window — no signal")
             return lines
         t0 = time_mod.perf_counter()
-        legs = _atm_legs(market, sig["script"], float(sig["spot"]))
+        legs = _atm_legs(market, sig["script"], float(sig["spot"]), after=day)
         if not legs:
             lines.append(f"  entry failed — ATM legs missing for {sig['script']}")
             return lines

@@ -16,7 +16,8 @@ from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
 
 from src.broker_adapter import OrderIntent, PaperBroker
-from src.master_live import LIVE_SCRIPTS, _atm_legs, collect_signals
+from src.master_live import LIVE_SCRIPTS, _atm_legs, _position_marks, collect_signals
+from src.universe import require_index
 from src.master_strategy import ENTRY_CLOCK, EXIT_CLOCK, SIGNAL_CLOCK
 from src.option_buy_book import OptionBuyBook
 from src.option_buy_strategy import (
@@ -104,14 +105,18 @@ def run_option_buy_tick(
         pos = book.position
         sym = pos["script"]
         try:
-            prices = market.get_ltps([sym])
-            spot = prices.get(sym) or float(pos.get("spot_entry") or 0)
-            legs = _atm_legs(market, sym, float(spot))
             raw = None
-            if legs:
-                got = _leg_for_side(legs, pos["opt_side"])
-                if got:
-                    raw = got[2]
+            token = str(pos.get("token") or "")
+            if token and token != "hist":
+                spec = require_index(sym)
+                quotes = market._fetch_option_quotes(spec.fno_exchange, [token])
+                px = (quotes.get(token) or {}).get("ltp")
+                if px is not None:
+                    raw = float(px)
+            if raw is None:
+                marks = _position_marks(market, pos)
+                if marks:
+                    raw = marks[0] if pos["opt_side"] == "CE" else marks[1]
             if raw is None:
                 lines.append(f"  open {sym}: {pos['opt_side']} mark unavailable")
             elif exit_due(pos, at):
@@ -174,7 +179,7 @@ def run_option_buy_tick(
             lines.append("  entry window — no BASE signal")
             return lines
         t0 = time_mod.perf_counter()
-        legs = _atm_legs(market, sig["script"], float(sig["spot"]))
+        legs = _atm_legs(market, sig["script"], float(sig["spot"]), after=day)
         if not legs:
             lines.append(f"  entry failed — ATM legs missing for {sig['script']}")
             return lines

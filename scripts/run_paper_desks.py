@@ -16,15 +16,20 @@ from src.master_live import LIVE_SCRIPTS, collect_signals, now_ist, run_master_t
 from src.option_buy_book import OptionBuyBook  # noqa: E402
 from src.option_buy_live import run_option_buy_tick  # noqa: E402
 from src.option_buy_strategy import INTENT_LOG  # noqa: E402
+from src.scan_slots import is_trading_day  # noqa: E402
 from src.seed_pcr_history import seed_master_pcr_history  # noqa: E402
 
 
 def main() -> None:
-    added = seed_master_pcr_history()
-    if any(added.values()):
-        print("PCR seeded:", {k: v for k, v in added.items() if v})
-
     at = now_ist()
+    if not is_trading_day(at.date()):
+        print(f"{at:%d-%b %Y} is not an NSE session. Paper desks stay idle.")
+        return
+    critical = (at.hour == 14 and at.minute <= 25) or (at.hour == 15 and at.minute <= 10)
+    if not critical:
+        added = seed_master_pcr_history()
+        if any(added.values()):
+            print("PCR seeded:", {k: v for k, v in added.items() if v})
     market = IndexMarket()
     try:
         print(f"\nPaper desks @ {at:%d-%b %Y %H:%M} IST | scripts={LIVE_SCRIPTS}")

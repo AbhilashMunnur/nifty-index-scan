@@ -355,10 +355,15 @@ class IndexMarket:
         *,
         wings: int = 2,
         fixed: list[tuple[str, float]] | None = None,
+        after: date | None = None,
     ) -> BandPcr | None:
-        """Option band around the spot ATM. wings=2 is five strikes; wings=6 is thirteen."""
+        """Option band around the spot ATM. wings=2 is five strikes; wings=6 is thirteen.
+
+        after: skip that expiry and anything earlier, so an entry is not the
+        contract that dies the same afternoon.
+        """
         spec = require_index(symbol)
-        nearest = self._nearest_expiry_rows(spec)
+        nearest = self._nearest_expiry_rows(spec, after=after)
         if not nearest:
             print(f"  {spec.symbol}: no index options listed")
             return None
@@ -449,7 +454,9 @@ class IndexMarket:
             strikes=rows,
         )
 
-    def _nearest_expiry_rows(self, spec: IndexSpec) -> tuple[str, list[dict]] | None:
+    def _nearest_expiry_rows(
+        self, spec: IndexSpec, *, after: date | None = None
+    ) -> tuple[str, list[dict]] | None:
         self._load_instruments()
         contracts = (self._option_rows or {}).get(spec.symbol)
         if not contracts:
@@ -462,8 +469,11 @@ class IndexMarket:
                 expiry = datetime.strptime(str(row["expiry"]), "%d%b%Y").date()
             except (KeyError, ValueError):
                 continue
-            if expiry >= today:
-                by_expiry.setdefault(expiry, []).append(row)
+            if expiry < today:
+                continue
+            if after is not None and expiry <= after:
+                continue
+            by_expiry.setdefault(expiry, []).append(row)
 
         if not by_expiry:
             return None
