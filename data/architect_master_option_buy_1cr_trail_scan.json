@@ -1,0 +1,58 @@
+{
+  "baseline": {
+    "name": "time_only",
+    "activate_pct": null,
+    "trail_pct": null,
+    "init_sl_pct": null,
+    "tp1_pct": null,
+    "partial_frac": null,
+    "tiers": "all",
+    "n": 1257,
+    "failed": 0,
+    "wr": 0.5322,
+    "sum_cr": 282.6875,
+    "multiple": 283.6875,
+    "max_dd": 0.5513,
+    "calmar": 512.78,
+    "exit_why": "{\"time\": 1257}",
+    "mean_pts": 45.97
+  },
+  "best_uniform": {
+    "name": "time_only",
+    "activate_pct": NaN,
+    "trail_pct": NaN,
+    "init_sl_pct": NaN,
+    "tp1_pct": NaN,
+    "partial_frac": NaN,
+    "tiers": "all",
+    "n": 1257,
+    "failed": 0,
+    "wr": 0.5322,
+    "sum_cr": 282.6875,
+    "multiple": 283.6875,
+    "max_dd": 0.5513,
+    "calmar": 512.78,
+    "exit_why": "{\"time\": 1257}",
+    "mean_pts": 45.97
+  },
+  "best_hybrid": {
+    "name": "base:time + f_act=1.0|trail=0.25|tp1=0.75|part=0.67",
+    "sum_cr": 291.649,
+    "multiple": 292.649,
+    "max_dd": 0.5513,
+    "calmar": 529.03,
+    "wr": 0.5672,
+    "n": 1257
+  },
+  "final": {
+    "name": "base:time + f_act=1.0|trail=0.25|tp1=0.75|part=0.67",
+    "sum_cr": 291.649,
+    "multiple": 292.649,
+    "max_dd": 0.5513,
+    "calmar": 529.03,
+    "wr": 0.5672,
+    "n": 1257
+  },
+  "final_label": "best_hybrid_pnl",
+  "beat_count": 0
+}

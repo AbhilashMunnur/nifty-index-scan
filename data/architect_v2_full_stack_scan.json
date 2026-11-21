@@ -1,0 +1,1085 @@
+{
+  "generated_at": "2026-11-20T00:09:00",
+  "data": {
+    "index": "/Users/abhilashmunnur/Nifty index trade/data/fyers/nifty_index_5m.parquet",
+    "fut": "/Users/abhilashmunnur/Nifty index trade/data/fyers/nifty_fut_5m.parquet",
+    "opt": "/Users/abhilashmunnur/Nifty index trade/data/fyers/nifty_opt_atm6_5m.parquet",
+    "feature_days": 1944,
+    "train_end": "2024-06-30",
+    "test_start": "2024-07-01"
+  },
+  "n_positive_persistent": 437,
+  "top20": [
+    {
+      "family": "futures_btst",
+      "name": "btst_fut|entry=14:00|trend=False|rsi=None",
+      "unit": "fut_points",
+      "train": {
+        "n": 1352,
+        "mean": 15.9845,
+        "med": 12.9,
+        "wr": 0.57,
+        "sum": 21611.0,
+        "p25": -41.25,
+        "p75": 72.925
+      },
+      "test": {
+        "n": 590,
+        "mean": 27.8401,
+        "med": 17.925,
+        "wr": 0.585,
+        "sum": 16425.65,
+        "p25": -37.7,
+        "p75": 80.75
+      },
+      "score": 881.9436992371357
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.005|tp=None|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 23.0384,
+        "med": 13.25,
+        "wr": 0.572,
+        "sum": 28890.2,
+        "p25": -56.4374,
+        "p75": 68.9375
+      },
+      "test": {
+        "n": 534,
+        "mean": 23.744,
+        "med": 21.925,
+        "wr": 0.594,
+        "sum": 12679.32,
+        "p25": -68.775,
+        "p75": 90.825
+      },
+      "score": 834.228227659629
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.008|tp=None|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 23.1354,
+        "med": 17.975,
+        "wr": 0.604,
+        "sum": 29011.83,
+        "p25": -45.4,
+        "p75": 70.75
+      },
+      "test": {
+        "n": 534,
+        "mean": 23.4437,
+        "med": 24.5,
+        "wr": 0.614,
+        "sum": 12518.94,
+        "p25": -51.4,
+        "p75": 94.475
+      },
+      "score": 828.4909958517828
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=None|tp=None|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 23.6121,
+        "med": 19.4,
+        "wr": 0.615,
+        "sum": 29609.55,
+        "p25": -37.35,
+        "p75": 71.425
+      },
+      "test": {
+        "n": 534,
+        "mean": 22.437,
+        "med": 25.45,
+        "wr": 0.616,
+        "sum": 11981.35,
+        "p25": -47.6125,
+        "p75": 94.475
+      },
+      "score": 811.1360214724291
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.005|tp=None|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 23.948,
+        "med": 12.5,
+        "wr": 0.566,
+        "sum": 24858.03,
+        "p25": -57.0594,
+        "p75": 73.0375
+      },
+      "test": {
+        "n": 469,
+        "mean": 24.2813,
+        "med": 21.95,
+        "wr": 0.586,
+        "sum": 11387.93,
+        "p25": -89.95,
+        "p75": 97.5
+      },
+      "score": 795.8906297047347
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.005|tp=0.012|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 19.978,
+        "med": 15.0,
+        "wr": 0.577,
+        "sum": 25052.38,
+        "p25": -56.4374,
+        "p75": 74.3
+      },
+      "test": {
+        "n": 534,
+        "mean": 23.7099,
+        "med": 22.025,
+        "wr": 0.594,
+        "sum": 12661.07,
+        "p25": -68.775,
+        "p75": 92.075
+      },
+      "score": 795.5091675433065
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.008|tp=0.012|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 20.0958,
+        "med": 19.35,
+        "wr": 0.609,
+        "sum": 25200.09,
+        "p25": -42.7,
+        "p75": 77.15
+      },
+      "test": {
+        "n": 534,
+        "mean": 23.4095,
+        "med": 25.45,
+        "wr": 0.614,
+        "sum": 12500.68,
+        "p25": -51.4,
+        "p75": 95.2125
+      },
+      "score": 790.0274232498707
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.008|tp=None|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 23.8419,
+        "med": 18.35,
+        "wr": 0.599,
+        "sum": 24747.85,
+        "p25": -49.925,
+        "p75": 76.25
+      },
+      "test": {
+        "n": 469,
+        "mean": 23.858,
+        "med": 24.1,
+        "wr": 0.608,
+        "sum": 11189.39,
+        "p25": -54.3,
+        "p75": 99.1
+      },
+      "score": 785.5270565669431
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=None|tp=0.012|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 20.5675,
+        "med": 20.9,
+        "wr": 0.62,
+        "sum": 25791.7,
+        "p25": -35.975,
+        "p75": 78.675
+      },
+      "test": {
+        "n": 534,
+        "mean": 22.4028,
+        "med": 26.15,
+        "wr": 0.616,
+        "sum": 11963.1,
+        "p25": -47.6125,
+        "p75": 95.2125
+      },
+      "score": 772.6104781112832
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.005|tp=0.008|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 18.8745,
+        "med": 19.25,
+        "wr": 0.596,
+        "sum": 23668.63,
+        "p25": -55.6755,
+        "p75": 80.2084
+      },
+      "test": {
+        "n": 534,
+        "mean": 23.08,
+        "med": 23.85,
+        "wr": 0.599,
+        "sum": 12324.7,
+        "p25": -67.8875,
+        "p75": 100.5125
+      },
+      "score": 767.2762146139855
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=None|tp=None|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 24.2419,
+        "med": 20.95,
+        "wr": 0.613,
+        "sum": 25163.05,
+        "p25": -41.775,
+        "p75": 77.275
+      },
+      "test": {
+        "n": 469,
+        "mean": 22.7809,
+        "med": 24.9,
+        "wr": 0.61,
+        "sum": 10684.25,
+        "p25": -52.9,
+        "p75": 99.1
+      },
+      "score": 766.7114607299236
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.008|tp=0.008|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 19.009,
+        "med": 22.3,
+        "wr": 0.626,
+        "sum": 23837.3,
+        "p25": -36.8,
+        "p75": 81.064
+      },
+      "test": {
+        "n": 534,
+        "mean": 22.6751,
+        "med": 27.075,
+        "wr": 0.618,
+        "sum": 12108.48,
+        "p25": -50.2,
+        "p75": 101.1
+      },
+      "score": 759.5866206746575
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.005|tp=0.012|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 20.8271,
+        "med": 14.7,
+        "wr": 0.572,
+        "sum": 21618.55,
+        "p25": -57.0594,
+        "p75": 79.6
+      },
+      "test": {
+        "n": 469,
+        "mean": 24.1584,
+        "med": 22.1,
+        "wr": 0.586,
+        "sum": 11330.31,
+        "p25": -89.95,
+        "p75": 98.6
+      },
+      "score": 758.0368444435883
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=None|tp=0.008|to=13:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1254,
+        "mean": 19.8707,
+        "med": 23.35,
+        "wr": 0.636,
+        "sum": 24917.89,
+        "p25": -32.15,
+        "p75": 83.041
+      },
+      "test": {
+        "n": 534,
+        "mean": 22.0177,
+        "med": 27.45,
+        "wr": 0.62,
+        "sum": 11757.45,
+        "p25": -47.4875,
+        "p75": 101.1
+      },
+      "score": 755.0751728540902
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.008|tp=0.012|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 20.7461,
+        "med": 20.9,
+        "wr": 0.606,
+        "sum": 21534.45,
+        "p25": -48.425,
+        "p75": 80.8625
+      },
+      "test": {
+        "n": 469,
+        "mean": 23.7351,
+        "med": 24.9,
+        "wr": 0.608,
+        "sum": 11131.77,
+        "p25": -54.3,
+        "p75": 99.8
+      },
+      "score": 747.9563065006931
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.005|tp=0.008|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 19.248,
+        "med": 20.8,
+        "wr": 0.592,
+        "sum": 19979.42,
+        "p25": -56.5655,
+        "p75": 84.0204
+      },
+      "test": {
+        "n": 469,
+        "mean": 24.0007,
+        "med": 24.1,
+        "wr": 0.593,
+        "sum": 11256.34,
+        "p25": -79.8,
+        "p75": 108.2
+      },
+      "score": 736.8152195163784
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=None|tp=0.012|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 21.1402,
+        "med": 21.9,
+        "wr": 0.618,
+        "sum": 21943.55,
+        "p25": -39.15,
+        "p75": 82.35
+      },
+      "test": {
+        "n": 469,
+        "mean": 22.6581,
+        "med": 26.0,
+        "wr": 0.61,
+        "sum": 10626.63,
+        "p25": -52.9,
+        "p75": 99.8
+      },
+      "score": 729.0763461192018
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=0.008|tp=0.008|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 19.1861,
+        "med": 23.3,
+        "wr": 0.624,
+        "sum": 19915.15,
+        "p25": -42.7,
+        "p75": 84.768
+      },
+      "test": {
+        "n": 469,
+        "mean": 23.4113,
+        "med": 27.25,
+        "wr": 0.612,
+        "sum": 10979.91,
+        "p25": -53.1,
+        "p75": 108.8
+      },
+      "score": 723.3529296126844
+    },
+    {
+      "family": "futures",
+      "name": "orb30_fut|sl=None|tp=0.008|to=11:00|trend=False",
+      "unit": "fut_points",
+      "train": {
+        "n": 1038,
+        "mean": 20.0513,
+        "med": 24.6,
+        "wr": 0.636,
+        "sum": 20813.22,
+        "p25": -34.125,
+        "p75": 84.9378
+      },
+      "test": {
+        "n": 469,
+        "mean": 22.732,
+        "med": 27.65,
+        "wr": 0.614,
+        "sum": 10661.32,
+        "p25": -52.0,
+        "p75": 108.8
+      },
+      "score": 718.3979887723067
+    },
+    {
+      "family": "futures_btst",
+      "name": "btst_fut|entry=14:00|trend=False|rsi=with_rsi",
+      "unit": "fut_points",
+      "train": {
+        "n": 640,
+        "mean": 25.2465,
+        "med": 26.95,
+        "wr": 0.641,
+        "sum": 16157.75,
+        "p25": -29.425,
+        "p75": 82.4
+      },
+      "test": {
+        "n": 285,
+        "mean": 25.4268,
+        "med": 14.7,
+        "wr": 0.572,
+        "sum": 7246.65,
+        "p25": -41.6,
+        "p75": 84.1
+      },
+      "score": 652.7958289354742
+    }
+  ],
+  "top_by_family": {
+    "futures_btst": [
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=14:00|trend=False|rsi=None",
+        "unit": "fut_points",
+        "train": {
+          "n": 1352,
+          "mean": 15.9845,
+          "med": 12.9,
+          "wr": 0.57,
+          "sum": 21611.0,
+          "p25": -41.25,
+          "p75": 72.925
+        },
+        "test": {
+          "n": 590,
+          "mean": 27.8401,
+          "med": 17.925,
+          "wr": 0.585,
+          "sum": 16425.65,
+          "p25": -37.7,
+          "p75": 80.75
+        },
+        "score": 881.9436992371357
+      },
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=14:00|trend=False|rsi=with_rsi",
+        "unit": "fut_points",
+        "train": {
+          "n": 640,
+          "mean": 25.2465,
+          "med": 26.95,
+          "wr": 0.641,
+          "sum": 16157.75,
+          "p25": -29.425,
+          "p75": 82.4
+        },
+        "test": {
+          "n": 285,
+          "mean": 25.4268,
+          "med": 14.7,
+          "wr": 0.572,
+          "sum": 7246.65,
+          "p25": -41.6,
+          "p75": 84.1
+        },
+        "score": 652.7958289354742
+      },
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=14:00|trend=True|rsi=None",
+        "unit": "fut_points",
+        "train": {
+          "n": 464,
+          "mean": 31.3163,
+          "med": 31.1,
+          "wr": 0.668,
+          "sum": 14530.75,
+          "p25": -24.1,
+          "p75": 81.85
+        },
+        "test": {
+          "n": 179,
+          "mean": 30.6101,
+          "med": 18.7,
+          "wr": 0.581,
+          "sum": 5479.2,
+          "p25": -43.275,
+          "p75": 83.875
+        },
+        "score": 645.6360378038967
+      },
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=14:00|trend=True|rsi=with_rsi",
+        "unit": "fut_points",
+        "train": {
+          "n": 464,
+          "mean": 31.3163,
+          "med": 31.1,
+          "wr": 0.668,
+          "sum": 14530.75,
+          "p25": -24.1,
+          "p75": 81.85
+        },
+        "test": {
+          "n": 179,
+          "mean": 30.6101,
+          "med": 18.7,
+          "wr": 0.581,
+          "sum": 5479.2,
+          "p25": -43.275,
+          "p75": 83.875
+        },
+        "score": 645.6360378038967
+      },
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=14:45|trend=True|rsi=None",
+        "unit": "fut_points",
+        "train": {
+          "n": 464,
+          "mean": 13.506,
+          "med": 15.65,
+          "wr": 0.591,
+          "sum": 6266.8,
+          "p25": -33.8,
+          "p75": 55.4125
+        },
+        "test": {
+          "n": 179,
+          "mean": 23.1425,
+          "med": 13.6,
+          "wr": 0.553,
+          "sum": 4142.5,
+          "p25": -42.3,
+          "p75": 76.725
+        },
+        "score": 411.450397988031
+      },
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=14:45|trend=True|rsi=with_rsi",
+        "unit": "fut_points",
+        "train": {
+          "n": 464,
+          "mean": 13.506,
+          "med": 15.65,
+          "wr": 0.591,
+          "sum": 6266.8,
+          "p25": -33.8,
+          "p75": 55.4125
+        },
+        "test": {
+          "n": 179,
+          "mean": 23.1425,
+          "med": 13.6,
+          "wr": 0.553,
+          "sum": 4142.5,
+          "p25": -42.3,
+          "p75": 76.725
+        },
+        "score": 411.450397988031
+      },
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=14:45|trend=False|rsi=with_rsi",
+        "unit": "fut_points",
+        "train": {
+          "n": 640,
+          "mean": 8.253,
+          "med": 8.55,
+          "wr": 0.561,
+          "sum": 5281.9,
+          "p25": -42.6,
+          "p75": 55.0375
+        },
+        "test": {
+          "n": 285,
+          "mean": 16.6709,
+          "med": 12.3,
+          "wr": 0.554,
+          "sum": 4751.2,
+          "p25": -49.0,
+          "p75": 69.5
+        },
+        "score": 354.5123609099055
+      },
+      {
+        "family": "futures_btst",
+        "name": "btst_fut|entry=15:00|trend=True|rsi=None",
+        "unit": "fut_points",
+        "train": {
+          "n": 464,
+          "mean": 12.3837,
+          "med": 14.0,
+          "wr": 0.593,
+          "sum": 5746.05,
+          "p25": -31.775,
+          "p75": 57.975
+        },
+        "test": {
+          "n": 179,
+          "mean": 17.9486,
+          "med": 8.5,
+          "wr": 0.547,
+          "sum": 3212.8,
+          "p25": -42.65,
+          "p75": 67.05
+        },
+        "score": 333.49947334419255
+      }
+    ],
+    "futures": [
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=0.005|tp=None|to=13:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1254,
+          "mean": 23.0384,
+          "med": 13.25,
+          "wr": 0.572,
+          "sum": 28890.2,
+          "p25": -56.4374,
+          "p75": 68.9375
+        },
+        "test": {
+          "n": 534,
+          "mean": 23.744,
+          "med": 21.925,
+          "wr": 0.594,
+          "sum": 12679.32,
+          "p25": -68.775,
+          "p75": 90.825
+        },
+        "score": 834.228227659629
+      },
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=0.008|tp=None|to=13:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1254,
+          "mean": 23.1354,
+          "med": 17.975,
+          "wr": 0.604,
+          "sum": 29011.83,
+          "p25": -45.4,
+          "p75": 70.75
+        },
+        "test": {
+          "n": 534,
+          "mean": 23.4437,
+          "med": 24.5,
+          "wr": 0.614,
+          "sum": 12518.94,
+          "p25": -51.4,
+          "p75": 94.475
+        },
+        "score": 828.4909958517828
+      },
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=None|tp=None|to=13:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1254,
+          "mean": 23.6121,
+          "med": 19.4,
+          "wr": 0.615,
+          "sum": 29609.55,
+          "p25": -37.35,
+          "p75": 71.425
+        },
+        "test": {
+          "n": 534,
+          "mean": 22.437,
+          "med": 25.45,
+          "wr": 0.616,
+          "sum": 11981.35,
+          "p25": -47.6125,
+          "p75": 94.475
+        },
+        "score": 811.1360214724291
+      },
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=0.005|tp=None|to=11:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1038,
+          "mean": 23.948,
+          "med": 12.5,
+          "wr": 0.566,
+          "sum": 24858.03,
+          "p25": -57.0594,
+          "p75": 73.0375
+        },
+        "test": {
+          "n": 469,
+          "mean": 24.2813,
+          "med": 21.95,
+          "wr": 0.586,
+          "sum": 11387.93,
+          "p25": -89.95,
+          "p75": 97.5
+        },
+        "score": 795.8906297047347
+      },
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=0.005|tp=0.012|to=13:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1254,
+          "mean": 19.978,
+          "med": 15.0,
+          "wr": 0.577,
+          "sum": 25052.38,
+          "p25": -56.4374,
+          "p75": 74.3
+        },
+        "test": {
+          "n": 534,
+          "mean": 23.7099,
+          "med": 22.025,
+          "wr": 0.594,
+          "sum": 12661.07,
+          "p25": -68.775,
+          "p75": 92.075
+        },
+        "score": 795.5091675433065
+      },
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=0.008|tp=0.012|to=13:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1254,
+          "mean": 20.0958,
+          "med": 19.35,
+          "wr": 0.609,
+          "sum": 25200.09,
+          "p25": -42.7,
+          "p75": 77.15
+        },
+        "test": {
+          "n": 534,
+          "mean": 23.4095,
+          "med": 25.45,
+          "wr": 0.614,
+          "sum": 12500.68,
+          "p25": -51.4,
+          "p75": 95.2125
+        },
+        "score": 790.0274232498707
+      },
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=0.008|tp=None|to=11:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1038,
+          "mean": 23.8419,
+          "med": 18.35,
+          "wr": 0.599,
+          "sum": 24747.85,
+          "p25": -49.925,
+          "p75": 76.25
+        },
+        "test": {
+          "n": 469,
+          "mean": 23.858,
+          "med": 24.1,
+          "wr": 0.608,
+          "sum": 11189.39,
+          "p25": -54.3,
+          "p75": 99.1
+        },
+        "score": 785.5270565669431
+      },
+      {
+        "family": "futures",
+        "name": "orb30_fut|sl=None|tp=0.012|to=13:00|trend=False",
+        "unit": "fut_points",
+        "train": {
+          "n": 1254,
+          "mean": 20.5675,
+          "med": 20.9,
+          "wr": 0.62,
+          "sum": 25791.7,
+          "p25": -35.975,
+          "p75": 78.675
+        },
+        "test": {
+          "n": 534,
+          "mean": 22.4028,
+          "med": 26.15,
+          "wr": 0.616,
+          "sum": 11963.1,
+          "p25": -47.6125,
+          "p75": 95.2125
+        },
+        "score": 772.6104781112832
+      }
+    ],
+    "options_sell": [
+      {
+        "family": "options_sell",
+        "name": "orb30|sell|tp=0.5|sl=0.4|to=13:00|exp=near_unless_0|plain",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 1202,
+          "mean": 0.039,
+          "med": 0.1169,
+          "wr": 0.608,
+          "sum": 46.91,
+          "p25": -0.4061,
+          "p75": 0.3555
+        },
+        "test": {
+          "n": 532,
+          "mean": 0.0493,
+          "med": 0.106,
+          "wr": 0.639,
+          "sum": 26.21,
+          "p25": -0.4049,
+          "p75": 0.3306
+        },
+        "score": 1.6103544198122606
+      },
+      {
+        "family": "options_sell",
+        "name": "orb30|sell|tp=1.0|sl=0.5|to=11:00|exp=near|plain",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 1001,
+          "mean": 0.0503,
+          "med": 0.1306,
+          "wr": 0.594,
+          "sum": 50.32,
+          "p25": -0.5172,
+          "p75": 0.4217
+        },
+        "test": {
+          "n": 467,
+          "mean": 0.0482,
+          "med": 0.1091,
+          "wr": 0.608,
+          "sum": 22.51,
+          "p25": -0.5184,
+          "p75": 0.4023
+        },
+        "score": 1.5986080822443416
+      },
+      {
+        "family": "options_sell",
+        "name": "orb30|sell|tp=None|sl=0.5|to=11:00|exp=near|plain",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 1001,
+          "mean": 0.0503,
+          "med": 0.1306,
+          "wr": 0.594,
+          "sum": 50.32,
+          "p25": -0.5172,
+          "p75": 0.4217
+        },
+        "test": {
+          "n": 467,
+          "mean": 0.0482,
+          "med": 0.1091,
+          "wr": 0.608,
+          "sum": 22.51,
+          "p25": -0.5184,
+          "p75": 0.4023
+        },
+        "score": 1.5986080822443416
+      },
+      {
+        "family": "options_sell",
+        "name": "orb30|sell|tp=0.5|sl=0.4|to=13:00|exp=near_unless_0|skip_dte0",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 1200,
+          "mean": 0.0391,
+          "med": 0.1169,
+          "wr": 0.608,
+          "sum": 46.95,
+          "p25": -0.406,
+          "p75": 0.3554
+        },
+        "test": {
+          "n": 531,
+          "mean": 0.0485,
+          "med": 0.1058,
+          "wr": 0.638,
+          "sum": 25.78,
+          "p25": -0.4053,
+          "p75": 0.3295
+        },
+        "score": 1.5916690123464843
+      },
+      {
+        "family": "options_sell",
+        "name": "orb30|sell|tp=0.5|sl=0.4|to=11:00|exp=near_unless_0|plain",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 998,
+          "mean": 0.041,
+          "med": 0.1225,
+          "wr": 0.604,
+          "sum": 40.92,
+          "p25": -0.4107,
+          "p75": 0.3732
+        },
+        "test": {
+          "n": 467,
+          "mean": 0.0519,
+          "med": 0.1091,
+          "wr": 0.642,
+          "sum": 24.22,
+          "p25": -0.407,
+          "p75": 0.3544
+        },
+        "score": 1.5749013168094954
+      },
+      {
+        "family": "options_sell",
+        "name": "orb15|sell|tp=0.5|sl=0.4|to=11:00|exp=near|plain",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 1171,
+          "mean": 0.0349,
+          "med": 0.1592,
+          "wr": 0.595,
+          "sum": 40.87,
+          "p25": -0.4213,
+          "p75": 0.4562
+        },
+        "test": {
+          "n": 536,
+          "mean": 0.0495,
+          "med": 0.1617,
+          "wr": 0.618,
+          "sum": 26.53,
+          "p25": -0.4173,
+          "p75": 0.4467
+        },
+        "score": 1.5640036541625562
+      },
+      {
+        "family": "options_sell",
+        "name": "orb30|sell|tp=0.5|sl=0.4|to=11:00|exp=near_unless_0|skip_dte0",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 997,
+          "mean": 0.0415,
+          "med": 0.1233,
+          "wr": 0.605,
+          "sum": 41.36,
+          "p25": -0.4107,
+          "p75": 0.3733
+        },
+        "test": {
+          "n": 466,
+          "mean": 0.051,
+          "med": 0.1086,
+          "wr": 0.642,
+          "sum": 23.79,
+          "p25": -0.407,
+          "p75": 0.3542
+        },
+        "score": 1.5595700217728217
+      },
+      {
+        "family": "options_sell",
+        "name": "orb15|sell|tp=0.5|sl=0.4|to=13:00|exp=near|plain",
+        "unit": "opt_prem_ret",
+        "train": {
+          "n": 1255,
+          "mean": 0.0346,
+          "med": 0.1585,
+          "wr": 0.596,
+          "sum": 43.45,
+          "p25": -0.4208,
+          "p75": 0.4505
+        },
+        "test": {
+          "n": 566,
+          "mean": 0.0474,
+          "med": 0.1568,
+          "wr": 0.618,
+          "sum": 26.82,
+          "p25": -0.4169,
+          "p75": 0.4386
+        },
+        "score": 1.5566903713420086
+      }
+    ]
+  },
+  "assumptions": {
+    "lot": 65,
+    "fut_slip": 2.0,
+    "opt_slip": 2.0,
+    "sell_margin_per_lot": 180000.0,
+    "capital_per_fut_lot": 268518.0
+  }
+}

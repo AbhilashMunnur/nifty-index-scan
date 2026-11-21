@@ -1,0 +1,1451 @@
+{
+  "baseline_oi25_from2021_profit": 310551771.87,
+  "persistent_setups": [
+    {
+      "setup": "mom_long_ret5",
+      "train": {
+        "name": "mom_long_ret5|train",
+        "n": 273,
+        "mean": 16.96,
+        "median": 23.2,
+        "winrate": 0.714,
+        "p25": -13.7,
+        "p75": 58.2,
+        "sum": 4631.3,
+        "score": 280.2990272049048,
+        "setup": "mom_long_ret5",
+        "split": "train"
+      },
+      "test": {
+        "name": "mom_long_ret5|test",
+        "n": 193,
+        "mean": 29.03,
+        "median": 31.0,
+        "winrate": 0.731,
+        "p25": -7.2,
+        "p75": 73.5,
+        "sum": 5602.1,
+        "score": 403.2479817269258,
+        "setup": "mom_long_ret5",
+        "split": "test"
+      },
+      "from2021": {
+        "name": "mom_long_ret5|from2021",
+        "n": 250,
+        "mean": 30.38,
+        "median": 34.07,
+        "winrate": 0.74,
+        "p25": -1.72,
+        "p75": 82.2,
+        "sum": 7594.9,
+        "score": 480.3436520242576,
+        "setup": "mom_long_ret5",
+        "split": "from2021"
+      },
+      "score": 543.3974953293782
+    },
+    {
+      "setup": "expand_loka_buy",
+      "train": {
+        "name": "expand_loka_buy|train",
+        "n": 180,
+        "mean": 10.26,
+        "median": 28.15,
+        "winrate": 0.744,
+        "p25": -0.98,
+        "p75": 61.75,
+        "sum": 1846.2,
+        "score": 137.60389655537554,
+        "setup": "expand_loka_buy",
+        "split": "train"
+      },
+      "test": {
+        "name": "expand_loka_buy|test",
+        "n": 124,
+        "mean": 35.53,
+        "median": 30.75,
+        "winrate": 0.742,
+        "p25": -5.4,
+        "p75": 89.85,
+        "sum": 4406.2,
+        "score": 395.6929310277381,
+        "setup": "expand_loka_buy",
+        "split": "test"
+      },
+      "from2021": {
+        "name": "expand_loka_buy|from2021",
+        "n": 164,
+        "mean": 32.39,
+        "median": 35.95,
+        "winrate": 0.75,
+        "p25": 0.07,
+        "p75": 92.27,
+        "sum": 5312.2,
+        "score": 414.80922460827964,
+        "setup": "expand_loka_buy",
+        "split": "from2021"
+      },
+      "score": 464.49487930542585
+    },
+    {
+      "setup": "cont_up2_loka",
+      "train": {
+        "name": "cont_up2_loka|train",
+        "n": 196,
+        "mean": 14.79,
+        "median": 22.25,
+        "winrate": 0.73,
+        "p25": -4.92,
+        "p75": 52.22,
+        "sum": 2898.4,
+        "score": 207.02857142857283,
+        "setup": "cont_up2_loka",
+        "split": "train"
+      },
+      "test": {
+        "name": "cont_up2_loka|test",
+        "n": 133,
+        "mean": 31.18,
+        "median": 28.9,
+        "winrate": 0.714,
+        "p25": -26.2,
+        "p75": 82.2,
+        "sum": 4147.5,
+        "score": 359.6381954099764,
+        "setup": "cont_up2_loka",
+        "split": "test"
+      },
+      "from2021": {
+        "name": "cont_up2_loka|from2021",
+        "n": 171,
+        "mean": 30.62,
+        "median": 35.5,
+        "winrate": 0.725,
+        "p25": -15.0,
+        "p75": 85.1,
+        "sum": 5236.2,
+        "score": 400.41839830211495,
+        "setup": "cont_up2_loka",
+        "split": "from2021"
+      },
+      "score": 463.1524811242628
+    },
+    {
+      "setup": "trend_long_sma20",
+      "train": {
+        "name": "trend_long_sma20|train",
+        "n": 290,
+        "mean": 11.97,
+        "median": 22.4,
+        "winrate": 0.703,
+        "p25": -17.7,
+        "p75": 56.43,
+        "sum": 3471.4,
+        "score": 203.84762700233642,
+        "setup": "trend_long_sma20",
+        "split": "train"
+      },
+      "test": {
+        "name": "trend_long_sma20|test",
+        "n": 190,
+        "mean": 25.78,
+        "median": 29.4,
+        "winrate": 0.737,
+        "p25": -1.43,
+        "p75": 69.4,
+        "sum": 4897.8,
+        "score": 355.3273851601314,
+        "setup": "trend_long_sma20",
+        "split": "test"
+      },
+      "from2021": {
+        "name": "trend_long_sma20|from2021",
+        "n": 245,
+        "mean": 26.27,
+        "median": 33.1,
+        "winrate": 0.739,
+        "p25": -1.5,
+        "p75": 79.9,
+        "sum": 6437.2,
+        "score": 411.25442803893725,
+        "setup": "trend_long_sma20",
+        "split": "from2021"
+      },
+      "score": 457.25119866129967
+    },
+    {
+      "setup": "trend_long_sma50",
+      "train": {
+        "name": "trend_long_sma50|train",
+        "n": 273,
+        "mean": 12.98,
+        "median": 23.2,
+        "winrate": 0.736,
+        "p25": -2.8,
+        "p75": 53.2,
+        "sum": 3543.8,
+        "score": 214.4775068895087,
+        "setup": "trend_long_sma50",
+        "split": "train"
+      },
+      "test": {
+        "name": "trend_long_sma50|test",
+        "n": 184,
+        "mean": 20.34,
+        "median": 27.6,
+        "winrate": 0.712,
+        "p25": -25.0,
+        "p75": 68.35,
+        "sum": 3742.8,
+        "score": 275.9228767482747,
+        "setup": "trend_long_sma50",
+        "split": "test"
+      },
+      "from2021": {
+        "name": "trend_long_sma50|from2021",
+        "n": 231,
+        "mean": 21.42,
+        "median": 31.0,
+        "winrate": 0.719,
+        "p25": -24.85,
+        "p75": 78.62,
+        "sum": 4947.4,
+        "score": 325.5150215643973,
+        "setup": "trend_long_sma50",
+        "split": "from2021"
+      },
+      "score": 383.16163019302905
+    },
+    {
+      "setup": "fade_dn_long",
+      "train": {
+        "name": "fade_dn_long|train",
+        "n": 121,
+        "mean": 10.04,
+        "median": 29.7,
+        "winrate": 0.645,
+        "p25": -43.7,
+        "p75": 73.0,
+        "sum": 1214.4,
+        "score": 110.40000000000087,
+        "setup": "fade_dn_long",
+        "split": "train"
+      },
+      "test": {
+        "name": "fade_dn_long|test",
+        "n": 59,
+        "mean": 26.79,
+        "median": 41.8,
+        "winrate": 0.746,
+        "p25": -6.45,
+        "p75": 87.7,
+        "sum": 1580.7,
+        "score": 205.7896115873879,
+        "setup": "fade_dn_long",
+        "split": "test"
+      },
+      "from2021": {
+        "name": "fade_dn_long|from2021",
+        "n": 86,
+        "mean": 14.58,
+        "median": 38.6,
+        "winrate": 0.686,
+        "p25": -27.25,
+        "p75": 96.35,
+        "sum": 1253.8,
+        "score": 135.2007310424706,
+        "setup": "fade_dn_long",
+        "split": "from2021"
+      },
+      "score": 260.9896115873883
+    },
+    {
+      "setup": "quiet_loka_buy",
+      "train": {
+        "name": "quiet_loka_buy|train",
+        "n": 79,
+        "mean": 9.09,
+        "median": 26.0,
+        "winrate": 0.696,
+        "p25": -41.55,
+        "p75": 51.15,
+        "sum": 718.0,
+        "score": 80.77568584698498,
+        "setup": "quiet_loka_buy",
+        "split": "train"
+      },
+      "test": {
+        "name": "quiet_loka_buy|test",
+        "n": 74,
+        "mean": 8.57,
+        "median": 27.4,
+        "winrate": 0.716,
+        "p25": -14.02,
+        "p75": 59.65,
+        "sum": 634.4,
+        "score": 73.7533144010158,
+        "setup": "quiet_loka_buy",
+        "split": "test"
+      },
+      "from2021": {
+        "name": "quiet_loka_buy|from2021",
+        "n": 87,
+        "mean": 9.3,
+        "median": 29.4,
+        "winrate": 0.701,
+        "p25": -26.15,
+        "p75": 63.5,
+        "sum": 809.0,
+        "score": 86.7285435057035,
+        "setup": "quiet_loka_buy",
+        "split": "from2021"
+      },
+      "score": 114.1411573245083
+    }
+  ],
+  "best_by_oos_score": [
+    {
+      "name": "loka_both_w20|stop=0.0125",
+      "setup": "loka_both_w20",
+      "stop": 0.0125,
+      "score": 56108676.037499994,
+      "is": {
+        "end": 13533153.04,
+        "profit": 3533153.04,
+        "n": 524,
+        "mean_pts": 6.22,
+        "winrate": 0.6374,
+        "max_dd": 0.5109
+      },
+      "oos": {
+        "end": 54886940.83,
+        "profit": 44886940.83,
+        "n": 365,
+        "mean_pts": 29.45,
+        "winrate": 0.674,
+        "max_dd": 0.1992
+      },
+      "from2021": {
+        "end": 82697835.48,
+        "profit": 72697835.48,
+        "n": 493,
+        "mean_pts": 26.63,
+        "winrate": 0.6694,
+        "max_dd": 0.1988
+      },
+      "full": {
+        "end": 75030201.84,
+        "profit": 65030201.84,
+        "n": 889,
+        "mean_pts": 15.75,
+        "winrate": 0.6524,
+        "max_dd": 0.5109
+      }
+    },
+    {
+      "name": "loka_both_w20|stop=0.015",
+      "setup": "loka_both_w20",
+      "stop": 0.015,
+      "score": 54569017.175000004,
+      "is": {
+        "end": 12290951.15,
+        "profit": 2290951.15,
+        "n": 524,
+        "mean_pts": 5.57,
+        "winrate": 0.6393,
+        "max_dd": 0.4909
+      },
+      "oos": {
+        "end": 53655213.74,
+        "profit": 43655213.74,
+        "n": 365,
+        "mean_pts": 29.22,
+        "winrate": 0.6767,
+        "max_dd": 0.2343
+      },
+      "from2021": {
+        "end": 75651326.63,
+        "profit": 65651326.63,
+        "n": 493,
+        "mean_pts": 26.0,
+        "winrate": 0.6714,
+        "max_dd": 0.2347
+      },
+      "full": {
+        "end": 65638911.53,
+        "profit": 55638911.53,
+        "n": 889,
+        "mean_pts": 15.28,
+        "winrate": 0.6547,
+        "max_dd": 0.4909
+      }
+    },
+    {
+      "name": "loka_both_w20|stop=0.02",
+      "setup": "loka_both_w20",
+      "stop": 0.02,
+      "score": 53799554.1375,
+      "is": {
+        "end": 11105295.31,
+        "profit": 1105295.31,
+        "n": 524,
+        "mean_pts": 4.76,
+        "winrate": 0.6393,
+        "max_dd": 0.5276
+      },
+      "oos": {
+        "end": 53039643.31,
+        "profit": 43039643.31,
+        "n": 365,
+        "mean_pts": 29.18,
+        "winrate": 0.6767,
+        "max_dd": 0.2457
+      },
+      "from2021": {
+        "end": 72808034.08,
+        "profit": 62808034.08,
+        "n": 493,
+        "mean_pts": 25.73,
+        "winrate": 0.6714,
+        "max_dd": 0.2455
+      },
+      "full": {
+        "end": 59067068.39,
+        "profit": 49067068.39,
+        "n": 889,
+        "mean_pts": 14.79,
+        "winrate": 0.6547,
+        "max_dd": 0.5276
+      }
+    },
+    {
+      "name": "loka_both_w20|stop=0.01",
+      "setup": "loka_both_w20",
+      "stop": 0.01,
+      "score": 47362290.5375,
+      "is": {
+        "end": 12949356.51,
+        "profit": 2949356.51,
+        "n": 524,
+        "mean_pts": 5.93,
+        "winrate": 0.6336,
+        "max_dd": 0.5412
+      },
+      "oos": {
+        "end": 47889832.43,
+        "profit": 37889832.43,
+        "n": 365,
+        "mean_pts": 27.88,
+        "winrate": 0.674,
+        "max_dd": 0.2086
+      },
+      "from2021": {
+        "end": 74476970.32,
+        "profit": 64476970.32,
+        "n": 493,
+        "mean_pts": 25.77,
+        "winrate": 0.6694,
+        "max_dd": 0.2088
+      },
+      "full": {
+        "end": 62425024.82,
+        "profit": 52425024.82,
+        "n": 889,
+        "mean_pts": 14.94,
+        "winrate": 0.6502,
+        "max_dd": 0.5412
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.0125",
+      "setup": "trend_short_combo",
+      "stop": 0.0125,
+      "score": 42781065.4,
+      "is": {
+        "end": 17488694.59,
+        "profit": 7488694.59,
+        "n": 384,
+        "mean_pts": 9.75,
+        "winrate": 0.6276,
+        "max_dd": 0.4353
+      },
+      "oos": {
+        "end": 44224852.32,
+        "profit": 34224852.32,
+        "n": 257,
+        "mean_pts": 33.65,
+        "winrate": 0.7043,
+        "max_dd": 0.286
+      },
+      "from2021": {
+        "end": 70555239.56,
+        "profit": 60555239.56,
+        "n": 338,
+        "mean_pts": 32.82,
+        "winrate": 0.6923,
+        "max_dd": 0.2856
+      },
+      "full": {
+        "end": 77691147.16,
+        "profit": 67691147.16,
+        "n": 641,
+        "mean_pts": 19.33,
+        "winrate": 0.6583,
+        "max_dd": 0.4353
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.015",
+      "setup": "trend_short_combo",
+      "stop": 0.015,
+      "score": 36585998.1,
+      "is": {
+        "end": 16087180.1,
+        "profit": 6087180.1,
+        "n": 384,
+        "mean_pts": 8.84,
+        "winrate": 0.6276,
+        "max_dd": 0.4181
+      },
+      "oos": {
+        "end": 39268798.48,
+        "profit": 29268798.48,
+        "n": 257,
+        "mean_pts": 31.88,
+        "winrate": 0.7043,
+        "max_dd": 0.3175
+      },
+      "from2021": {
+        "end": 58583778.18,
+        "profit": 48583778.18,
+        "n": 338,
+        "mean_pts": 30.71,
+        "winrate": 0.6923,
+        "max_dd": 0.3172
+      },
+      "full": {
+        "end": 63214587.21,
+        "profit": 53214587.21,
+        "n": 641,
+        "mean_pts": 18.08,
+        "winrate": 0.6583,
+        "max_dd": 0.4181
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.01",
+      "setup": "trend_short_combo",
+      "stop": 0.01,
+      "score": 36266141.4,
+      "is": {
+        "end": 16816649.49,
+        "profit": 6816649.49,
+        "n": 384,
+        "mean_pts": 9.38,
+        "winrate": 0.625,
+        "max_dd": 0.4033
+      },
+      "oos": {
+        "end": 39012913.12,
+        "profit": 29012913.12,
+        "n": 257,
+        "mean_pts": 31.79,
+        "winrate": 0.7043,
+        "max_dd": 0.2937
+      },
+      "from2021": {
+        "end": 62962766.64,
+        "profit": 52962766.64,
+        "n": 338,
+        "mean_pts": 31.47,
+        "winrate": 0.6923,
+        "max_dd": 0.2943
+      },
+      "full": {
+        "end": 66101581.34,
+        "profit": 56101581.34,
+        "n": 641,
+        "mean_pts": 18.37,
+        "winrate": 0.6568,
+        "max_dd": 0.4033
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=None",
+      "setup": "trend_short_combo",
+      "stop": null,
+      "score": 36169753.75,
+      "is": {
+        "end": 12327192.88,
+        "profit": 2327192.88,
+        "n": 384,
+        "mean_pts": 6.34,
+        "winrate": 0.6302,
+        "max_dd": 0.5483
+      },
+      "oos": {
+        "end": 38935803.0,
+        "profit": 28935803.0,
+        "n": 257,
+        "mean_pts": 31.8,
+        "winrate": 0.7043,
+        "max_dd": 0.2967
+      },
+      "from2021": {
+        "end": 56921560.04,
+        "profit": 46921560.04,
+        "n": 338,
+        "mean_pts": 30.42,
+        "winrate": 0.6923,
+        "max_dd": 0.2976
+      },
+      "full": {
+        "end": 47930374.3,
+        "profit": 37930374.3,
+        "n": 641,
+        "mean_pts": 16.55,
+        "winrate": 0.6599,
+        "max_dd": 0.5483
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.02",
+      "setup": "trend_short_combo",
+      "stop": 0.02,
+      "score": 36011615.0625,
+      "is": {
+        "end": 14050094.54,
+        "profit": 4050094.54,
+        "n": 384,
+        "mean_pts": 7.51,
+        "winrate": 0.6276,
+        "max_dd": 0.4581
+      },
+      "oos": {
+        "end": 38809292.05,
+        "profit": 28809292.05,
+        "n": 257,
+        "mean_pts": 31.76,
+        "winrate": 0.7043,
+        "max_dd": 0.2991
+      },
+      "from2021": {
+        "end": 56891106.06,
+        "profit": 46891106.06,
+        "n": 338,
+        "mean_pts": 30.44,
+        "winrate": 0.6923,
+        "max_dd": 0.3002
+      },
+      "full": {
+        "end": 54549510.19,
+        "profit": 44549510.19,
+        "n": 641,
+        "mean_pts": 17.24,
+        "winrate": 0.6583,
+        "max_dd": 0.4581
+      }
+    },
+    {
+      "name": "loka_buy|stop=0.02",
+      "setup": "loka_buy",
+      "stop": 0.02,
+      "score": 32391153.3,
+      "is": {
+        "end": 14676830.45,
+        "profit": 4676830.45,
+        "n": 395,
+        "mean_pts": 7.65,
+        "winrate": 0.7139,
+        "max_dd": 0.4244
+      },
+      "oos": {
+        "end": 35912922.64,
+        "profit": 25912922.64,
+        "n": 284,
+        "mean_pts": 27.49,
+        "winrate": 0.7042,
+        "max_dd": 0.1595
+      },
+      "from2021": {
+        "end": 47368841.65,
+        "profit": 37368841.65,
+        "n": 377,
+        "mean_pts": 25.01,
+        "winrate": 0.7135,
+        "max_dd": 0.1653
+      },
+      "full": {
+        "end": 52729118.25,
+        "profit": 42729118.25,
+        "n": 679,
+        "mean_pts": 15.95,
+        "winrate": 0.7099,
+        "max_dd": 0.4244
+      }
+    },
+    {
+      "name": "loka_buy|stop=None",
+      "setup": "loka_buy",
+      "stop": null,
+      "score": 32391153.3,
+      "is": {
+        "end": 14566171.04,
+        "profit": 4566171.04,
+        "n": 395,
+        "mean_pts": 7.84,
+        "winrate": 0.7165,
+        "max_dd": 0.4758
+      },
+      "oos": {
+        "end": 35912922.64,
+        "profit": 25912922.64,
+        "n": 284,
+        "mean_pts": 27.49,
+        "winrate": 0.7042,
+        "max_dd": 0.1595
+      },
+      "from2021": {
+        "end": 49709699.45,
+        "profit": 39709699.45,
+        "n": 377,
+        "mean_pts": 25.5,
+        "winrate": 0.7135,
+        "max_dd": 0.1607
+      },
+      "full": {
+        "end": 52384277.84,
+        "profit": 42384277.84,
+        "n": 679,
+        "mean_pts": 16.06,
+        "winrate": 0.7113,
+        "max_dd": 0.4758
+      }
+    },
+    {
+      "name": "loka_buy|stop=0.015",
+      "setup": "loka_buy",
+      "stop": 0.015,
+      "score": 28587252.4625,
+      "is": {
+        "end": 14726121.68,
+        "profit": 4726121.68,
+        "n": 395,
+        "mean_pts": 7.72,
+        "winrate": 0.7139,
+        "max_dd": 0.4248
+      },
+      "oos": {
+        "end": 32869801.97,
+        "profit": 22869801.97,
+        "n": 284,
+        "mean_pts": 26.35,
+        "winrate": 0.7042,
+        "max_dd": 0.1604
+      },
+      "from2021": {
+        "end": 43388300.63,
+        "profit": 33388300.63,
+        "n": 377,
+        "mean_pts": 24.13,
+        "winrate": 0.7135,
+        "max_dd": 0.1717
+      },
+      "full": {
+        "end": 48692019.21,
+        "profit": 38692019.21,
+        "n": 679,
+        "mean_pts": 15.51,
+        "winrate": 0.7099,
+        "max_dd": 0.4248
+      }
+    },
+    {
+      "name": "confirm_trend_w20|stop=0.0125",
+      "setup": "confirm_trend_w20",
+      "stop": 0.0125,
+      "score": 27310068.4,
+      "is": {
+        "end": 11917985.13,
+        "profit": 1917985.13,
+        "n": 346,
+        "mean_pts": 5.84,
+        "winrate": 0.6214,
+        "max_dd": 0.4861
+      },
+      "oos": {
+        "end": 31848054.72,
+        "profit": 21848054.72,
+        "n": 234,
+        "mean_pts": 30.04,
+        "winrate": 0.6966,
+        "max_dd": 0.3521
+      },
+      "from2021": {
+        "end": 42493858.39,
+        "profit": 32493858.39,
+        "n": 304,
+        "mean_pts": 28.56,
+        "winrate": 0.6875,
+        "max_dd": 0.3522
+      },
+      "full": {
+        "end": 37924373.78,
+        "profit": 27924373.78,
+        "n": 580,
+        "mean_pts": 15.6,
+        "winrate": 0.6517,
+        "max_dd": 0.4861
+      }
+    },
+    {
+      "name": "loka_buy|stop=0.0125",
+      "setup": "loka_buy",
+      "stop": 0.0125,
+      "score": 25913488.625,
+      "is": {
+        "end": 14833743.62,
+        "profit": 4833743.62,
+        "n": 395,
+        "mean_pts": 7.78,
+        "winrate": 0.7114,
+        "max_dd": 0.4564
+      },
+      "oos": {
+        "end": 30730790.9,
+        "profit": 20730790.9,
+        "n": 284,
+        "mean_pts": 25.35,
+        "winrate": 0.7007,
+        "max_dd": 0.1671
+      },
+      "from2021": {
+        "end": 42931991.31,
+        "profit": 32931991.31,
+        "n": 377,
+        "mean_pts": 23.9,
+        "winrate": 0.7109,
+        "max_dd": 0.1755
+      },
+      "full": {
+        "end": 45798706.14,
+        "profit": 35798706.14,
+        "n": 679,
+        "mean_pts": 15.13,
+        "winrate": 0.7069,
+        "max_dd": 0.4564
+      }
+    },
+    {
+      "name": "loka_buy|stop=0.01",
+      "setup": "loka_buy",
+      "stop": 0.01,
+      "score": 23552123.6875,
+      "is": {
+        "end": 13742723.1,
+        "profit": 3742723.1,
+        "n": 395,
+        "mean_pts": 7.01,
+        "winrate": 0.7063,
+        "max_dd": 0.4926
+      },
+      "oos": {
+        "end": 28841698.95,
+        "profit": 18841698.95,
+        "n": 284,
+        "mean_pts": 24.36,
+        "winrate": 0.7007,
+        "max_dd": 0.1655
+      },
+      "from2021": {
+        "end": 41653734.15,
+        "profit": 31653734.15,
+        "n": 377,
+        "mean_pts": 23.53,
+        "winrate": 0.7109,
+        "max_dd": 0.1732
+      },
+      "full": {
+        "end": 39665835.84,
+        "profit": 29665835.84,
+        "n": 679,
+        "mean_pts": 14.27,
+        "winrate": 0.704,
+        "max_dd": 0.4926
+      }
+    }
+  ],
+  "best_by_2021_profit": [
+    {
+      "name": "loka_both_w20|stop=0.0125",
+      "setup": "loka_both_w20",
+      "stop": 0.0125,
+      "score": 56108676.037499994,
+      "is": {
+        "end": 13533153.04,
+        "profit": 3533153.04,
+        "n": 524,
+        "mean_pts": 6.22,
+        "winrate": 0.6374,
+        "max_dd": 0.5109
+      },
+      "oos": {
+        "end": 54886940.83,
+        "profit": 44886940.83,
+        "n": 365,
+        "mean_pts": 29.45,
+        "winrate": 0.674,
+        "max_dd": 0.1992
+      },
+      "from2021": {
+        "end": 82697835.48,
+        "profit": 72697835.48,
+        "n": 493,
+        "mean_pts": 26.63,
+        "winrate": 0.6694,
+        "max_dd": 0.1988
+      },
+      "full": {
+        "end": 75030201.84,
+        "profit": 65030201.84,
+        "n": 889,
+        "mean_pts": 15.75,
+        "winrate": 0.6524,
+        "max_dd": 0.5109
+      }
+    },
+    {
+      "name": "loka_both_w20|stop=0.015",
+      "setup": "loka_both_w20",
+      "stop": 0.015,
+      "score": 54569017.175000004,
+      "is": {
+        "end": 12290951.15,
+        "profit": 2290951.15,
+        "n": 524,
+        "mean_pts": 5.57,
+        "winrate": 0.6393,
+        "max_dd": 0.4909
+      },
+      "oos": {
+        "end": 53655213.74,
+        "profit": 43655213.74,
+        "n": 365,
+        "mean_pts": 29.22,
+        "winrate": 0.6767,
+        "max_dd": 0.2343
+      },
+      "from2021": {
+        "end": 75651326.63,
+        "profit": 65651326.63,
+        "n": 493,
+        "mean_pts": 26.0,
+        "winrate": 0.6714,
+        "max_dd": 0.2347
+      },
+      "full": {
+        "end": 65638911.53,
+        "profit": 55638911.53,
+        "n": 889,
+        "mean_pts": 15.28,
+        "winrate": 0.6547,
+        "max_dd": 0.4909
+      }
+    },
+    {
+      "name": "loka_both_w20|stop=0.01",
+      "setup": "loka_both_w20",
+      "stop": 0.01,
+      "score": 47362290.5375,
+      "is": {
+        "end": 12949356.51,
+        "profit": 2949356.51,
+        "n": 524,
+        "mean_pts": 5.93,
+        "winrate": 0.6336,
+        "max_dd": 0.5412
+      },
+      "oos": {
+        "end": 47889832.43,
+        "profit": 37889832.43,
+        "n": 365,
+        "mean_pts": 27.88,
+        "winrate": 0.674,
+        "max_dd": 0.2086
+      },
+      "from2021": {
+        "end": 74476970.32,
+        "profit": 64476970.32,
+        "n": 493,
+        "mean_pts": 25.77,
+        "winrate": 0.6694,
+        "max_dd": 0.2088
+      },
+      "full": {
+        "end": 62425024.82,
+        "profit": 52425024.82,
+        "n": 889,
+        "mean_pts": 14.94,
+        "winrate": 0.6502,
+        "max_dd": 0.5412
+      }
+    },
+    {
+      "name": "loka_both_w20|stop=None",
+      "setup": "loka_both_w20",
+      "stop": null,
+      "score": -1e+18,
+      "is": {
+        "end": 8767556.4,
+        "profit": -1232443.6,
+        "n": 524,
+        "mean_pts": 3.37,
+        "winrate": 0.6412,
+        "max_dd": 0.676
+      },
+      "oos": {
+        "end": 53184918.53,
+        "profit": 43184918.53,
+        "n": 365,
+        "mean_pts": 29.21,
+        "winrate": 0.6767,
+        "max_dd": 0.2431
+      },
+      "from2021": {
+        "end": 73254695.34,
+        "profit": 63254695.34,
+        "n": 493,
+        "mean_pts": 25.84,
+        "winrate": 0.6714,
+        "max_dd": 0.2429
+      },
+      "full": {
+        "end": 46986473.02,
+        "profit": 36986473.02,
+        "n": 889,
+        "mean_pts": 13.98,
+        "winrate": 0.6558,
+        "max_dd": 0.676
+      }
+    },
+    {
+      "name": "loka_both_w20|stop=0.02",
+      "setup": "loka_both_w20",
+      "stop": 0.02,
+      "score": 53799554.1375,
+      "is": {
+        "end": 11105295.31,
+        "profit": 1105295.31,
+        "n": 524,
+        "mean_pts": 4.76,
+        "winrate": 0.6393,
+        "max_dd": 0.5276
+      },
+      "oos": {
+        "end": 53039643.31,
+        "profit": 43039643.31,
+        "n": 365,
+        "mean_pts": 29.18,
+        "winrate": 0.6767,
+        "max_dd": 0.2457
+      },
+      "from2021": {
+        "end": 72808034.08,
+        "profit": 62808034.08,
+        "n": 493,
+        "mean_pts": 25.73,
+        "winrate": 0.6714,
+        "max_dd": 0.2455
+      },
+      "full": {
+        "end": 59067068.39,
+        "profit": 49067068.39,
+        "n": 889,
+        "mean_pts": 14.79,
+        "winrate": 0.6547,
+        "max_dd": 0.5276
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.0125",
+      "setup": "trend_short_combo",
+      "stop": 0.0125,
+      "score": 42781065.4,
+      "is": {
+        "end": 17488694.59,
+        "profit": 7488694.59,
+        "n": 384,
+        "mean_pts": 9.75,
+        "winrate": 0.6276,
+        "max_dd": 0.4353
+      },
+      "oos": {
+        "end": 44224852.32,
+        "profit": 34224852.32,
+        "n": 257,
+        "mean_pts": 33.65,
+        "winrate": 0.7043,
+        "max_dd": 0.286
+      },
+      "from2021": {
+        "end": 70555239.56,
+        "profit": 60555239.56,
+        "n": 338,
+        "mean_pts": 32.82,
+        "winrate": 0.6923,
+        "max_dd": 0.2856
+      },
+      "full": {
+        "end": 77691147.16,
+        "profit": 67691147.16,
+        "n": 641,
+        "mean_pts": 19.33,
+        "winrate": 0.6583,
+        "max_dd": 0.4353
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.01",
+      "setup": "trend_short_combo",
+      "stop": 0.01,
+      "score": 36266141.4,
+      "is": {
+        "end": 16816649.49,
+        "profit": 6816649.49,
+        "n": 384,
+        "mean_pts": 9.38,
+        "winrate": 0.625,
+        "max_dd": 0.4033
+      },
+      "oos": {
+        "end": 39012913.12,
+        "profit": 29012913.12,
+        "n": 257,
+        "mean_pts": 31.79,
+        "winrate": 0.7043,
+        "max_dd": 0.2937
+      },
+      "from2021": {
+        "end": 62962766.64,
+        "profit": 52962766.64,
+        "n": 338,
+        "mean_pts": 31.47,
+        "winrate": 0.6923,
+        "max_dd": 0.2943
+      },
+      "full": {
+        "end": 66101581.34,
+        "profit": 56101581.34,
+        "n": 641,
+        "mean_pts": 18.37,
+        "winrate": 0.6568,
+        "max_dd": 0.4033
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.015",
+      "setup": "trend_short_combo",
+      "stop": 0.015,
+      "score": 36585998.1,
+      "is": {
+        "end": 16087180.1,
+        "profit": 6087180.1,
+        "n": 384,
+        "mean_pts": 8.84,
+        "winrate": 0.6276,
+        "max_dd": 0.4181
+      },
+      "oos": {
+        "end": 39268798.48,
+        "profit": 29268798.48,
+        "n": 257,
+        "mean_pts": 31.88,
+        "winrate": 0.7043,
+        "max_dd": 0.3175
+      },
+      "from2021": {
+        "end": 58583778.18,
+        "profit": 48583778.18,
+        "n": 338,
+        "mean_pts": 30.71,
+        "winrate": 0.6923,
+        "max_dd": 0.3172
+      },
+      "full": {
+        "end": 63214587.21,
+        "profit": 53214587.21,
+        "n": 641,
+        "mean_pts": 18.08,
+        "winrate": 0.6583,
+        "max_dd": 0.4181
+      }
+    },
+    {
+      "name": "confirm_both_w20|stop=0.0125",
+      "setup": "confirm_both_w20",
+      "stop": 0.0125,
+      "score": -1e+18,
+      "is": {
+        "end": 8956529.74,
+        "profit": -1043470.26,
+        "n": 453,
+        "mean_pts": 3.0,
+        "winrate": 0.6291,
+        "max_dd": 0.5569
+      },
+      "oos": {
+        "end": 47837597.03,
+        "profit": 37837597.03,
+        "n": 317,
+        "mean_pts": 30.36,
+        "winrate": 0.6845,
+        "max_dd": 0.2304
+      },
+      "from2021": {
+        "end": 57930911.03,
+        "profit": 47930911.03,
+        "n": 424,
+        "mean_pts": 26.03,
+        "winrate": 0.6769,
+        "max_dd": 0.2305
+      },
+      "full": {
+        "end": 42852871.49,
+        "profit": 32852871.49,
+        "n": 770,
+        "mean_pts": 14.26,
+        "winrate": 0.6519,
+        "max_dd": 0.5569
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=None",
+      "setup": "trend_short_combo",
+      "stop": null,
+      "score": 36169753.75,
+      "is": {
+        "end": 12327192.88,
+        "profit": 2327192.88,
+        "n": 384,
+        "mean_pts": 6.34,
+        "winrate": 0.6302,
+        "max_dd": 0.5483
+      },
+      "oos": {
+        "end": 38935803.0,
+        "profit": 28935803.0,
+        "n": 257,
+        "mean_pts": 31.8,
+        "winrate": 0.7043,
+        "max_dd": 0.2967
+      },
+      "from2021": {
+        "end": 56921560.04,
+        "profit": 46921560.04,
+        "n": 338,
+        "mean_pts": 30.42,
+        "winrate": 0.6923,
+        "max_dd": 0.2976
+      },
+      "full": {
+        "end": 47930374.3,
+        "profit": 37930374.3,
+        "n": 641,
+        "mean_pts": 16.55,
+        "winrate": 0.6599,
+        "max_dd": 0.5483
+      }
+    },
+    {
+      "name": "trend_short_combo|stop=0.02",
+      "setup": "trend_short_combo",
+      "stop": 0.02,
+      "score": 36011615.0625,
+      "is": {
+        "end": 14050094.54,
+        "profit": 4050094.54,
+        "n": 384,
+        "mean_pts": 7.51,
+        "winrate": 0.6276,
+        "max_dd": 0.4581
+      },
+      "oos": {
+        "end": 38809292.05,
+        "profit": 28809292.05,
+        "n": 257,
+        "mean_pts": 31.76,
+        "winrate": 0.7043,
+        "max_dd": 0.2991
+      },
+      "from2021": {
+        "end": 56891106.06,
+        "profit": 46891106.06,
+        "n": 338,
+        "mean_pts": 30.44,
+        "winrate": 0.6923,
+        "max_dd": 0.3002
+      },
+      "full": {
+        "end": 54549510.19,
+        "profit": 44549510.19,
+        "n": 641,
+        "mean_pts": 17.24,
+        "winrate": 0.6583,
+        "max_dd": 0.4581
+      }
+    },
+    {
+      "name": "confirm_both_w20|stop=0.01",
+      "setup": "confirm_both_w20",
+      "stop": 0.01,
+      "score": -1e+18,
+      "is": {
+        "end": 8607501.63,
+        "profit": -1392498.37,
+        "n": 453,
+        "mean_pts": 2.6,
+        "winrate": 0.6247,
+        "max_dd": 0.5584
+      },
+      "oos": {
+        "end": 41017781.82,
+        "profit": 31017781.82,
+        "n": 317,
+        "mean_pts": 28.4,
+        "winrate": 0.6845,
+        "max_dd": 0.2481
+      },
+      "from2021": {
+        "end": 51377467.78,
+        "profit": 41377467.78,
+        "n": 424,
+        "mean_pts": 24.91,
+        "winrate": 0.6769,
+        "max_dd": 0.2482
+      },
+      "full": {
+        "end": 35240023.77,
+        "profit": 25240023.77,
+        "n": 770,
+        "mean_pts": 13.22,
+        "winrate": 0.6494,
+        "max_dd": 0.5584
+      }
+    },
+    {
+      "name": "loka_buy|stop=None",
+      "setup": "loka_buy",
+      "stop": null,
+      "score": 32391153.3,
+      "is": {
+        "end": 14566171.04,
+        "profit": 4566171.04,
+        "n": 395,
+        "mean_pts": 7.84,
+        "winrate": 0.7165,
+        "max_dd": 0.4758
+      },
+      "oos": {
+        "end": 35912922.64,
+        "profit": 25912922.64,
+        "n": 284,
+        "mean_pts": 27.49,
+        "winrate": 0.7042,
+        "max_dd": 0.1595
+      },
+      "from2021": {
+        "end": 49709699.45,
+        "profit": 39709699.45,
+        "n": 377,
+        "mean_pts": 25.5,
+        "winrate": 0.7135,
+        "max_dd": 0.1607
+      },
+      "full": {
+        "end": 52384277.84,
+        "profit": 42384277.84,
+        "n": 679,
+        "mean_pts": 16.06,
+        "winrate": 0.7113,
+        "max_dd": 0.4758
+      }
+    },
+    {
+      "name": "loka_buy|stop=0.02",
+      "setup": "loka_buy",
+      "stop": 0.02,
+      "score": 32391153.3,
+      "is": {
+        "end": 14676830.45,
+        "profit": 4676830.45,
+        "n": 395,
+        "mean_pts": 7.65,
+        "winrate": 0.7139,
+        "max_dd": 0.4244
+      },
+      "oos": {
+        "end": 35912922.64,
+        "profit": 25912922.64,
+        "n": 284,
+        "mean_pts": 27.49,
+        "winrate": 0.7042,
+        "max_dd": 0.1595
+      },
+      "from2021": {
+        "end": 47368841.65,
+        "profit": 37368841.65,
+        "n": 377,
+        "mean_pts": 25.01,
+        "winrate": 0.7135,
+        "max_dd": 0.1653
+      },
+      "full": {
+        "end": 52729118.25,
+        "profit": 42729118.25,
+        "n": 679,
+        "mean_pts": 15.95,
+        "winrate": 0.7099,
+        "max_dd": 0.4244
+      }
+    },
+    {
+      "name": "confirm_both_w20|stop=0.015",
+      "setup": "confirm_both_w20",
+      "stop": 0.015,
+      "score": -1e+18,
+      "is": {
+        "end": 8282952.51,
+        "profit": -1717047.49,
+        "n": 453,
+        "mean_pts": 2.29,
+        "winrate": 0.6313,
+        "max_dd": 0.534
+      },
+      "oos": {
+        "end": 41668135.46,
+        "profit": 31668135.46,
+        "n": 317,
+        "mean_pts": 28.68,
+        "winrate": 0.6845,
+        "max_dd": 0.2649
+      },
+      "from2021": {
+        "end": 47364957.01,
+        "profit": 37364957.01,
+        "n": 424,
+        "mean_pts": 24.24,
+        "winrate": 0.6769,
+        "max_dd": 0.2648
+      },
+      "full": {
+        "end": 34375227.32,
+        "profit": 24375227.32,
+        "n": 770,
+        "mean_pts": 13.15,
+        "winrate": 0.6532,
+        "max_dd": 0.534
+      }
+    }
+  ],
+  "built_at": "2026-11-19 19:56:56"
+}

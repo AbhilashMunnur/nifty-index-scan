@@ -1,0 +1,74 @@
+{
+  "rule": "Day-open break \u2192 sell opposite ATM; 60% SL; EOD; FIXED 70 lots every day",
+  "lots": 70,
+  "qty": 4550,
+  "start_capital": 20000000.0,
+  "end_capital": 79890487.48,
+  "profit": 59890487.48,
+  "multiple": 3.995,
+  "max_dd": 0.0152,
+  "trades": 1233,
+  "margin_note": "70 lots \u00d7 ~\u20b91.8L \u2248 \u20b91.26 Cr margin; \u20b92 Cr start leaves ~\u20b90.74 Cr buffer (not simulated as hard constraint)",
+  "yearly": {
+    "2021": {
+      "n": 55,
+      "start": 20000000.0,
+      "end": 23157993.33,
+      "profit": 3157993.33,
+      "roe": 0.1579,
+      "winrate": 0.7818,
+      "mean_pts": 12.77,
+      "mean_net": 57418.06
+    },
+    "2022": {
+      "n": 247,
+      "start": 23157993.33,
+      "end": 35980705.54,
+      "profit": 12822712.21,
+      "roe": 0.5537,
+      "winrate": 0.6842,
+      "mean_pts": 11.58,
+      "mean_net": 51913.81
+    },
+    "2023": {
+      "n": 245,
+      "start": 35980705.54,
+      "end": 41801998.42,
+      "profit": 5821292.88,
+      "roe": 0.1618,
+      "winrate": 0.6286,
+      "mean_pts": 5.34,
+      "mean_net": 23760.38
+    },
+    "2024": {
+      "n": 247,
+      "start": 41801998.42,
+      "end": 57873396.1,
+      "profit": 16071397.68,
+      "roe": 0.3845,
+      "winrate": 0.7206,
+      "mean_pts": 14.49,
+      "mean_net": 65066.39
+    },
+    "2025": {
+      "n": 248,
+      "start": 57873396.1,
+      "end": 68517677.41,
+      "profit": 10644281.31,
+      "roe": 0.1839,
+      "winrate": 0.6008,
+      "mean_pts": 9.64,
+      "mean_net": 42920.49
+    },
+    "2026": {
+      "n": 191,
+      "start": 68517677.41,
+      "end": 79890487.48,
+      "profit": 11372810.07,
+      "roe": 0.166,
+      "winrate": 0.712,
+      "mean_pts": 13.37,
+      "mean_net": 59543.51
+    }
+  }
+}

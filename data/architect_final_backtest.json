@@ -1,0 +1,98 @@
+{
+  "decision": "Primary = futures (OI-25 + 20w + 1.25%). Options side book for comparison only.",
+  "logic": [
+    "Index Loka close = default pressure",
+    "PCR rank < 25% \u2192 OI override (today vs yesterday)",
+    "Shorts only if 20-week futures filter allows",
+    "Execute on continuous futures @14:45, hold-long, 1.25% stop",
+    "Dhan ATM options tested with front-week roll; same signals underperform futures"
+  ],
+  "futures": {
+    "full": {
+      "trades": 605,
+      "end_capital": 320551771.87,
+      "profit": 310551771.87,
+      "max_dd": 0.2486,
+      "mean_pts": 32.37,
+      "winrate": 0.681,
+      "signal_mix": {
+        "Loka": 411,
+        "OI pressure": 43,
+        "OI thrust": 151
+      }
+    },
+    "train": {
+      "trades": 334,
+      "end_capital": 41722683.71,
+      "profit": 31722683.71,
+      "max_dd": 0.2486,
+      "mean_pts": 23.11,
+      "winrate": 0.6916,
+      "signal_mix": {
+        "Loka": 226,
+        "OI pressure": 21,
+        "OI thrust": 87
+      }
+    },
+    "test": {
+      "trades": 271,
+      "end_capital": 75960617.21,
+      "profit": 65960617.21,
+      "max_dd": 0.2334,
+      "mean_pts": 43.79,
+      "winrate": 0.6679,
+      "signal_mix": {
+        "Loka": 185,
+        "OI pressure": 22,
+        "OI thrust": 64
+      }
+    },
+    "blocked": 270,
+    "xlsx": "/Users/abhilashmunnur/Nifty index trade/btst-stbt-futures-architect-oi25-20w-sl1_25-fyers-2021-2026.xlsx"
+  },
+  "options_side": {
+    "full": {
+      "trades": 591,
+      "end_capital": 9193023.76,
+      "profit": -806976.24,
+      "max_dd": 0.1674,
+      "mean_pts": -0.02,
+      "winrate": 0.5584,
+      "signal_mix": {
+        "Loka": 398,
+        "OI pressure": 43,
+        "OI thrust": 150
+      }
+    },
+    "train": {
+      "trades": 334,
+      "end_capital": 9110802.74,
+      "profit": -889197.26,
+      "max_dd": 0.1146,
+      "mean_pts": -0.7,
+      "winrate": 0.5419,
+      "signal_mix": {
+        "Loka": 226,
+        "OI pressure": 21,
+        "OI thrust": 87
+      }
+    },
+    "test": {
+      "trades": 257,
+      "end_capital": 10099294.97,
+      "profit": 99294.97,
+      "max_dd": 0.1681,
+      "mean_pts": 0.86,
+      "winrate": 0.5798,
+      "signal_mix": {
+        "Loka": 172,
+        "OI pressure": 22,
+        "OI thrust": 63
+      }
+    },
+    "blocked": 267,
+    "xlsx": "/Users/abhilashmunnur/Nifty index trade/btst-stbt-options-architect-oi25-20w-dhan-2021-2026.xlsx",
+    "note": "Front-week ATM with roll when straddle < 80; exit 10:15 if profit else 14:00; 4pt slip"
+  },
+  "built_at": "2026-11-19 19:47:20"
+}

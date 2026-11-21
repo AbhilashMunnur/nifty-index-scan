@@ -1,0 +1,712 @@
+{
+  "panel_rows": 1256,
+  "train_end": "2024-06-30",
+  "test_start": "2024-07-01",
+  "top_train": [
+    {
+      "rule": "Loka Short + 40w ok \u2192 short",
+      "n": 66,
+      "mean_pts": 37.62,
+      "median_pts": 30.4,
+      "winrate": 0.545,
+      "sum_pts": 2483.1
+    },
+    {
+      "rule": "Loka Buy \u2192 long hold",
+      "n": 197,
+      "mean_pts": 20.7,
+      "median_pts": 39.5,
+      "winrate": 0.741,
+      "sum_pts": 4077.1
+    },
+    {
+      "rule": "CONV long: Loka Buy + green + PCR<85%",
+      "n": 150,
+      "mean_pts": 22.63,
+      "median_pts": 43.6,
+      "winrate": 0.753,
+      "sum_pts": 3395.0
+    },
+    {
+      "rule": "Loka Buy + green day \u2192 long",
+      "n": 176,
+      "mean_pts": 20.53,
+      "median_pts": 42.65,
+      "winrate": 0.739,
+      "sum_pts": 3613.1
+    },
+    {
+      "rule": "PCR<30% + Loka Buy \u2192 long",
+      "n": 38,
+      "mean_pts": 39.01,
+      "median_pts": 62.65,
+      "winrate": 0.842,
+      "sum_pts": 1482.2
+    },
+    {
+      "rule": "Loka Short + 20w ok \u2192 short",
+      "n": 71,
+      "mean_pts": 28.01,
+      "median_pts": 30.0,
+      "winrate": 0.535,
+      "sum_pts": 1988.5
+    },
+    {
+      "rule": "PCR>70% + Loka Buy \u2192 long",
+      "n": 61,
+      "mean_pts": 29.54,
+      "median_pts": 42.3,
+      "winrate": 0.77,
+      "sum_pts": 1802.1
+    },
+    {
+      "rule": "PCR<25% follow down \u2192 short",
+      "n": 69,
+      "mean_pts": 27.74,
+      "median_pts": 21.7,
+      "winrate": 0.58,
+      "sum_pts": 1914.1
+    },
+    {
+      "rule": "narrow range + Loka Buy \u2192 long",
+      "n": 63,
+      "mean_pts": 28.83,
+      "median_pts": 28.4,
+      "winrate": 0.746,
+      "sum_pts": 1816.4
+    },
+    {
+      "rule": "PCR<30% follow down \u2192 short",
+      "n": 89,
+      "mean_pts": 23.01,
+      "median_pts": 21.7,
+      "winrate": 0.573,
+      "sum_pts": 2048.0
+    },
+    {
+      "rule": "PCR<25% + Loka Short \u2192 short",
+      "n": 43,
+      "mean_pts": 31.72,
+      "median_pts": 21.7,
+      "winrate": 0.581,
+      "sum_pts": 1364.0
+    },
+    {
+      "rule": "CONV short: Loka Short + red + 20w + PCR>20%",
+      "n": 50,
+      "mean_pts": 27.88,
+      "median_pts": 28.65,
+      "winrate": 0.54,
+      "sum_pts": 1393.8
+    },
+    {
+      "rule": "PCR<15% + Loka Short \u2192 short",
+      "n": 27,
+      "mean_pts": 36.07,
+      "median_pts": 30.1,
+      "winrate": 0.593,
+      "sum_pts": 973.9
+    },
+    {
+      "rule": "PCR<20% + Loka Short \u2192 short",
+      "n": 31,
+      "mean_pts": 32.46,
+      "median_pts": 24.9,
+      "winrate": 0.613,
+      "sum_pts": 1006.3
+    },
+    {
+      "rule": "PCR<25% + Loka Buy \u2192 long",
+      "n": 32,
+      "mean_pts": 31.51,
+      "median_pts": 62.65,
+      "winrate": 0.812,
+      "sum_pts": 1008.2
+    },
+    {
+      "rule": "PCR<30% follow up \u2192 long",
+      "n": 96,
+      "mean_pts": 17.28,
+      "median_pts": 47.15,
+      "winrate": 0.771,
+      "sum_pts": 1658.9
+    },
+    {
+      "rule": "PCR<20% + Loka Buy \u2192 long",
+      "n": 31,
+      "mean_pts": 29.61,
+      "median_pts": 61.6,
+      "winrate": 0.806,
+      "sum_pts": 917.9
+    },
+    {
+      "rule": "PCR>80% + Loka Buy \u2192 long",
+      "n": 36,
+      "mean_pts": 22.8,
+      "median_pts": 39.5,
+      "winrate": 0.75,
+      "sum_pts": 820.8
+    },
+    {
+      "rule": "basis cheap (\u2264p20=0.00037) \u2192 long",
+      "n": 134,
+      "mean_pts": 11.52,
+      "median_pts": 28.45,
+      "winrate": 0.694,
+      "sum_pts": 1543.4
+    },
+    {
+      "rule": "PCR<20% follow up \u2192 long",
+      "n": 76,
+      "mean_pts": 14.43,
+      "median_pts": 48.75,
+      "winrate": 0.776,
+      "sum_pts": 1096.3
+    }
+  ],
+  "top_test": [
+    {
+      "rule": "wide range + Loka Buy \u2192 long",
+      "n": 60,
+      "mean_pts": 80.0,
+      "median_pts": 34.55,
+      "winrate": 0.767,
+      "sum_pts": 4800.1
+    },
+    {
+      "rule": "PCR<20% + Loka Buy \u2192 long",
+      "n": 25,
+      "mean_pts": 119.44,
+      "median_pts": 50.5,
+      "winrate": 0.88,
+      "sum_pts": 2985.9
+    },
+    {
+      "rule": "PCR<30% follow down \u2192 short",
+      "n": 97,
+      "mean_pts": 59.91,
+      "median_pts": 51.3,
+      "winrate": 0.619,
+      "sum_pts": 5811.8
+    },
+    {
+      "rule": "Loka Buy \u2192 long hold",
+      "n": 159,
+      "mean_pts": 44.61,
+      "median_pts": 29.9,
+      "winrate": 0.717,
+      "sum_pts": 7093.2
+    },
+    {
+      "rule": "PCR<20% follow down \u2192 short",
+      "n": 61,
+      "mean_pts": 68.56,
+      "median_pts": 50.2,
+      "winrate": 0.623,
+      "sum_pts": 4182.1
+    },
+    {
+      "rule": "PCR<25% follow down \u2192 short",
+      "n": 79,
+      "mean_pts": 60.21,
+      "median_pts": 50.2,
+      "winrate": 0.62,
+      "sum_pts": 4756.8
+    },
+    {
+      "rule": "PCR<30% + Loka Buy \u2192 long",
+      "n": 35,
+      "mean_pts": 84.22,
+      "median_pts": 50.5,
+      "winrate": 0.8,
+      "sum_pts": 2947.8
+    },
+    {
+      "rule": "PCR<15% follow down \u2192 short",
+      "n": 49,
+      "mean_pts": 70.34,
+      "median_pts": 51.3,
+      "winrate": 0.633,
+      "sum_pts": 3446.4
+    },
+    {
+      "rule": "CONV long: Loka Buy + green + PCR<85%",
+      "n": 110,
+      "mean_pts": 45.47,
+      "median_pts": 31.3,
+      "winrate": 0.745,
+      "sum_pts": 5001.9
+    },
+    {
+      "rule": "Loka Buy + green day \u2192 long",
+      "n": 135,
+      "mean_pts": 39.47,
+      "median_pts": 28.9,
+      "winrate": 0.719,
+      "sum_pts": 5328.3
+    },
+    {
+      "rule": "PCR<25% + Loka Buy \u2192 long",
+      "n": 30,
+      "mean_pts": 79.88,
+      "median_pts": 36.55,
+      "winrate": 0.8,
+      "sum_pts": 2396.3
+    },
+    {
+      "rule": "Loka Short + 20w ok \u2192 short",
+      "n": 69,
+      "mean_pts": 44.18,
+      "median_pts": 16.3,
+      "winrate": 0.536,
+      "sum_pts": 3048.2
+    },
+    {
+      "rule": "PCR<20% follow up \u2192 long",
+      "n": 47,
+      "mean_pts": 49.24,
+      "median_pts": 32.0,
+      "winrate": 0.723,
+      "sum_pts": 2314.5
+    },
+    {
+      "rule": "basis rich (\u2265p80=0.00398) \u2192 short",
+      "n": 118,
+      "mean_pts": 31.04,
+      "median_pts": 37.25,
+      "winrate": 0.602,
+      "sum_pts": 3663.1
+    },
+    {
+      "rule": "Loka Short + 40w ok \u2192 short",
+      "n": 72,
+      "mean_pts": 37.57,
+      "median_pts": 17.55,
+      "winrate": 0.528,
+      "sum_pts": 2704.9
+    },
+    {
+      "rule": "PCR<30% + Loka Short \u2192 short",
+      "n": 60,
+      "mean_pts": 38.58,
+      "median_pts": 11.9,
+      "winrate": 0.55,
+      "sum_pts": 2314.7
+    },
+    {
+      "rule": "CONV short: Loka Short + red + 20w + PCR>20%",
+      "n": 46,
+      "mean_pts": 41.2,
+      "median_pts": 23.5,
+      "winrate": 0.543,
+      "sum_pts": 1895.2
+    },
+    {
+      "rule": "PCR<20% + Loka Short \u2192 short",
+      "n": 33,
+      "mean_pts": 47.96,
+      "median_pts": 36.7,
+      "winrate": 0.576,
+      "sum_pts": 1582.6
+    },
+    {
+      "rule": "PCR>80% + Loka Buy \u2192 long",
+      "n": 44,
+      "mean_pts": 40.97,
+      "median_pts": 19.75,
+      "winrate": 0.682,
+      "sum_pts": 1802.7
+    },
+    {
+      "rule": "PCR<25% follow up \u2192 long",
+      "n": 64,
+      "mean_pts": 32.23,
+      "median_pts": 30.45,
+      "winrate": 0.703,
+      "sum_pts": 2062.9
+    }
+  ],
+  "persistent": [
+    {
+      "rule": "Loka Buy \u2192 long hold",
+      "train": {
+        "rule": "Loka Buy \u2192 long hold",
+        "n": 197,
+        "mean_pts": 20.7,
+        "median_pts": 39.5,
+        "winrate": 0.741,
+        "sum_pts": 4077.1
+      },
+      "test": {
+        "rule": "Loka Buy \u2192 long hold",
+        "n": 159,
+        "mean_pts": 44.61,
+        "median_pts": 29.9,
+        "winrate": 0.717,
+        "sum_pts": 7093.2
+      },
+      "score": 707.7798692711423
+    },
+    {
+      "rule": "PCR<30% follow down \u2192 short",
+      "train": {
+        "rule": "PCR<30% follow down \u2192 short",
+        "n": 89,
+        "mean_pts": 23.01,
+        "median_pts": 21.7,
+        "winrate": 0.573,
+        "sum_pts": 2048.0
+      },
+      "test": {
+        "rule": "PCR<30% follow down \u2192 short",
+        "n": 97,
+        "mean_pts": 59.91,
+        "median_pts": 51.3,
+        "winrate": 0.619,
+        "sum_pts": 5811.8
+      },
+      "score": 698.5830238299158
+    },
+    {
+      "rule": "PCR<25% follow down \u2192 short",
+      "train": {
+        "rule": "PCR<25% follow down \u2192 short",
+        "n": 69,
+        "mean_pts": 27.74,
+        "median_pts": 21.7,
+        "winrate": 0.58,
+        "sum_pts": 1914.1
+      },
+      "test": {
+        "rule": "PCR<25% follow down \u2192 short",
+        "n": 79,
+        "mean_pts": 60.21,
+        "median_pts": 50.2,
+        "winrate": 0.62,
+        "sum_pts": 4756.8
+      },
+      "score": 650.3710588452452
+    },
+    {
+      "rule": "wide range + Loka Buy \u2192 long",
+      "train": {
+        "rule": "wide range + Loka Buy \u2192 long",
+        "n": 52,
+        "mean_pts": 7.16,
+        "median_pts": 46.95,
+        "winrate": 0.731,
+        "sum_pts": 372.4
+      },
+      "test": {
+        "rule": "wide range + Loka Buy \u2192 long",
+        "n": 60,
+        "mean_pts": 80.0,
+        "median_pts": 34.55,
+        "winrate": 0.767,
+        "sum_pts": 4800.1
+      },
+      "score": 645.4930825255088
+    },
+    {
+      "rule": "CONV long: Loka Buy + green + PCR<85%",
+      "train": {
+        "rule": "CONV long: Loka Buy + green + PCR<85%",
+        "n": 150,
+        "mean_pts": 22.63,
+        "median_pts": 43.6,
+        "winrate": 0.753,
+        "sum_pts": 3395.0
+      },
+      "test": {
+        "rule": "CONV long: Loka Buy + green + PCR<85%",
+        "n": 110,
+        "mean_pts": 45.47,
+        "median_pts": 31.3,
+        "winrate": 0.745,
+        "sum_pts": 5001.9
+      },
+      "score": 615.4732654609262
+    },
+    {
+      "rule": "Loka Buy + green day \u2192 long",
+      "train": {
+        "rule": "Loka Buy + green day \u2192 long",
+        "n": 176,
+        "mean_pts": 20.53,
+        "median_pts": 42.65,
+        "winrate": 0.739,
+        "sum_pts": 3613.1
+      },
+      "test": {
+        "rule": "Loka Buy + green day \u2192 long",
+        "n": 135,
+        "mean_pts": 39.47,
+        "median_pts": 28.9,
+        "winrate": 0.719,
+        "sum_pts": 5328.3
+      },
+      "score": 594.7805719164129
+    },
+    {
+      "rule": "PCR<20% follow down \u2192 short",
+      "train": {
+        "rule": "PCR<20% follow down \u2192 short",
+        "n": 52,
+        "mean_pts": 12.95,
+        "median_pts": 23.3,
+        "winrate": 0.577,
+        "sum_pts": 673.1
+      },
+      "test": {
+        "rule": "PCR<20% follow down \u2192 short",
+        "n": 61,
+        "mean_pts": 68.56,
+        "median_pts": 50.2,
+        "winrate": 0.623,
+        "sum_pts": 4182.1
+      },
+      "score": 582.1626067974189
+    },
+    {
+      "rule": "Loka Short + 20w ok \u2192 short",
+      "train": {
+        "rule": "Loka Short + 20w ok \u2192 short",
+        "n": 71,
+        "mean_pts": 28.01,
+        "median_pts": 30.0,
+        "winrate": 0.535,
+        "sum_pts": 1988.5
+      },
+      "test": {
+        "rule": "Loka Short + 20w ok \u2192 short",
+        "n": 69,
+        "mean_pts": 44.18,
+        "median_pts": 16.3,
+        "winrate": 0.536,
+        "sum_pts": 3048.2
+      },
+      "score": 484.9948698370555
+    },
+    {
+      "rule": "Loka Short + 40w ok \u2192 short",
+      "train": {
+        "rule": "Loka Short + 40w ok \u2192 short",
+        "n": 66,
+        "mean_pts": 37.62,
+        "median_pts": 30.4,
+        "winrate": 0.545,
+        "sum_pts": 2483.1
+      },
+      "test": {
+        "rule": "Loka Short + 40w ok \u2192 short",
+        "n": 72,
+        "mean_pts": 37.57,
+        "median_pts": 17.55,
+        "winrate": 0.528,
+        "sum_pts": 2704.9
+      },
+      "score": 471.6051836213455
+    },
+    {
+      "rule": "PCR<20% follow up \u2192 long",
+      "train": {
+        "rule": "PCR<20% follow up \u2192 long",
+        "n": 76,
+        "mean_pts": 14.43,
+        "median_pts": 48.75,
+        "winrate": 0.776,
+        "sum_pts": 1096.3
+      },
+      "test": {
+        "rule": "PCR<20% follow up \u2192 long",
+        "n": 47,
+        "mean_pts": 49.24,
+        "median_pts": 32.0,
+        "winrate": 0.723,
+        "sum_pts": 2314.5
+      },
+      "score": 400.47134427903933
+    },
+    {
+      "rule": "CONV short: Loka Short + red + 20w + PCR>20%",
+      "train": {
+        "rule": "CONV short: Loka Short + red + 20w + PCR>20%",
+        "n": 50,
+        "mean_pts": 27.88,
+        "median_pts": 28.65,
+        "winrate": 0.54,
+        "sum_pts": 1393.8
+      },
+      "test": {
+        "rule": "CONV short: Loka Short + red + 20w + PCR>20%",
+        "n": 46,
+        "mean_pts": 41.2,
+        "median_pts": 23.5,
+        "winrate": 0.543,
+        "sum_pts": 1895.2
+      },
+      "score": 378.0026806021658
+    },
+    {
+      "rule": "PCR<30% + Loka Short \u2192 short",
+      "train": {
+        "rule": "PCR<30% + Loka Short \u2192 short",
+        "n": 55,
+        "mean_pts": 13.87,
+        "median_pts": 10.5,
+        "winrate": 0.527,
+        "sum_pts": 763.0
+      },
+      "test": {
+        "rule": "PCR<30% + Loka Short \u2192 short",
+        "n": 60,
+        "mean_pts": 38.58,
+        "median_pts": 11.9,
+        "winrate": 0.55,
+        "sum_pts": 2314.7
+      },
+      "score": 350.2707315013727
+    },
+    {
+      "rule": "PCR>70% + Loka Buy \u2192 long",
+      "train": {
+        "rule": "PCR>70% + Loka Buy \u2192 long",
+        "n": 61,
+        "mean_pts": 29.54,
+        "median_pts": 42.3,
+        "winrate": 0.77,
+        "sum_pts": 1802.1
+      },
+      "test": {
+        "rule": "PCR>70% + Loka Buy \u2192 long",
+        "n": 60,
+        "mean_pts": 30.03,
+        "median_pts": 13.75,
+        "winrate": 0.667,
+        "sum_pts": 1801.7
+      },
+      "score": 347.96876748635873
+    },
+    {
+      "rule": "PCR<30% follow up \u2192 long",
+      "train": {
+        "rule": "PCR<30% follow up \u2192 long",
+        "n": 96,
+        "mean_pts": 17.28,
+        "median_pts": 47.15,
+        "winrate": 0.771,
+        "sum_pts": 1658.9
+      },
+      "test": {
+        "rule": "PCR<30% follow up \u2192 long",
+        "n": 77,
+        "mean_pts": 28.79,
+        "median_pts": 28.0,
+        "winrate": 0.701,
+        "sum_pts": 2217.1
+      },
+      "score": 337.2855902236058
+    },
+    {
+      "rule": "PCR<25% + Loka Short \u2192 short",
+      "train": {
+        "rule": "PCR<25% + Loka Short \u2192 short",
+        "n": 43,
+        "mean_pts": 31.72,
+        "median_pts": 21.7,
+        "winrate": 0.581,
+        "sum_pts": 1364.0
+      },
+      "test": {
+        "rule": "PCR<25% + Loka Short \u2192 short",
+        "n": 47,
+        "mean_pts": 33.79,
+        "median_pts": 5.0,
+        "winrate": 0.553,
+        "sum_pts": 1588.1
+      },
+      "score": 335.65354394298095
+    },
+    {
+      "rule": "PCR<25% follow up \u2192 long",
+      "train": {
+        "rule": "PCR<25% follow up \u2192 long",
+        "n": 87,
+        "mean_pts": 12.96,
+        "median_pts": 46.5,
+        "winrate": 0.759,
+        "sum_pts": 1127.5
+      },
+      "test": {
+        "rule": "PCR<25% follow up \u2192 long",
+        "n": 64,
+        "mean_pts": 32.23,
+        "median_pts": 30.45,
+        "winrate": 0.703,
+        "sum_pts": 2062.9
+      },
+      "score": 318.2814162640155
+    },
+    {
+      "rule": "OI thrust long: PCR<25% + green",
+      "train": {
+        "rule": "OI thrust long: PCR<25% + green",
+        "n": 87,
+        "mean_pts": 12.96,
+        "median_pts": 46.5,
+        "winrate": 0.759,
+        "sum_pts": 1127.5
+      },
+      "test": {
+        "rule": "OI thrust long: PCR<25% + green",
+        "n": 64,
+        "mean_pts": 32.23,
+        "median_pts": 30.45,
+        "winrate": 0.703,
+        "sum_pts": 2062.9
+      },
+      "score": 318.2814162640155
+    },
+    {
+      "rule": "PCR<15% follow up \u2192 long",
+      "train": {
+        "rule": "PCR<15% follow up \u2192 long",
+        "n": 59,
+        "mean_pts": 5.95,
+        "median_pts": 51.1,
+        "winrate": 0.797,
+        "sum_pts": 351.2
+      },
+      "test": {
+        "rule": "PCR<15% follow up \u2192 long",
+        "n": 31,
+        "mean_pts": 33.27,
+        "median_pts": 32.0,
+        "winrate": 0.742,
+        "sum_pts": 1031.3
+      },
+      "score": 208.09092895126395
+    },
+    {
+      "rule": "narrow range + Loka Buy \u2192 long",
+      "train": {
+        "rule": "narrow range + Loka Buy \u2192 long",
+        "n": 63,
+        "mean_pts": 28.83,
+        "median_pts": 28.4,
+        "winrate": 0.746,
+        "sum_pts": 1816.4
+      },
+      "test": {
+        "rule": "narrow range + Loka Buy \u2192 long",
+        "n": 45,
+        "mean_pts": 9.69,
+        "median_pts": 20.0,
+        "winrate": 0.711,
+        "sum_pts": 435.9
+      },
+      "score": 179.4180115529071
+    }
+  ],
+  "built_at": "2026-11-19 19:23:36"
+}

@@ -1,0 +1,140 @@
+{
+  "rule": "Futures Loka both + 20w short filter + 1.25% hold-long stop",
+  "reference": "Nifty futures only (no index, no PCR)",
+  "start": "2021-10-14",
+  "stop_pct": 0.0125,
+  "week_filter": 20,
+  "baseline_oi25_profit": 310551771.87,
+  "beats_baseline": false,
+  "train": {
+    "n": 264,
+    "end_capital": 18095664.91,
+    "profit": 8095664.91,
+    "max_dd": 0.1565,
+    "mean_pts": 14.57,
+    "winrate": 0.678,
+    "longs": 214,
+    "shorts": 50
+  },
+  "test": {
+    "n": 229,
+    "end_capital": 45497592.35,
+    "profit": 35497592.35,
+    "max_dd": 0.1984,
+    "mean_pts": 40.53,
+    "winrate": 0.6594,
+    "longs": 163,
+    "shorts": 66
+  },
+  "full": {
+    "n": 493,
+    "end_capital": 82697835.48,
+    "profit": 72697835.48,
+    "max_dd": 0.1988,
+    "mean_pts": 26.63,
+    "winrate": 0.6694,
+    "longs": 377,
+    "shorts": 116
+  },
+  "unfiltered": {
+    "n": 714,
+    "end_capital": 57168518.69,
+    "profit": 47168518.69,
+    "max_dd": 0.0,
+    "mean_pts": 18.78,
+    "winrate": 0.6148,
+    "longs": 377,
+    "shorts": 337
+  },
+  "blocked_shorts": 221,
+  "sheet": "btst-stbt-futures-only-loka-w20-sl1_25-fyers-2021-2026.xlsx",
+  "scan_top_setups": [
+    {
+      "setup": "mom_long_ret5",
+      "train_wr": 0.714,
+      "test_wr": 0.731,
+      "train_mean": 16.96,
+      "test_mean": 29.03
+    },
+    {
+      "setup": "expand_loka_buy",
+      "train_wr": 0.744,
+      "test_wr": 0.742,
+      "train_mean": 10.26,
+      "test_mean": 35.53
+    },
+    {
+      "setup": "cont_up2_loka",
+      "train_wr": 0.73,
+      "test_wr": 0.714,
+      "train_mean": 14.79,
+      "test_mean": 31.18
+    },
+    {
+      "setup": "trend_long_sma20",
+      "train_wr": 0.703,
+      "test_wr": 0.737,
+      "train_mean": 11.97,
+      "test_mean": 25.78
+    },
+    {
+      "setup": "trend_long_sma50",
+      "train_wr": 0.736,
+      "test_wr": 0.712,
+      "train_mean": 12.98,
+      "test_mean": 20.34
+    },
+    {
+      "setup": "fade_dn_long",
+      "train_wr": 0.645,
+      "test_wr": 0.746,
+      "train_mean": 10.04,
+      "test_mean": 26.79
+    },
+    {
+      "setup": "quiet_loka_buy",
+      "train_wr": 0.696,
+      "test_wr": 0.716,
+      "train_mean": 9.09,
+      "test_mean": 8.57
+    }
+  ],
+  "scan_best_2021": [
+    {
+      "name": "loka_both_w20|stop=0.0125",
+      "profit_2021": 72697835.48,
+      "oos": 44886940.83,
+      "max_dd": 0.1992
+    },
+    {
+      "name": "loka_both_w20|stop=0.015",
+      "profit_2021": 65651326.63,
+      "oos": 43655213.74,
+      "max_dd": 0.2343
+    },
+    {
+      "name": "loka_both_w20|stop=0.01",
+      "profit_2021": 64476970.32,
+      "oos": 37889832.43,
+      "max_dd": 0.2086
+    },
+    {
+      "name": "loka_both_w20|stop=None",
+      "profit_2021": 63254695.34,
+      "oos": 43184918.53,
+      "max_dd": 0.2431
+    },
+    {
+      "name": "loka_both_w20|stop=0.02",
+      "profit_2021": 62808034.08,
+      "oos": 43039643.31,
+      "max_dd": 0.2457
+    }
+  ],
+  "notes": [
+    "Highest win-rate persistent setups were long-only (mom_long_ret5 ~73% WR) but compounds ~\u20b93 Cr.",
+    "Best overnight futures-only compound: loka_both_w20 + 1.25% SL ~\u20b97.3 Cr from 2021.",
+    "Positional max-5d no-stop long ~\u20b910 Cr research \u2014 still << \u20b931 Cr OI-25.",
+    "Conclusion: keep OI-25 futures architect as primary; this sheet is best futures-alone."
+  ]
+}

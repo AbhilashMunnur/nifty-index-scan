@@ -1,0 +1,1270 @@
+{
+  "generated_at": "2026-11-20T00:51:35",
+  "fill_rule": "index break on 5m close \u2192 futures next 5m open \u00b12 slip; SL/EOD on subsequent path",
+  "note": "Replaces same-bar-open look-ahead results",
+  "workbook": "architect-v2-orb30-NEXTBAR-compounding-1cr.xlsx",
+  "compound": [
+    {
+      "name": "ORB30 0.8 BASE CMPD",
+      "mode": "compound",
+      "sl": 0.008,
+      "filter": "base",
+      "end_capital": 1579067.04,
+      "multiple": 0.158,
+      "max_dd": 0.9152,
+      "n_trades": 1784,
+      "yearly": {
+        "2019": {
+          "n": 223,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 8822014.88,
+          "absolute_pnl": -1177985.12,
+          "pct_return": -0.1178,
+          "wr": 0.462,
+          "mean_pts": 0.13
+        },
+        "2020": {
+          "n": 228,
+          "year_start_capital": 8822014.88,
+          "year_end_capital": 10778063.73,
+          "absolute_pnl": 1956048.85,
+          "pct_return": 0.2217,
+          "wr": 0.456,
+          "mean_pts": 6.68
+        },
+        "2021": {
+          "n": 235,
+          "year_start_capital": 10778063.73,
+          "year_end_capital": 7744271.42,
+          "absolute_pnl": -3033792.31,
+          "pct_return": -0.2815,
+          "wr": 0.468,
+          "mean_pts": -1.86
+        },
+        "2022": {
+          "n": 236,
+          "year_start_capital": 7744271.42,
+          "year_end_capital": 7881732.59,
+          "absolute_pnl": 137461.17,
+          "pct_return": 0.0178,
+          "wr": 0.508,
+          "mean_pts": 4.63
+        },
+        "2023": {
+          "n": 219,
+          "year_start_capital": 7881732.59,
+          "year_end_capital": 4523197.18,
+          "absolute_pnl": -3358535.41,
+          "pct_return": -0.4261,
+          "wr": 0.479,
+          "mean_pts": -6.47
+        },
+        "2024": {
+          "n": 231,
+          "year_start_capital": 4523197.18,
+          "year_end_capital": 4446518.79,
+          "absolute_pnl": -76678.39,
+          "pct_return": -0.017,
+          "wr": 0.494,
+          "mean_pts": 6.55
+        },
+        "2025": {
+          "n": 223,
+          "year_start_capital": 4446518.79,
+          "year_end_capital": 2701842.98,
+          "absolute_pnl": -1744675.81,
+          "pct_return": -0.3924,
+          "wr": 0.484,
+          "mean_pts": -1.85
+        },
+        "2026": {
+          "n": 189,
+          "year_start_capital": 2701842.98,
+          "year_end_capital": 1579067.04,
+          "absolute_pnl": -1122775.94,
+          "pct_return": -0.4156,
+          "wr": 0.434,
+          "mean_pts": 1.04
+        }
+      },
+      "train": {
+        "n": 1253,
+        "wr": 0.485,
+        "mean_pts": 3.24,
+        "sum_net": -1720466.4,
+        "med_pts": 0.2
+      },
+      "test": {
+        "n": 531,
+        "wr": 0.448,
+        "mean_pts": -3.72,
+        "sum_net": -6700466.56,
+        "med_pts": 1.0
+      },
+      "all": {
+        "n": 1784,
+        "wr": 0.474,
+        "mean_pts": 1.17,
+        "sum_net": -8420932.96,
+        "med_pts": 0.2
+      }
+    },
+    {
+      "name": "ORB30 0.8 PCR20-80 CMPD",
+      "mode": "compound",
+      "sl": 0.008,
+      "filter": "pcr20_80",
+      "end_capital": 69847866.23,
+      "multiple": 6.985,
+      "max_dd": 0.4722,
+      "n_trades": 730,
+      "yearly": {
+        "2019": {
+          "n": 75,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 11304430.17,
+          "absolute_pnl": 1304430.17,
+          "pct_return": 0.1304,
+          "wr": 0.467,
+          "mean_pts": 9.51
+        },
+        "2020": {
+          "n": 99,
+          "year_start_capital": 11304430.17,
+          "year_end_capital": 22517001.89,
+          "absolute_pnl": 11212571.72,
+          "pct_return": 0.9919,
+          "wr": 0.576,
+          "mean_pts": 32.5
+        },
+        "2021": {
+          "n": 96,
+          "year_start_capital": 22517001.89,
+          "year_end_capital": 28742387.9,
+          "absolute_pnl": 6225386.01,
+          "pct_return": 0.2765,
+          "wr": 0.531,
+          "mean_pts": 15.03
+        },
+        "2022": {
+          "n": 91,
+          "year_start_capital": 28742387.9,
+          "year_end_capital": 35879895.36,
+          "absolute_pnl": 7137507.46,
+          "pct_return": 0.2483,
+          "wr": 0.549,
+          "mean_pts": 14.49
+        },
+        "2023": {
+          "n": 98,
+          "year_start_capital": 35879895.36,
+          "year_end_capital": 29484511.39,
+          "absolute_pnl": -6395383.96,
+          "pct_return": -0.1782,
+          "wr": 0.48,
+          "mean_pts": -3.76
+        },
+        "2024": {
+          "n": 96,
+          "year_start_capital": 29484511.39,
+          "year_end_capital": 64103066.54,
+          "absolute_pnl": 34618555.15,
+          "pct_return": 1.1741,
+          "wr": 0.615,
+          "mean_pts": 41.38
+        },
+        "2025": {
+          "n": 88,
+          "year_start_capital": 64103066.54,
+          "year_end_capital": 91468667.74,
+          "absolute_pnl": 27365601.2,
+          "pct_return": 0.4269,
+          "wr": 0.602,
+          "mean_pts": 24.79
+        },
+        "2026": {
+          "n": 87,
+          "year_start_capital": 91468667.74,
+          "year_end_capital": 69847866.23,
+          "absolute_pnl": -21620801.51,
+          "pct_return": -0.2364,
+          "wr": 0.448,
+          "mean_pts": 0.17
+        }
+      },
+      "train": {
+        "n": 507,
+        "wr": 0.538,
+        "mean_pts": 18.15,
+        "sum_net": 44014607.18,
+        "med_pts": 8.2
+      },
+      "test": {
+        "n": 223,
+        "wr": 0.529,
+        "mean_pts": 14.77,
+        "sum_net": 15833259.06,
+        "med_pts": 17.0
+      },
+      "all": {
+        "n": 730,
+        "wr": 0.536,
+        "mean_pts": 17.11,
+        "sum_net": 59847866.23,
+        "med_pts": 11.8
+      }
+    },
+    {
+      "name": "ORB30 0.8 SkipPCRmid CMPD",
+      "mode": "compound",
+      "sl": 0.008,
+      "filter": "skip_mid",
+      "end_capital": 8331766.58,
+      "multiple": 0.833,
+      "max_dd": 0.7541,
+      "n_trades": 1485,
+      "yearly": {
+        "2019": {
+          "n": 187,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 10260115.47,
+          "absolute_pnl": 260115.47,
+          "pct_return": 0.026,
+          "wr": 0.487,
+          "mean_pts": 3.13
+        },
+        "2020": {
+          "n": 194,
+          "year_start_capital": 10260115.47,
+          "year_end_capital": 14021561.01,
+          "absolute_pnl": 3761445.54,
+          "pct_return": 0.3666,
+          "wr": 0.469,
+          "mean_pts": 9.63
+        },
+        "2021": {
+          "n": 190,
+          "year_start_capital": 14021561.01,
+          "year_end_capital": 11700728.17,
+          "absolute_pnl": -2320832.83,
+          "pct_return": -0.1655,
+          "wr": 0.468,
+          "mean_pts": 0.08
+        },
+        "2022": {
+          "n": 197,
+          "year_start_capital": 11700728.17,
+          "year_end_capital": 13522956.72,
+          "absolute_pnl": 1822228.55,
+          "pct_return": 0.1557,
+          "wr": 0.528,
+          "mean_pts": 7.18
+        },
+        "2023": {
+          "n": 181,
+          "year_start_capital": 13522956.72,
+          "year_end_capital": 10745552.4,
+          "absolute_pnl": -2777404.33,
+          "pct_return": -0.2054,
+          "wr": 0.519,
+          "mean_pts": -0.99
+        },
+        "2024": {
+          "n": 193,
+          "year_start_capital": 10745552.4,
+          "year_end_capital": 14957538.23,
+          "absolute_pnl": 4211985.83,
+          "pct_return": 0.392,
+          "wr": 0.518,
+          "mean_pts": 14.18
+        },
+        "2025": {
+          "n": 181,
+          "year_start_capital": 14957538.23,
+          "year_end_capital": 13270811.42,
+          "absolute_pnl": -1686726.81,
+          "pct_return": -0.1128,
+          "wr": 0.514,
+          "mean_pts": 5.21
+        },
+        "2026": {
+          "n": 162,
+          "year_start_capital": 13270811.42,
+          "year_end_capital": 8331766.58,
+          "absolute_pnl": -4939044.83,
+          "pct_return": -0.3722,
+          "wr": 0.444,
+          "mean_pts": 1.42
+        }
+      },
+      "train": {
+        "n": 1040,
+        "wr": 0.505,
+        "mean_pts": 6.89,
+        "sum_net": 11356690.65,
+        "med_pts": 3.3
+      },
+      "test": {
+        "n": 445,
+        "wr": 0.47,
+        "mean_pts": 1.0,
+        "sum_net": -13024924.06,
+        "med_pts": 4.0
+      },
+      "all": {
+        "n": 1485,
+        "wr": 0.494,
+        "mean_pts": 5.13,
+        "sum_net": -1668233.42,
+        "med_pts": 3.6
+      }
+    },
+    {
+      "name": "ORB30 0.5 BASE CMPD",
+      "mode": "compound",
+      "sl": 0.005,
+      "filter": "base",
+      "end_capital": 1315525.96,
+      "multiple": 0.132,
+      "max_dd": 0.9186,
+      "n_trades": 1784,
+      "yearly": {
+        "2019": {
+          "n": 223,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 8470051.64,
+          "absolute_pnl": -1529948.36,
+          "pct_return": -0.153,
+          "wr": 0.422,
+          "mean_pts": -0.8
+        },
+        "2020": {
+          "n": 228,
+          "year_start_capital": 8470051.64,
+          "year_end_capital": 10542291.77,
+          "absolute_pnl": 2072240.14,
+          "pct_return": 0.2447,
+          "wr": 0.395,
+          "mean_pts": 6.82
+        },
+        "2021": {
+          "n": 235,
+          "year_start_capital": 10542291.77,
+          "year_end_capital": 8918001.29,
+          "absolute_pnl": -1624290.48,
+          "pct_return": -0.1541,
+          "wr": 0.43,
+          "mean_pts": 0.76
+        },
+        "2022": {
+          "n": 236,
+          "year_start_capital": 8918001.29,
+          "year_end_capital": 6982262.5,
+          "absolute_pnl": -1935738.79,
+          "pct_return": -0.2171,
+          "wr": 0.441,
+          "mean_pts": -0.4
+        },
+        "2023": {
+          "n": 219,
+          "year_start_capital": 6982262.5,
+          "year_end_capital": 4127969.66,
+          "absolute_pnl": -2854292.84,
+          "pct_return": -0.4088,
+          "wr": 0.466,
+          "mean_pts": -6.11
+        },
+        "2024": {
+          "n": 231,
+          "year_start_capital": 4127969.66,
+          "year_end_capital": 3875336.38,
+          "absolute_pnl": -252633.28,
+          "pct_return": -0.0612,
+          "wr": 0.459,
+          "mean_pts": 5.43
+        },
+        "2025": {
+          "n": 223,
+          "year_start_capital": 3875336.38,
+          "year_end_capital": 2471056.59,
+          "absolute_pnl": -1404279.79,
+          "pct_return": -0.3624,
+          "wr": 0.466,
+          "mean_pts": -0.72
+        },
+        "2026": {
+          "n": 189,
+          "year_start_capital": 2471056.59,
+          "year_end_capital": 1315525.96,
+          "absolute_pnl": -1155530.63,
+          "pct_return": -0.4676,
+          "wr": 0.407,
+          "mean_pts": -1.04
+        }
+      },
+      "train": {
+        "n": 1253,
+        "wr": 0.441,
+        "mean_pts": 2.65,
+        "sum_net": -2574777.27,
+        "med_pts": -10.2
+      },
+      "test": {
+        "n": 531,
+        "wr": 0.424,
+        "mean_pts": -4.34,
+        "sum_net": -6109696.77,
+        "med_pts": -5.85
+      },
+      "all": {
+        "n": 1784,
+        "wr": 0.436,
+        "mean_pts": 0.57,
+        "sum_net": -8684474.04,
+        "med_pts": -9.2
+      }
+    },
+    {
+      "name": "ORB30 0.5 PCR20-80 CMPD",
+      "mode": "compound",
+      "sl": 0.005,
+      "filter": "pcr20_80",
+      "end_capital": 62319855.24,
+      "multiple": 6.232,
+      "max_dd": 0.4229,
+      "n_trades": 730,
+      "yearly": {
+        "2019": {
+          "n": 75,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 10472144.9,
+          "absolute_pnl": 472144.9,
+          "pct_return": 0.0472,
+          "wr": 0.413,
+          "mean_pts": 5.21
+        },
+        "2020": {
+          "n": 99,
+          "year_start_capital": 10472144.9,
+          "year_end_capital": 18691594.11,
+          "absolute_pnl": 8219449.21,
+          "pct_return": 0.7849,
+          "wr": 0.485,
+          "mean_pts": 27.67
+        },
+        "2021": {
+          "n": 96,
+          "year_start_capital": 18691594.11,
+          "year_end_capital": 25842634.05,
+          "absolute_pnl": 7151039.94,
+          "pct_return": 0.3826,
+          "wr": 0.479,
+          "mean_pts": 18.29
+        },
+        "2022": {
+          "n": 91,
+          "year_start_capital": 25842634.05,
+          "year_end_capital": 22466833.53,
+          "absolute_pnl": -3375800.52,
+          "pct_return": -0.1306,
+          "wr": 0.418,
+          "mean_pts": -2.3
+        },
+        "2023": {
+          "n": 98,
+          "year_start_capital": 22466833.53,
+          "year_end_capital": 20533476.98,
+          "absolute_pnl": -1933356.55,
+          "pct_return": -0.0861,
+          "wr": 0.459,
+          "mean_pts": 0.51
+        },
+        "2024": {
+          "n": 96,
+          "year_start_capital": 20533476.98,
+          "year_end_capital": 48889274.72,
+          "absolute_pnl": 28355797.74,
+          "pct_return": 1.381,
+          "wr": 0.594,
+          "mean_pts": 44.92
+        },
+        "2025": {
+          "n": 88,
+          "year_start_capital": 48889274.72,
+          "year_end_capital": 72934349.31,
+          "absolute_pnl": 24045074.6,
+          "pct_return": 0.4918,
+          "wr": 0.602,
+          "mean_pts": 26.73
+        },
+        "2026": {
+          "n": 87,
+          "year_start_capital": 72934349.31,
+          "year_end_capital": 62319855.24,
+          "absolute_pnl": -10614494.07,
+          "pct_return": -0.1455,
+          "wr": 0.425,
+          "mean_pts": 5.03
+        }
+      },
+      "train": {
+        "n": 507,
+        "wr": 0.473,
+        "mean_pts": 15.28,
+        "sum_net": 28974615.2,
+        "med_pts": -2.1
+      },
+      "test": {
+        "n": 223,
+        "wr": 0.516,
+        "mean_pts": 18.31,
+        "sum_net": 23345240.04,
+        "med_pts": 14.0
+      },
+      "all": {
+        "n": 730,
+        "wr": 0.486,
+        "mean_pts": 16.21,
+        "sum_net": 52319855.24,
+        "med_pts": 0.95
+      }
+    },
+    {
+      "name": "ORB30 0.5 SkipPCRmid CMPD",
+      "mode": "compound",
+      "sl": 0.005,
+      "filter": "skip_mid",
+      "end_capital": 5546419.74,
+      "multiple": 0.555,
+      "max_dd": 0.7487,
+      "n_trades": 1485,
+      "yearly": {
+        "2019": {
+          "n": 187,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 9521676.92,
+          "absolute_pnl": -478323.08,
+          "pct_return": -0.0478,
+          "wr": 0.439,
+          "mean_pts": 1.27
+        },
+        "2020": {
+          "n": 194,
+          "year_start_capital": 9521676.92,
+          "year_end_capital": 11667068.87,
+          "absolute_pnl": 2145391.95,
+          "pct_return": 0.2253,
+          "wr": 0.397,
+          "mean_pts": 7.14
+        },
+        "2021": {
+          "n": 190,
+          "year_start_capital": 11667068.87,
+          "year_end_capital": 10414853.73,
+          "absolute_pnl": -1252215.14,
+          "pct_return": -0.1073,
+          "wr": 0.421,
+          "mean_pts": 1.42
+        },
+        "2022": {
+          "n": 197,
+          "year_start_capital": 10414853.73,
+          "year_end_capital": 8637587.49,
+          "absolute_pnl": -1777266.24,
+          "pct_return": -0.1706,
+          "wr": 0.457,
+          "mean_pts": -0.09
+        },
+        "2023": {
+          "n": 181,
+          "year_start_capital": 8637587.49,
+          "year_end_capital": 7308841.08,
+          "absolute_pnl": -1328746.41,
+          "pct_return": -0.1538,
+          "wr": 0.503,
+          "mean_pts": 0.26
+        },
+        "2024": {
+          "n": 193,
+          "year_start_capital": 7308841.08,
+          "year_end_capital": 10662357.54,
+          "absolute_pnl": 3353516.46,
+          "pct_return": 0.4588,
+          "wr": 0.497,
+          "mean_pts": 14.92
+        },
+        "2025": {
+          "n": 181,
+          "year_start_capital": 10662357.54,
+          "year_end_capital": 9668449.74,
+          "absolute_pnl": -993907.8,
+          "pct_return": -0.0932,
+          "wr": 0.497,
+          "mean_pts": 5.57
+        },
+        "2026": {
+          "n": 162,
+          "year_start_capital": 9668449.74,
+          "year_end_capital": 5546419.74,
+          "absolute_pnl": -4122030.0,
+          "pct_return": -0.4263,
+          "wr": 0.414,
+          "mean_pts": -1.29
+        }
+      },
+      "train": {
+        "n": 1040,
+        "wr": 0.456,
+        "mean_pts": 5.3,
+        "sum_net": 4932175.94,
+        "med_pts": -6.8
+      },
+      "test": {
+        "n": 445,
+        "wr": 0.447,
+        "mean_pts": 0.19,
+        "sum_net": -9385756.2,
+        "med_pts": -2.2
+      },
+      "all": {
+        "n": 1485,
+        "wr": 0.453,
+        "mean_pts": 3.77,
+        "sum_net": -4453580.26,
+        "med_pts": -4.5
+      }
+    }
+  ],
+  "fixed": [
+    {
+      "name": "ORB30 0.8 BASE FIXED",
+      "mode": "fixed",
+      "sl": 0.008,
+      "filter": "base",
+      "end_capital": -3606318.47,
+      "multiple": -0.361,
+      "max_dd": 1.4613,
+      "n_trades": 1784,
+      "yearly": {
+        "2019": {
+          "n": 223,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 9041326.82,
+          "absolute_pnl": -958673.18,
+          "pct_return": -0.0959,
+          "wr": 0.462,
+          "mean_pts": 0.13
+        },
+        "2020": {
+          "n": 228,
+          "year_start_capital": 9041326.82,
+          "year_end_capital": 11682823.57,
+          "absolute_pnl": 2641496.75,
+          "pct_return": 0.2641,
+          "wr": 0.456,
+          "mean_pts": 6.68
+        },
+        "2021": {
+          "n": 235,
+          "year_start_capital": 11682823.57,
+          "year_end_capital": 9119489.2,
+          "absolute_pnl": -2563334.38,
+          "pct_return": -0.2563,
+          "wr": 0.468,
+          "mean_pts": -1.86
+        },
+        "2022": {
+          "n": 236,
+          "year_start_capital": 9119489.2,
+          "year_end_capital": 10114715.93,
+          "absolute_pnl": 995226.73,
+          "pct_return": 0.0995,
+          "wr": 0.508,
+          "mean_pts": 4.63
+        },
+        "2023": {
+          "n": 219,
+          "year_start_capital": 10114715.93,
+          "year_end_capital": 4852901.91,
+          "absolute_pnl": -5261814.02,
+          "pct_return": -0.5262,
+          "wr": 0.479,
+          "mean_pts": -6.47
+        },
+        "2024": {
+          "n": 231,
+          "year_start_capital": 4852901.91,
+          "year_end_capital": 5733605.57,
+          "absolute_pnl": 880703.65,
+          "pct_return": 0.0881,
+          "wr": 0.494,
+          "mean_pts": 6.55
+        },
+        "2025": {
+          "n": 223,
+          "year_start_capital": 5733605.57,
+          "year_end_capital": 1220959.27,
+          "absolute_pnl": -4512646.3,
+          "pct_return": -0.4513,
+          "wr": 0.484,
+          "mean_pts": -1.85
+        },
+        "2026": {
+          "n": 189,
+          "year_start_capital": 1220959.27,
+          "year_end_capital": -3606318.47,
+          "absolute_pnl": -4827277.73,
+          "pct_return": -0.4827,
+          "wr": 0.434,
+          "mean_pts": 1.04
+        }
+      },
+      "train": {
+        "n": 1253,
+        "wr": 0.485,
+        "mean_pts": 3.24,
+        "sum_net": 1564972.11,
+        "med_pts": 0.2
+      },
+      "test": {
+        "n": 531,
+        "wr": 0.448,
+        "mean_pts": -3.72,
+        "sum_net": -15171290.57,
+        "med_pts": 1.0
+      },
+      "all": {
+        "n": 1784,
+        "wr": 0.474,
+        "mean_pts": 1.17,
+        "sum_net": -13606318.47,
+        "med_pts": 0.2
+      }
+    },
+    {
+      "name": "ORB30 0.8 PCR20-80 FIXED",
+      "mode": "fixed",
+      "sl": 0.008,
+      "filter": "pcr20_80",
+      "end_capital": 32370227.86,
+      "multiple": 3.237,
+      "max_dd": 0.1712,
+      "n_trades": 730,
+      "yearly": {
+        "2019": {
+          "n": 75,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 11370801.24,
+          "absolute_pnl": 1370801.24,
+          "pct_return": 0.1371,
+          "wr": 0.467,
+          "mean_pts": 9.51
+        },
+        "2020": {
+          "n": 99,
+          "year_start_capital": 11370801.24,
+          "year_end_capital": 18668399.71,
+          "absolute_pnl": 7297598.46,
+          "pct_return": 0.7298,
+          "wr": 0.576,
+          "mean_pts": 32.5
+        },
+        "2021": {
+          "n": 96,
+          "year_start_capital": 18668399.71,
+          "year_end_capital": 21517716.65,
+          "absolute_pnl": 2849316.94,
+          "pct_return": 0.2849,
+          "wr": 0.531,
+          "mean_pts": 15.03
+        },
+        "2022": {
+          "n": 91,
+          "year_start_capital": 21517716.65,
+          "year_end_capital": 24060489.75,
+          "absolute_pnl": 2542773.1,
+          "pct_return": 0.2543,
+          "wr": 0.549,
+          "mean_pts": 14.49
+        },
+        "2023": {
+          "n": 98,
+          "year_start_capital": 24060489.75,
+          "year_end_capital": 22342601.38,
+          "absolute_pnl": -1717888.36,
+          "pct_return": -0.1718,
+          "wr": 0.48,
+          "mean_pts": -3.76
+        },
+        "2024": {
+          "n": 96,
+          "year_start_capital": 22342601.38,
+          "year_end_capital": 30744329.11,
+          "absolute_pnl": 8401727.72,
+          "pct_return": 0.8402,
+          "wr": 0.615,
+          "mean_pts": 41.38
+        },
+        "2025": {
+          "n": 88,
+          "year_start_capital": 30744329.11,
+          "year_end_capital": 34599658.92,
+          "absolute_pnl": 3855329.82,
+          "pct_return": 0.3855,
+          "wr": 0.602,
+          "mean_pts": 24.79
+        },
+        "2026": {
+          "n": 87,
+          "year_start_capital": 34599658.92,
+          "year_end_capital": 32370227.86,
+          "absolute_pnl": -2229431.07,
+          "pct_return": -0.2229,
+          "wr": 0.448,
+          "mean_pts": 0.17
+        }
+      },
+      "train": {
+        "n": 507,
+        "wr": 0.538,
+        "mean_pts": 18.15,
+        "sum_net": 18766183.67,
+        "med_pts": 8.2
+      },
+      "test": {
+        "n": 223,
+        "wr": 0.529,
+        "mean_pts": 14.77,
+        "sum_net": 3604044.19,
+        "med_pts": 17.0
+      },
+      "all": {
+        "n": 730,
+        "wr": 0.536,
+        "mean_pts": 17.11,
+        "sum_net": 22370227.86,
+        "med_pts": 11.8
+      }
+    },
+    {
+      "name": "ORB30 0.8 SkipPCRmid FIXED",
+      "mode": "fixed",
+      "sl": 0.008,
+      "filter": "skip_mid",
+      "end_capital": 12794173.45,
+      "multiple": 1.279,
+      "max_dd": 0.5712,
+      "n_trades": 1485,
+      "yearly": {
+        "2019": {
+          "n": 187,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 10546808.81,
+          "absolute_pnl": 546808.81,
+          "pct_return": 0.0547,
+          "wr": 0.487,
+          "mean_pts": 3.13
+        },
+        "2020": {
+          "n": 194,
+          "year_start_capital": 10546808.81,
+          "year_end_capital": 14166833.13,
+          "absolute_pnl": 3620024.32,
+          "pct_return": 0.362,
+          "wr": 0.469,
+          "mean_pts": 9.63
+        },
+        "2021": {
+          "n": 190,
+          "year_start_capital": 14166833.13,
+          "year_end_capital": 12978265.39,
+          "absolute_pnl": -1188567.74,
+          "pct_return": -0.1189,
+          "wr": 0.468,
+          "mean_pts": 0.08
+        },
+        "2022": {
+          "n": 197,
+          "year_start_capital": 12978265.39,
+          "year_end_capital": 15013969.23,
+          "absolute_pnl": 2035703.84,
+          "pct_return": 0.2036,
+          "wr": 0.528,
+          "mean_pts": 7.18
+        },
+        "2023": {
+          "n": 181,
+          "year_start_capital": 15013969.23,
+          "year_end_capital": 13052866.29,
+          "absolute_pnl": -1961102.94,
+          "pct_return": -0.1961,
+          "wr": 0.519,
+          "mean_pts": -0.99
+        },
+        "2024": {
+          "n": 193,
+          "year_start_capital": 13052866.29,
+          "year_end_capital": 17327160.13,
+          "absolute_pnl": 4274293.84,
+          "pct_return": 0.4274,
+          "wr": 0.518,
+          "mean_pts": 14.18
+        },
+        "2025": {
+          "n": 181,
+          "year_start_capital": 17327160.13,
+          "year_end_capital": 16734367.84,
+          "absolute_pnl": -592792.29,
+          "pct_return": -0.0593,
+          "wr": 0.514,
+          "mean_pts": 5.21
+        },
+        "2026": {
+          "n": 162,
+          "year_start_capital": 16734367.84,
+          "year_end_capital": 12794173.45,
+          "absolute_pnl": -3940194.39,
+          "pct_return": -0.394,
+          "wr": 0.444,
+          "mean_pts": 1.42
+        }
+      },
+      "train": {
+        "n": 1040,
+        "wr": 0.505,
+        "mean_pts": 6.89,
+        "sum_net": 10447980.97,
+        "med_pts": 3.3
+      },
+      "test": {
+        "n": 445,
+        "wr": 0.47,
+        "mean_pts": 1.0,
+        "sum_net": -7653807.52,
+        "med_pts": 4.0
+      },
+      "all": {
+        "n": 1485,
+        "wr": 0.494,
+        "mean_pts": 5.13,
+        "sum_net": 2794173.45,
+        "med_pts": 3.6
+      }
+    },
+    {
+      "name": "ORB30 0.5 BASE FIXED",
+      "mode": "fixed",
+      "sl": 0.005,
+      "filter": "base",
+      "end_capital": -6179420.05,
+      "multiple": -0.618,
+      "max_dd": 1.6436,
+      "n_trades": 1784,
+      "yearly": {
+        "2019": {
+          "n": 223,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 8543245.8,
+          "absolute_pnl": -1456754.2,
+          "pct_return": -0.1457,
+          "wr": 0.422,
+          "mean_pts": -0.8
+        },
+        "2020": {
+          "n": 228,
+          "year_start_capital": 8543245.8,
+          "year_end_capital": 11260981.04,
+          "absolute_pnl": 2717735.24,
+          "pct_return": 0.2718,
+          "wr": 0.395,
+          "mean_pts": 6.82
+        },
+        "2021": {
+          "n": 235,
+          "year_start_capital": 11260981.04,
+          "year_end_capital": 10176298.22,
+          "absolute_pnl": -1084682.82,
+          "pct_return": -0.1085,
+          "wr": 0.43,
+          "mean_pts": 0.76
+        },
+        "2022": {
+          "n": 236,
+          "year_start_capital": 10176298.22,
+          "year_end_capital": 8318196.1,
+          "absolute_pnl": -1858102.12,
+          "pct_return": -0.1858,
+          "wr": 0.441,
+          "mean_pts": -0.4
+        },
+        "2023": {
+          "n": 219,
+          "year_start_capital": 8318196.1,
+          "year_end_capital": 3247596.44,
+          "absolute_pnl": -5070599.66,
+          "pct_return": -0.5071,
+          "wr": 0.466,
+          "mean_pts": -6.11
+        },
+        "2024": {
+          "n": 231,
+          "year_start_capital": 3247596.44,
+          "year_end_capital": 3502951.47,
+          "absolute_pnl": 255355.03,
+          "pct_return": 0.0255,
+          "wr": 0.459,
+          "mean_pts": 5.43
+        },
+        "2025": {
+          "n": 223,
+          "year_start_capital": 3502951.47,
+          "year_end_capital": -405375.35,
+          "absolute_pnl": -3908326.82,
+          "pct_return": -0.3908,
+          "wr": 0.466,
+          "mean_pts": -0.72
+        },
+        "2026": {
+          "n": 189,
+          "year_start_capital": -405375.35,
+          "year_end_capital": -6179420.05,
+          "absolute_pnl": -5774044.7,
+          "pct_return": -0.5774,
+          "wr": 0.407,
+          "mean_pts": -1.04
+        }
+      },
+      "train": {
+        "n": 1253,
+        "wr": 0.441,
+        "mean_pts": 2.65,
+        "sum_net": -211578.93,
+        "med_pts": -10.2
+      },
+      "test": {
+        "n": 531,
+        "wr": 0.424,
+        "mean_pts": -4.34,
+        "sum_net": -15967841.11,
+        "med_pts": -5.85
+      },
+      "all": {
+        "n": 1784,
+        "wr": 0.436,
+        "mean_pts": 0.57,
+        "sum_net": -16179420.05,
+        "med_pts": -9.2
+      }
+    },
+    {
+      "name": "ORB30 0.5 PCR20-80 FIXED",
+      "mode": "fixed",
+      "sl": 0.005,
+      "filter": "pcr20_80",
+      "end_capital": 30775989.83,
+      "multiple": 3.078,
+      "max_dd": 0.1719,
+      "n_trades": 730,
+      "yearly": {
+        "2019": {
+          "n": 75,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 10595893.04,
+          "absolute_pnl": 595893.04,
+          "pct_return": 0.0596,
+          "wr": 0.413,
+          "mean_pts": 5.21
+        },
+        "2020": {
+          "n": 99,
+          "year_start_capital": 10595893.04,
+          "year_end_capital": 16742672.85,
+          "absolute_pnl": 6146779.82,
+          "pct_return": 0.6147,
+          "wr": 0.485,
+          "mean_pts": 27.67
+        },
+        "2021": {
+          "n": 96,
+          "year_start_capital": 16742672.85,
+          "year_end_capital": 20345548.84,
+          "absolute_pnl": 3602875.99,
+          "pct_return": 0.3603,
+          "wr": 0.479,
+          "mean_pts": 18.29
+        },
+        "2022": {
+          "n": 91,
+          "year_start_capital": 20345548.84,
+          "year_end_capital": 19214107.9,
+          "absolute_pnl": -1131440.93,
+          "pct_return": -0.1131,
+          "wr": 0.418,
+          "mean_pts": -2.3
+        },
+        "2023": {
+          "n": 98,
+          "year_start_capital": 19214107.9,
+          "year_end_capital": 18502116.36,
+          "absolute_pnl": -711991.54,
+          "pct_return": -0.0712,
+          "wr": 0.459,
+          "mean_pts": 0.51
+        },
+        "2024": {
+          "n": 96,
+          "year_start_capital": 18502116.36,
+          "year_end_capital": 27721553.36,
+          "absolute_pnl": 9219437.0,
+          "pct_return": 0.9219,
+          "wr": 0.594,
+          "mean_pts": 44.92
+        },
+        "2025": {
+          "n": 88,
+          "year_start_capital": 27721553.36,
+          "year_end_capital": 31987953.64,
+          "absolute_pnl": 4266400.28,
+          "pct_return": 0.4266,
+          "wr": 0.602,
+          "mean_pts": 26.73
+        },
+        "2026": {
+          "n": 87,
+          "year_start_capital": 31987953.64,
+          "year_end_capital": 30775989.83,
+          "absolute_pnl": -1211963.81,
+          "pct_return": -0.1212,
+          "wr": 0.425,
+          "mean_pts": 5.03
+        }
+      },
+      "train": {
+        "n": 507,
+        "wr": 0.473,
+        "mean_pts": 15.28,
+        "sum_net": 15270564.22,
+        "med_pts": -2.1
+      },
+      "test": {
+        "n": 223,
+        "wr": 0.516,
+        "mean_pts": 18.31,
+        "sum_net": 5505425.61,
+        "med_pts": 14.0
+      },
+      "all": {
+        "n": 730,
+        "wr": 0.486,
+        "mean_pts": 16.21,
+        "sum_net": 20775989.83,
+        "med_pts": 0.95
+      }
+    },
+    {
+      "name": "ORB30 0.5 SkipPCRmid FIXED",
+      "mode": "fixed",
+      "sl": 0.005,
+      "filter": "skip_mid",
+      "end_capital": 7953851.09,
+      "multiple": 0.795,
+      "max_dd": 0.7169,
+      "n_trades": 1485,
+      "yearly": {
+        "2019": {
+          "n": 187,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 9710493.65,
+          "absolute_pnl": -289506.35,
+          "pct_return": -0.029,
+          "wr": 0.439,
+          "mean_pts": 1.27
+        },
+        "2020": {
+          "n": 194,
+          "year_start_capital": 9710493.65,
+          "year_end_capital": 12166512.56,
+          "absolute_pnl": 2456018.91,
+          "pct_return": 0.2456,
+          "wr": 0.397,
+          "mean_pts": 7.14
+        },
+        "2021": {
+          "n": 190,
+          "year_start_capital": 12166512.56,
+          "year_end_capital": 11591088.31,
+          "absolute_pnl": -575424.25,
+          "pct_return": -0.0575,
+          "wr": 0.421,
+          "mean_pts": 1.42
+        },
+        "2022": {
+          "n": 197,
+          "year_start_capital": 11591088.31,
+          "year_end_capital": 10185275.44,
+          "absolute_pnl": -1405812.87,
+          "pct_return": -0.1406,
+          "wr": 0.457,
+          "mean_pts": -0.09
+        },
+        "2023": {
+          "n": 181,
+          "year_start_capital": 10185275.44,
+          "year_end_capital": 8768645.72,
+          "absolute_pnl": -1416629.72,
+          "pct_return": -0.1417,
+          "wr": 0.503,
+          "mean_pts": 0.26
+        },
+        "2024": {
+          "n": 193,
+          "year_start_capital": 8768645.72,
+          "year_end_capital": 13384573.57,
+          "absolute_pnl": 4615927.85,
+          "pct_return": 0.4616,
+          "wr": 0.497,
+          "mean_pts": 14.92
+        },
+        "2025": {
+          "n": 181,
+          "year_start_capital": 13384573.57,
+          "year_end_capital": 12949367.13,
+          "absolute_pnl": -435206.44,
+          "pct_return": -0.0435,
+          "wr": 0.497,
+          "mean_pts": 5.57
+        },
+        "2026": {
+          "n": 162,
+          "year_start_capital": 12949367.13,
+          "year_end_capital": 7953851.09,
+          "absolute_pnl": -4995516.04,
+          "pct_return": -0.4996,
+          "wr": 0.414,
+          "mean_pts": -1.29
+        }
+      },
+      "train": {
+        "n": 1040,
+        "wr": 0.456,
+        "mean_pts": 5.3,
+        "sum_net": 6474881.4,
+        "med_pts": -6.8
+      },
+      "test": {
+        "n": 445,
+        "wr": 0.447,
+        "mean_pts": 0.19,
+        "sum_net": -8521030.31,
+        "med_pts": -2.2
+      },
+      "all": {
+        "n": 1485,
+        "wr": 0.453,
+        "mean_pts": 3.77,
+        "sum_net": -2046148.91,
+        "med_pts": -4.5
+      }
+    }
+  ]
+}

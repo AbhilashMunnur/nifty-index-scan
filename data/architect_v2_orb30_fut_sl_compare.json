@@ -1,0 +1,34 @@
+{
+  "generated": "2026-11-20",
+  "lots": 37,
+  "capital": 10000000.0,
+  "sl_0_5": {
+    "n": 1791,
+    "wr": 0.55,
+    "mean_pts": 21.141,
+    "med_pts": 13.3,
+    "sum_net": 72338526.53,
+    "exit_mix": {
+      "eod": 0.7426,
+      "sl": 0.2574
+    },
+    "max_loss_streak": null
+  },
+  "sl_0_8": {
+    "n": 1791,
+    "wr": 0.5784,
+    "mean_pts": 21.3104,
+    "med_pts": 18.1,
+    "sum_net": 73067751.13,
+    "exit_mix": {
+      "eod": 0.8844,
+      "sl": 0.1156
+    }
+  },
+  "when_0_5_stops_0_8_continues": {
+    "n": 254,
+    "avg_pts_05": -93.02,
+    "avg_pts_08": -51.47,
+    "extra_net_choosing_08": 25378668.15
+  }
+}

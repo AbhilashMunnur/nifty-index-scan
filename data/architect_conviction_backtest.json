@@ -1,0 +1,72 @@
+{
+  "name": "Architect conviction (Pressure Close + OI Override)",
+  "logic": [
+    "Loka close is the default pressure read on the index",
+    "PCR rank < 30% \u2192 OI override: follow today vs yesterday",
+    "Skip Loka buys on red days vs yesterday",
+    "Shorts only if 20-week futures filter allows",
+    "Futures fill @14:45, hold-long, 1.25% stop"
+  ],
+  "start": "2021-10-14",
+  "full": {
+    "trades": 586,
+    "end_capital": 241603235.56,
+    "profit": 231603235.56,
+    "max_dd": 0.315,
+    "mean_pts": 31.16,
+    "winrate": 0.6826,
+    "signal_mix": {
+      "Loka": 356,
+      "OI pressure": 57,
+      "OI thrust": 173
+    }
+  },
+  "train_to_2024_06": {
+    "trades": 320,
+    "end_capital": 47540233.59,
+    "profit": 37540233.59,
+    "max_dd": 0.2396,
+    "mean_pts": 25.61,
+    "winrate": 0.6969,
+    "signal_mix": {
+      "Loka": 196,
+      "OI pressure": 28,
+      "OI thrust": 96
+    }
+  },
+  "test_from_2024_07": {
+    "trades": 266,
+    "end_capital": 50349232.89,
+    "profit": 40349232.89,
+    "max_dd": 0.3144,
+    "mean_pts": 37.83,
+    "winrate": 0.6654,
+    "signal_mix": {
+      "Loka": 160,
+      "OI pressure": 29,
+      "OI thrust": 77
+    }
+  },
+  "oos_from_2023": {
+    "trades": 428,
+    "end_capital": 58958641.76,
+    "profit": 48958641.76,
+    "max_dd": 0.3152,
+    "mean_pts": 26.86,
+    "winrate": 0.6822,
+    "signal_mix": {
+      "Loka": 261,
+      "OI pressure": 40,
+      "OI thrust": 127
+    }
+  },
+  "blocked_shorts": 277,
+  "skips": {
+    "mixed": 357,
+    "red_loka_buy": 36,
+    "week": 277
+  },
+  "unfiltered_end": 117640218.43,
+  "xlsx": "/Users/abhilashmunnur/Nifty index trade/btst-stbt-futures-architect-conviction-fyers-2021-2026.xlsx",
+  "built_at": "2026-11-19 19:24:41"
+}

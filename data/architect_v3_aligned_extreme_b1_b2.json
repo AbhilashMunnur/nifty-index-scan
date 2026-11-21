@@ -1,0 +1,90 @@
+{
+  "generated_at": "2026-11-20T01:42:16",
+  "workbook": "architect-v3-aligned-extreme-B1-B2-compounding-1cr.xlsx",
+  "start_capital": 10000000.0,
+  "filter": "aligned+extreme: Buy if PCR<=0.10; Sell if PCR>=0.90",
+  "books": [
+    {
+      "name": "B1 Aligned+Extreme | signal 15:00 \u2192 entry 15:05 OPEN \u2192 exit next 14:00 OPEN",
+      "decision_clock": "15:00",
+      "exit_clock": "14:00",
+      "n": 316,
+      "wr": 0.728,
+      "mean_pts": 85.72,
+      "median_pts": 70.9,
+      "loss_mean": -79.56,
+      "win_mean": 147.53,
+      "worst": -352.9,
+      "best": 914.0,
+      "end_capital": 3712310482.29,
+      "multiple": 371.231,
+      "total_pnl": 3702310482.29,
+      "max_dd": 0.1702,
+      "train": {
+        "n": 206,
+        "wr": 0.723,
+        "mean_pts": 69.67,
+        "pnl": 233754707.4
+      },
+      "test": {
+        "n": 110,
+        "wr": 0.736,
+        "mean_pts": 115.79,
+        "pnl": 3468555774.89
+      },
+      "checks": {
+        "entry_after_signal": true,
+        "buy_entry_open_plus_slip": true,
+        "sell_entry_open_minus_slip": true,
+        "buy_exit_open_minus_slip": true,
+        "sell_exit_open_plus_slip": true,
+        "buy_pcr_le_0_10": true,
+        "sell_pcr_ge_0_90": true,
+        "violations": 0
+      },
+      "n_buy": 140,
+      "n_sell": 176
+    },
+    {
+      "name": "B2 Aligned+Extreme | signal 14:00 \u2192 entry 14:05 OPEN \u2192 exit next 14:00 OPEN",
+      "decision_clock": "14:00",
+      "exit_clock": "14:00",
+      "n": 306,
+      "wr": 0.775,
+      "mean_pts": 99.08,
+      "median_pts": 86.65,
+      "loss_mean": -83.8,
+      "win_mean": 152.32,
+      "worst": -340.0,
+      "best": 901.95,
+      "end_capital": 8154173906.56,
+      "multiple": 815.417,
+      "total_pnl": 8144173906.56,
+      "max_dd": 0.1324,
+      "train": {
+        "n": 200,
+        "wr": 0.77,
+        "mean_pts": 87.39,
+        "pnl": 505618203.06
+      },
+      "test": {
+        "n": 106,
+        "wr": 0.783,
+        "mean_pts": 121.15,
+        "pnl": 7638555703.5
+      },
+      "checks": {
+        "entry_after_signal": true,
+        "buy_entry_open_plus_slip": true,
+        "sell_entry_open_minus_slip": true,
+        "buy_exit_open_minus_slip": true,
+        "sell_exit_open_plus_slip": true,
+        "buy_pcr_le_0_10": true,
+        "sell_pcr_ge_0_90": true,
+        "violations": 0
+      },
+      "n_buy": 138,
+      "n_sell": 168
+    }
+  ]
+}

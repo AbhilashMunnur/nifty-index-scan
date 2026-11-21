@@ -1,0 +1,152 @@
+{
+  "generated_at": "2026-11-20T20:40:09",
+  "workbook": "architect-TRIPLE-plus-FILLER-10cr-FIXED-CAP1000-MONTHLY.xlsx",
+  "filler_band": [
+    0.25,
+    0.75
+  ],
+  "scan": [
+    {
+      "lo": 0.25,
+      "hi": 0.75,
+      "n": 161,
+      "wr": 0.5963,
+      "mean_pts": 66.17,
+      "n_BankNifty": 45,
+      "mean_BankNifty": 87.89,
+      "n_Sensex": 28,
+      "mean_Sensex": 107.73,
+      "n_Nifty": 88,
+      "mean_Nifty": 41.83
+    },
+    {
+      "lo": 0.3,
+      "hi": 0.7,
+      "n": 246,
+      "wr": 0.5691,
+      "mean_pts": 65.84,
+      "n_BankNifty": 80,
+      "mean_BankNifty": 73.09,
+      "n_Sensex": 48,
+      "mean_Sensex": 147.25,
+      "n_Nifty": 118,
+      "mean_Nifty": 27.8
+    },
+    {
+      "lo": 0.35,
+      "hi": 0.65,
+      "n": 324,
+      "wr": 0.5463,
+      "mean_pts": 61.03,
+      "n_BankNifty": 129,
+      "mean_BankNifty": 61.91,
+      "n_Sensex": 60,
+      "mean_Sensex": 196.27,
+      "n_Nifty": 135,
+      "mean_Nifty": 0.08
+    },
+    {
+      "lo": 0.4,
+      "hi": 0.6,
+      "n": 412,
+      "wr": 0.5097,
+      "mean_pts": 36.86,
+      "n_BankNifty": 174,
+      "mean_BankNifty": 19.63,
+      "n_Sensex": 83,
+      "mean_Sensex": 154.49,
+      "n_Nifty": 155,
+      "mean_Nifty": -6.79
+    }
+  ],
+  "start": 100000000.0,
+  "end": 2729625896.85,
+  "total_pnl": 2629625896.85,
+  "base_pnl": 2395012306.32,
+  "filler_pnl": 234613590.52,
+  "max_dd": 0.05,
+  "empty_after": 1309,
+  "empty_after_pct": 0.6692,
+  "yearly": [
+    {
+      "year": 2019,
+      "start_capital": 100000000.0,
+      "end_capital": 389088731.83,
+      "pnl": 289088731.83,
+      "pct": 289.0887,
+      "trades": 71,
+      "base": 55,
+      "filler": 16
+    },
+    {
+      "year": 2020,
+      "start_capital": 389088731.83,
+      "end_capital": 906374220.91,
+      "pnl": 517285489.08,
+      "pct": 517.2855,
+      "trades": 76,
+      "base": 60,
+      "filler": 16
+    },
+    {
+      "year": 2021,
+      "start_capital": 906374220.91,
+      "end_capital": 1374410779.45,
+      "pnl": 468036558.54,
+      "pct": 468.0366,
+      "trades": 74,
+      "base": 56,
+      "filler": 18
+    },
+    {
+      "year": 2022,
+      "start_capital": 1374410779.45,
+      "end_capital": 1715282321.62,
+      "pnl": 340871542.17,
+      "pct": 340.8715,
+      "trades": 73,
+      "base": 53,
+      "filler": 20
+    },
+    {
+      "year": 2023,
+      "start_capital": 1715282321.62,
+      "end_capital": 1962072759.87,
+      "pnl": 246790438.25,
+      "pct": 246.7904,
+      "trades": 78,
+      "base": 63,
+      "filler": 15
+    },
+    {
+      "year": 2024,
+      "start_capital": 1962072759.87,
+      "end_capital": 2287437492.86,
+      "pnl": 325364732.99,
+      "pct": 325.3647,
+      "trades": 112,
+      "base": 80,
+      "filler": 32
+    },
+    {
+      "year": 2025,
+      "start_capital": 2287437492.86,
+      "end_capital": 2565593279.7,
+      "pnl": 278155786.84,
+      "pct": 278.1558,
+      "trades": 90,
+      "base": 70,
+      "filler": 20
+    },
+    {
+      "year": 2026,
+      "start_capital": 2565593279.7,
+      "end_capital": 2729625896.85,
+      "pnl": 164032617.15,
+      "pct": 164.0326,
+      "trades": 73,
+      "base": 49,
+      "filler": 24
+    }
+  ]
+}

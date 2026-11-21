@@ -1,0 +1,507 @@
+{
+  "generated_at": "2026-11-20T00:40:08",
+  "start_capital": 10000000.0,
+  "capital_per_lot": 268518.0,
+  "lot": 65,
+  "workbook": "architect-v2-orb30-compounding-1cr-entry-exit.xlsx",
+  "books": [
+    {
+      "name": "ORB30 0.8% BASE",
+      "n_trades": 1791,
+      "end_capital": 8345462820.24,
+      "multiple": 834.546,
+      "max_dd": 0.3311,
+      "total_pnl": 8335462820.24,
+      "total_pct": 833.5463,
+      "yearly": {
+        "2019": {
+          "n": 225,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 16331292.27,
+          "absolute_pnl": 6331292.27,
+          "pct_return": 0.6331,
+          "wr": 0.578,
+          "mean_pts": 11.65
+        },
+        "2020": {
+          "n": 228,
+          "year_start_capital": 16331292.27,
+          "year_end_capital": 53307071.45,
+          "absolute_pnl": 36975779.18,
+          "pct_return": 2.2641,
+          "wr": 0.539,
+          "mean_pts": 24.81
+        },
+        "2021": {
+          "n": 236,
+          "year_start_capital": 53307071.45,
+          "year_end_capital": 119701185.05,
+          "absolute_pnl": 66394113.6,
+          "pct_return": 1.2455,
+          "wr": 0.568,
+          "mean_pts": 18.19
+        },
+        "2022": {
+          "n": 236,
+          "year_start_capital": 119701185.05,
+          "year_end_capital": 384240269.31,
+          "absolute_pnl": 264539084.26,
+          "pct_return": 2.21,
+          "wr": 0.61,
+          "mean_pts": 24.78
+        },
+        "2023": {
+          "n": 219,
+          "year_start_capital": 384240269.31,
+          "year_end_capital": 498321410.89,
+          "absolute_pnl": 114081141.59,
+          "pct_return": 0.2969,
+          "wr": 0.566,
+          "mean_pts": 9.19
+        },
+        "2024": {
+          "n": 232,
+          "year_start_capital": 498321410.89,
+          "year_end_capital": 2419916507.64,
+          "absolute_pnl": 1921595096.75,
+          "pct_return": 3.8561,
+          "wr": 0.612,
+          "mean_pts": 35.32
+        },
+        "2025": {
+          "n": 225,
+          "year_start_capital": 2419916507.64,
+          "year_end_capital": 5112677341.04,
+          "absolute_pnl": 2692760833.4,
+          "pct_return": 1.1127,
+          "wr": 0.591,
+          "mean_pts": 21.83
+        },
+        "2026": {
+          "n": 190,
+          "year_start_capital": 5112677341.04,
+          "year_end_capital": 8345462820.24,
+          "absolute_pnl": 3232785479.2,
+          "pct_return": 0.6323,
+          "wr": 0.558,
+          "mean_pts": 24.37
+        }
+      }
+    },
+    {
+      "name": "ORB30 0.8% PCR20-80",
+      "n_trades": 733,
+      "end_capital": 2609134642.98,
+      "multiple": 260.913,
+      "max_dd": 0.1999,
+      "total_pnl": 2599134642.98,
+      "total_pct": 259.9135,
+      "yearly": {
+        "2019": {
+          "n": 76,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 14027739.2,
+          "absolute_pnl": 4027739.2,
+          "pct_return": 0.4028,
+          "wr": 0.566,
+          "mean_pts": 21.48
+        },
+        "2020": {
+          "n": 99,
+          "year_start_capital": 14027739.2,
+          "year_end_capital": 39866167.46,
+          "absolute_pnl": 25838428.26,
+          "pct_return": 1.842,
+          "wr": 0.657,
+          "mean_pts": 47.64
+        },
+        "2021": {
+          "n": 96,
+          "year_start_capital": 39866167.46,
+          "year_end_capital": 87107419.91,
+          "absolute_pnl": 47241252.45,
+          "pct_return": 1.185,
+          "wr": 0.635,
+          "mean_pts": 38.32
+        },
+        "2022": {
+          "n": 91,
+          "year_start_capital": 87107419.91,
+          "year_end_capital": 168191646.13,
+          "absolute_pnl": 81084226.22,
+          "pct_return": 0.9309,
+          "wr": 0.681,
+          "mean_pts": 34.37
+        },
+        "2023": {
+          "n": 98,
+          "year_start_capital": 168191646.13,
+          "year_end_capital": 199871358.29,
+          "absolute_pnl": 31679712.16,
+          "pct_return": 0.1884,
+          "wr": 0.582,
+          "mean_pts": 11.9
+        },
+        "2024": {
+          "n": 97,
+          "year_start_capital": 199871358.29,
+          "year_end_capital": 832460044.53,
+          "absolute_pnl": 632588686.24,
+          "pct_return": 3.165,
+          "wr": 0.701,
+          "mean_pts": 69.21
+        },
+        "2025": {
+          "n": 88,
+          "year_start_capital": 832460044.53,
+          "year_end_capital": 1974659824.7,
+          "absolute_pnl": 1142199780.18,
+          "pct_return": 1.3721,
+          "wr": 0.682,
+          "mean_pts": 48.91
+        },
+        "2026": {
+          "n": 88,
+          "year_start_capital": 1974659824.7,
+          "year_end_capital": 2609134642.98,
+          "absolute_pnl": 634474818.28,
+          "pct_return": 0.3213,
+          "wr": 0.568,
+          "mean_pts": 26.28
+        }
+      }
+    },
+    {
+      "name": "ORB30 0.8% SkipPCRmid",
+      "n_trades": 1489,
+      "end_capital": 12459225741.28,
+      "multiple": 1245.923,
+      "max_dd": 0.387,
+      "total_pnl": 12449225741.28,
+      "total_pct": 1244.9226,
+      "yearly": {
+        "2019": {
+          "n": 188,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 17259518.71,
+          "absolute_pnl": 7259518.71,
+          "pct_return": 0.726,
+          "wr": 0.601,
+          "mean_pts": 14.65
+        },
+        "2020": {
+          "n": 194,
+          "year_start_capital": 17259518.71,
+          "year_end_capital": 53256826.21,
+          "absolute_pnl": 35997307.5,
+          "pct_return": 2.0856,
+          "wr": 0.562,
+          "mean_pts": 27.5
+        },
+        "2021": {
+          "n": 191,
+          "year_start_capital": 53256826.21,
+          "year_end_capital": 115158791.24,
+          "absolute_pnl": 61901965.03,
+          "pct_return": 1.1623,
+          "wr": 0.571,
+          "mean_pts": 20.85
+        },
+        "2022": {
+          "n": 197,
+          "year_start_capital": 115158791.24,
+          "year_end_capital": 369880110.08,
+          "absolute_pnl": 254721318.84,
+          "pct_return": 2.2119,
+          "wr": 0.64,
+          "mean_pts": 28.7
+        },
+        "2023": {
+          "n": 181,
+          "year_start_capital": 369880110.08,
+          "year_end_capital": 582824283.7,
+          "absolute_pnl": 212944173.62,
+          "pct_return": 0.5757,
+          "wr": 0.619,
+          "mean_pts": 14.69
+        },
+        "2024": {
+          "n": 194,
+          "year_start_capital": 582824283.7,
+          "year_end_capital": 3105189654.07,
+          "absolute_pnl": 2522365370.37,
+          "pct_return": 4.3278,
+          "wr": 0.639,
+          "mean_pts": 42.99
+        },
+        "2025": {
+          "n": 181,
+          "year_start_capital": 3105189654.07,
+          "year_end_capital": 7815404431.04,
+          "absolute_pnl": 4710214776.97,
+          "pct_return": 1.5169,
+          "wr": 0.63,
+          "mean_pts": 29.22
+        },
+        "2026": {
+          "n": 163,
+          "year_start_capital": 7815404431.04,
+          "year_end_capital": 12459225741.28,
+          "absolute_pnl": 4643821310.23,
+          "pct_return": 0.5942,
+          "wr": 0.564,
+          "mean_pts": 25.48
+        }
+      }
+    },
+    {
+      "name": "ORB30 0.5% BASE",
+      "n_trades": 1791,
+      "end_capital": 8258522541.96,
+      "multiple": 825.852,
+      "max_dd": 0.3307,
+      "total_pnl": 8248522541.96,
+      "total_pct": 824.8523,
+      "yearly": {
+        "2019": {
+          "n": 225,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 18422402.72,
+          "absolute_pnl": 8422402.72,
+          "pct_return": 0.8422,
+          "wr": 0.551,
+          "mean_pts": 13.77
+        },
+        "2020": {
+          "n": 228,
+          "year_start_capital": 18422402.72,
+          "year_end_capital": 65086998.27,
+          "absolute_pnl": 46664595.55,
+          "pct_return": 2.533,
+          "wr": 0.509,
+          "mean_pts": 26.16
+        },
+        "2021": {
+          "n": 236,
+          "year_start_capital": 65086998.27,
+          "year_end_capital": 157181002.4,
+          "absolute_pnl": 92094004.13,
+          "pct_return": 1.4149,
+          "wr": 0.538,
+          "mean_pts": 19.3
+        },
+        "2022": {
+          "n": 236,
+          "year_start_capital": 157181002.4,
+          "year_end_capital": 404709195.5,
+          "absolute_pnl": 247528193.11,
+          "pct_return": 1.5748,
+          "wr": 0.547,
+          "mean_pts": 20.71
+        },
+        "2023": {
+          "n": 219,
+          "year_start_capital": 404709195.5,
+          "year_end_capital": 534927020.53,
+          "absolute_pnl": 130217825.03,
+          "pct_return": 0.3218,
+          "wr": 0.553,
+          "mean_pts": 9.48
+        },
+        "2024": {
+          "n": 232,
+          "year_start_capital": 534927020.53,
+          "year_end_capital": 2612215622.3,
+          "absolute_pnl": 2077288601.77,
+          "pct_return": 3.8833,
+          "wr": 0.595,
+          "mean_pts": 35.25
+        },
+        "2025": {
+          "n": 225,
+          "year_start_capital": 2612215622.3,
+          "year_end_capital": 6218410117.8,
+          "absolute_pnl": 3606194495.5,
+          "pct_return": 1.3805,
+          "wr": 0.582,
+          "mean_pts": 23.84
+        },
+        "2026": {
+          "n": 190,
+          "year_start_capital": 6218410117.8,
+          "year_end_capital": 8258522541.96,
+          "absolute_pnl": 2040112424.16,
+          "pct_return": 0.3281,
+          "wr": 0.521,
+          "mean_pts": 19.69
+        }
+      }
+    },
+    {
+      "name": "ORB30 0.5% PCR20-80",
+      "n_trades": 733,
+      "end_capital": 2700580464.25,
+      "multiple": 270.058,
+      "max_dd": 0.2242,
+      "total_pnl": 2690580464.25,
+      "total_pct": 269.058,
+      "yearly": {
+        "2019": {
+          "n": 76,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 14558433.15,
+          "absolute_pnl": 4558433.15,
+          "pct_return": 0.4558,
+          "wr": 0.539,
+          "mean_pts": 23.45
+        },
+        "2020": {
+          "n": 99,
+          "year_start_capital": 14558433.15,
+          "year_end_capital": 42504427.92,
+          "absolute_pnl": 27945994.77,
+          "pct_return": 1.9196,
+          "wr": 0.626,
+          "mean_pts": 48.66
+        },
+        "2021": {
+          "n": 96,
+          "year_start_capital": 42504427.92,
+          "year_end_capital": 95055773.18,
+          "absolute_pnl": 52551345.27,
+          "pct_return": 1.2364,
+          "wr": 0.594,
+          "mean_pts": 39.22
+        },
+        "2022": {
+          "n": 91,
+          "year_start_capital": 95055773.18,
+          "year_end_capital": 152061768.68,
+          "absolute_pnl": 57005995.5,
+          "pct_return": 0.5997,
+          "wr": 0.571,
+          "mean_pts": 25.7
+        },
+        "2023": {
+          "n": 98,
+          "year_start_capital": 152061768.68,
+          "year_end_capital": 196420382.49,
+          "absolute_pnl": 44358613.81,
+          "pct_return": 0.2917,
+          "wr": 0.571,
+          "mean_pts": 15.27
+        },
+        "2024": {
+          "n": 97,
+          "year_start_capital": 196420382.49,
+          "year_end_capital": 909152474.57,
+          "absolute_pnl": 712732092.09,
+          "pct_return": 3.6286,
+          "wr": 0.691,
+          "mean_pts": 73.42
+        },
+        "2025": {
+          "n": 88,
+          "year_start_capital": 909152474.57,
+          "year_end_capital": 2132508340.46,
+          "absolute_pnl": 1223355865.89,
+          "pct_return": 1.3456,
+          "wr": 0.67,
+          "mean_pts": 48.3
+        },
+        "2026": {
+          "n": 88,
+          "year_start_capital": 2132508340.46,
+          "year_end_capital": 2700580464.25,
+          "absolute_pnl": 568072123.79,
+          "pct_return": 0.2664,
+          "wr": 0.534,
+          "mean_pts": 23.94
+        }
+      }
+    },
+    {
+      "name": "ORB30 0.5% SkipPCRmid",
+      "n_trades": 1489,
+      "end_capital": 11108099613.46,
+      "multiple": 1110.81,
+      "max_dd": 0.381,
+      "total_pnl": 11098099613.46,
+      "total_pct": 1109.81,
+      "yearly": {
+        "2019": {
+          "n": 188,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 18672439.88,
+          "absolute_pnl": 8672439.88,
+          "pct_return": 0.8672,
+          "wr": 0.574,
+          "mean_pts": 16.35
+        },
+        "2020": {
+          "n": 194,
+          "year_start_capital": 18672439.88,
+          "year_end_capital": 60184054.11,
+          "absolute_pnl": 41511614.23,
+          "pct_return": 2.2231,
+          "wr": 0.531,
+          "mean_pts": 28.29
+        },
+        "2021": {
+          "n": 191,
+          "year_start_capital": 60184054.11,
+          "year_end_capital": 131580661.75,
+          "absolute_pnl": 71396607.64,
+          "pct_return": 1.1863,
+          "wr": 0.534,
+          "mean_pts": 20.9
+        },
+        "2022": {
+          "n": 197,
+          "year_start_capital": 131580661.75,
+          "year_end_capital": 313365709.46,
+          "absolute_pnl": 181785047.72,
+          "pct_return": 1.3815,
+          "wr": 0.574,
+          "mean_pts": 22.26
+        },
+        "2023": {
+          "n": 181,
+          "year_start_capital": 313365709.46,
+          "year_end_capital": 522882809.6,
+          "absolute_pnl": 209517100.14,
+          "pct_return": 0.6686,
+          "wr": 0.608,
+          "mean_pts": 15.91
+        },
+        "2024": {
+          "n": 194,
+          "year_start_capital": 522882809.6,
+          "year_end_capital": 3198543953.27,
+          "absolute_pnl": 2675661143.67,
+          "pct_return": 5.1171,
+          "wr": 0.634,
+          "mean_pts": 45.74
+        },
+        "2025": {
+          "n": 181,
+          "year_start_capital": 3198543953.27,
+          "year_end_capital": 8506727391.51,
+          "absolute_pnl": 5308183438.25,
+          "pct_return": 1.6596,
+          "wr": 0.619,
+          "mean_pts": 30.32
+        },
+        "2026": {
+          "n": 163,
+          "year_start_capital": 8506727391.51,
+          "year_end_capital": 11108099613.46,
+          "absolute_pnl": 2601372221.95,
+          "pct_return": 0.3058,
+          "wr": 0.521,
+          "mean_pts": 20.21
+        }
+      }
+    }
+  ]
+}

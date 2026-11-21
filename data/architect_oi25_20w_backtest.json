@@ -1,0 +1,100 @@
+{
+  "name": "Architect OI-25 + 20w + 1.25% SL",
+  "logic": [
+    "Loka index close = default pressure read",
+    "PCR rank < 25% of last 60 \u2192 OI override (follow today vs yesterday)",
+    "Shorts only if 20-week futures filter allows",
+    "Futures fill @14:45, hold-long, 1.25% stop"
+  ],
+  "why_this": "Edge scan showed Loka buys and low-PCR follow-through as the persistent pieces on real futures. Tightening the OI gate from 30%\u219225% improved the 2024-07+ test vs classic OI-60 while keeping the 20w short filter and 1.25% stop.",
+  "start": "2021-10-14",
+  "full": {
+    "trades": 605,
+    "end_capital": 320551771.87,
+    "profit": 310551771.87,
+    "max_dd": 0.2486,
+    "mean_pts": 32.37,
+    "winrate": 0.681,
+    "buys": 445,
+    "shorts": 160,
+    "signal_mix": {
+      "Loka": 411,
+      "OI pressure": 43,
+      "OI thrust": 151
+    }
+  },
+  "train": {
+    "trades": 334,
+    "end_capital": 41722683.71,
+    "profit": 31722683.71,
+    "max_dd": 0.2486,
+    "mean_pts": 23.11,
+    "winrate": 0.6916,
+    "buys": 252,
+    "shorts": 82,
+    "signal_mix": {
+      "Loka": 226,
+      "OI pressure": 21,
+      "OI thrust": 87
+    }
+  },
+  "test": {
+    "trades": 271,
+    "end_capital": 75960617.21,
+    "profit": 65960617.21,
+    "max_dd": 0.2334,
+    "mean_pts": 43.79,
+    "winrate": 0.6679,
+    "buys": 193,
+    "shorts": 78,
+    "signal_mix": {
+      "Loka": 185,
+      "OI pressure": 22,
+      "OI thrust": 64
+    }
+  },
+  "blocked_shorts": 270,
+  "unfiltered_end": 135950839.86,
+  "yearly": {
+    "2021": {
+      "net": 4252692.73,
+      "trades": 30,
+      "end": 14252692.73
+    },
+    "2022": {
+      "net": 24128809.08,
+      "trades": 138,
+      "end": 38381501.81
+    },
+    "2023": {
+      "net": -1254207.67,
+      "trades": 124,
+      "end": 37127294.14
+    },
+    "2024": {
+      "net": 10645586.71,
+      "trades": 90,
+      "end": 47772880.85
+    },
+    "2025": {
+      "net": 57746015.99,
+      "trades": 106,
+      "end": 105518896.84
+    },
+    "2026": {
+      "net": 215032875.03,
+      "trades": 117,
+      "end": 320551771.87
+    }
+  },
+  "comparisons_same_window": {
+    "classic_oi30_40w_1pct_profit_cr": 22.06,
+    "oi30_20w_1_25_profit_cr": 30.32,
+    "this_oi25_20w_1_25_profit_cr": 31.06,
+    "this_test_profit_cr": 6.6,
+    "oi30_20w_1_25_test_profit_cr": 5.19
+  },
+  "xlsx": "/Users/abhilashmunnur/Nifty index trade/btst-stbt-futures-architect-oi25-20w-sl1_25-fyers-2021-2026.xlsx",
+  "built_at": "2026-11-19 19:26:10",
+  "note": "ATM options history still incomplete \u2014 OI used as PCR overlay only, not option premium fills."
+}

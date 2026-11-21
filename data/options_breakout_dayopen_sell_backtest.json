@@ -1,0 +1,284 @@
+{
+  "rule": "Day-open break \u2192 sell opposite ATM option; 60% premium SL; EOD cover; front-week Dhan ATM",
+  "start_cap": 30000000.0,
+  "n_trades": 1233,
+  "mean_ret": 0.0969,
+  "winrate": 0.6723,
+  "profiles": {
+    "balanced": {
+      "margin_per_lot": 120000.0,
+      "margin_frac": 0.5,
+      "full_end": 1018898042.45,
+      "full_profit": 988898042.45,
+      "full_mult": 33.963,
+      "max_dd": 0.0538,
+      "yearly_fresh_3cr": {
+        "2021": {
+          "n": 55,
+          "end": 36128833.54,
+          "profit": 6128833.54,
+          "roe": 0.2043,
+          "max_dd": 0.0165,
+          "winrate": 0.7818,
+          "mean_pts": 12.77
+        },
+        "2022": {
+          "n": 247,
+          "end": 63881506.75,
+          "profit": 33881506.75,
+          "roe": 1.1294,
+          "max_dd": 0.0317,
+          "winrate": 0.6842,
+          "mean_pts": 11.58
+        },
+        "2023": {
+          "n": 245,
+          "end": 42224894.02,
+          "profit": 12224894.02,
+          "roe": 0.4075,
+          "max_dd": 0.0259,
+          "winrate": 0.6286,
+          "mean_pts": 5.34
+        },
+        "2024": {
+          "n": 247,
+          "end": 77042735.91,
+          "profit": 47042735.91,
+          "roe": 1.5681,
+          "max_dd": 0.0329,
+          "winrate": 0.7206,
+          "mean_pts": 14.49
+        },
+        "2025": {
+          "n": 248,
+          "end": 56039113.49,
+          "profit": 26039113.49,
+          "roe": 0.868,
+          "max_dd": 0.0363,
+          "winrate": 0.6008,
+          "mean_pts": 9.64
+        },
+        "2026": {
+          "n": 191,
+          "end": 58456086.0,
+          "profit": 28456086.0,
+          "roe": 0.9485,
+          "max_dd": 0.0537,
+          "winrate": 0.712,
+          "mean_pts": 13.37
+        }
+      },
+      "years_profit_ge_8cr": 0,
+      "years_roe_ge_1": 2
+    },
+    "conservative": {
+      "margin_per_lot": 150000.0,
+      "margin_frac": 0.4,
+      "full_end": 287971571.99,
+      "full_profit": 257971571.99,
+      "full_mult": 9.599,
+      "max_dd": 0.0347,
+      "yearly_fresh_3cr": {
+        "2021": {
+          "n": 55,
+          "end": 33797752.84,
+          "profit": 3797752.84,
+          "roe": 0.1266,
+          "max_dd": 0.0104,
+          "winrate": 0.7818,
+          "mean_pts": 12.77
+        },
+        "2022": {
+          "n": 247,
+          "end": 48664614.89,
+          "profit": 18664614.89,
+          "roe": 0.6222,
+          "max_dd": 0.0204,
+          "winrate": 0.6842,
+          "mean_pts": 11.58
+        },
+        "2023": {
+          "n": 245,
+          "end": 37350498.77,
+          "profit": 7350498.77,
+          "roe": 0.245,
+          "max_dd": 0.0165,
+          "winrate": 0.6286,
+          "mean_pts": 5.34
+        },
+        "2024": {
+          "n": 247,
+          "end": 54905526.1,
+          "profit": 24905526.1,
+          "roe": 0.8302,
+          "max_dd": 0.0211,
+          "winrate": 0.7206,
+          "mean_pts": 14.49
+        },
+        "2025": {
+          "n": 248,
+          "end": 44774281.35,
+          "profit": 14774281.35,
+          "roe": 0.4925,
+          "max_dd": 0.0233,
+          "winrate": 0.6008,
+          "mean_pts": 9.64
+        },
+        "2026": {
+          "n": 191,
+          "end": 45999276.42,
+          "profit": 15999276.42,
+          "roe": 0.5333,
+          "max_dd": 0.0346,
+          "winrate": 0.712,
+          "mean_pts": 13.37
+        }
+      },
+      "years_profit_ge_8cr": 0,
+      "years_roe_ge_1": 0
+    },
+    "aggressive": {
+      "margin_per_lot": 100000.0,
+      "margin_frac": 0.7,
+      "full_end": 10783343450.33,
+      "full_profit": 10753343450.33,
+      "full_mult": 359.445,
+      "max_dd": 0.0892,
+      "yearly_fresh_3cr": {
+        "2021": {
+          "n": 55,
+          "end": 40957806.49,
+          "profit": 10957806.49,
+          "roe": 0.3653,
+          "max_dd": 0.0277,
+          "winrate": 0.7818,
+          "mean_pts": 12.77
+        },
+        "2022": {
+          "n": 247,
+          "end": 106275456.26,
+          "profit": 76275456.26,
+          "roe": 2.5425,
+          "max_dd": 0.0531,
+          "winrate": 0.6842,
+          "mean_pts": 11.58
+        },
+        "2023": {
+          "n": 245,
+          "end": 53128955.83,
+          "profit": 23128955.83,
+          "roe": 0.771,
+          "max_dd": 0.0435,
+          "winrate": 0.6286,
+          "mean_pts": 5.34
+        },
+        "2024": {
+          "n": 247,
+          "end": 144707149.69,
+          "profit": 114707149.69,
+          "roe": 3.8236,
+          "max_dd": 0.0553,
+          "winrate": 0.7206,
+          "mean_pts": 14.49
+        },
+        "2025": {
+          "n": 248,
+          "end": 85137860.78,
+          "profit": 55137860.78,
+          "roe": 1.8379,
+          "max_dd": 0.0605,
+          "winrate": 0.6008,
+          "mean_pts": 9.64
+        },
+        "2026": {
+          "n": 191,
+          "end": 91312566.46,
+          "profit": 61312566.46,
+          "roe": 2.0438,
+          "max_dd": 0.089,
+          "winrate": 0.712,
+          "mean_pts": 13.37
+        }
+      },
+      "years_profit_ge_8cr": 1,
+      "years_roe_ge_1": 4
+    },
+    "very_aggressive": {
+      "margin_per_lot": 80000.0,
+      "margin_frac": 0.7,
+      "full_end": 45476327864.34,
+      "full_profit": 45446327864.34,
+      "full_mult": 1515.878,
+      "max_dd": 0.1104,
+      "yearly_fresh_3cr": {
+        "2021": {
+          "n": 55,
+          "end": 44221832.39,
+          "profit": 14221832.39,
+          "roe": 0.4741,
+          "max_dd": 0.0346,
+          "winrate": 0.7818,
+          "mean_pts": 12.77
+        },
+        "2022": {
+          "n": 247,
+          "end": 145203609.3,
+          "profit": 115203609.3,
+          "roe": 3.8401,
+          "max_dd": 0.0661,
+          "winrate": 0.6842,
+          "mean_pts": 11.58
+        },
+        "2023": {
+          "n": 245,
+          "end": 61123341.01,
+          "profit": 31123341.01,
+          "roe": 1.0374,
+          "max_dd": 0.0544,
+          "winrate": 0.6286,
+          "mean_pts": 5.34
+        },
+        "2024": {
+          "n": 247,
+          "end": 212561471.57,
+          "profit": 182561471.57,
+          "roe": 6.0854,
+          "max_dd": 0.0691,
+          "winrate": 0.7206,
+          "mean_pts": 14.49
+        },
+        "2025": {
+          "n": 248,
+          "end": 109857007.63,
+          "profit": 79857007.63,
+          "roe": 2.6619,
+          "max_dd": 0.0755,
+          "winrate": 0.6008,
+          "mean_pts": 9.64
+        },
+        "2026": {
+          "n": 191,
+          "end": 119793548.84,
+          "profit": 89793548.84,
+          "roe": 2.9931,
+          "max_dd": 0.1104,
+          "winrate": 0.712,
+          "mean_pts": 13.37
+        }
+      },
+      "years_profit_ge_8cr": 3,
+      "years_roe_ge_1": 5
+    }
+  },
+  "note": "Option BUY breakouts had no durable train+test edge on this data. Anecdotal \u20b98 Cr/yr on \u20b93 Cr only appears under aggressive margin assumptions. No 5m bars \u2014 15m day-open / ORB used as proxy.",
+  "train": {
+    "n": 669,
+    "mean_ret": 0.09,
+    "winrate": 0.6771
+  },
+  "test": {
+    "n": 564,
+    "mean_ret": 0.105,
+    "winrate": 0.6667
+  }
+}

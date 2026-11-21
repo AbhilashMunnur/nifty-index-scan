@@ -1,0 +1,204 @@
+{
+  "generated_at": "2026-11-20T01:24:52",
+  "workbook": "architect-v3-top2-BTST-PCR20-compounding-1cr-VERIFIED.xlsx",
+  "start_capital": 10000000.0,
+  "price_discipline": {
+    "bar_label": "start time",
+    "signal": "index close of decision bar",
+    "entry": "futures OPEN of first bar after decision bar",
+    "exit": "futures OPEN at/after exit clock next session",
+    "slip": 2.0
+  },
+  "books": [
+    {
+      "name": "#1 BTST PCR20 | signal 15:00 close vs open \u2192 entry next OPEN \u2192 exit next 14:00 OPEN",
+      "decision_clock": "15:00",
+      "exit_clock": "14:00",
+      "n_trades": 791,
+      "wr": 0.578,
+      "mean_pts": 28.7,
+      "end_capital": 538243394.65,
+      "multiple": 53.824,
+      "total_pnl": 528243394.65,
+      "max_dd": 0.5396,
+      "yearly": {
+        "2019": {
+          "n": 82,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 8730367.62,
+          "absolute_pnl": -1269632.38,
+          "pct_return": -0.127,
+          "wr": 0.512,
+          "mean_pts": -4.31
+        },
+        "2020": {
+          "n": 109,
+          "year_start_capital": 8730367.62,
+          "year_end_capital": 7336235.18,
+          "absolute_pnl": -1394132.44,
+          "pct_return": -0.1597,
+          "wr": 0.56,
+          "mean_pts": -1.93
+        },
+        "2021": {
+          "n": 102,
+          "year_start_capital": 7336235.18,
+          "year_end_capital": 18120428.88,
+          "absolute_pnl": 10784193.7,
+          "pct_return": 1.47,
+          "wr": 0.667,
+          "mean_pts": 43.1
+        },
+        "2022": {
+          "n": 105,
+          "year_start_capital": 18120428.88,
+          "year_end_capital": 36741542.91,
+          "absolute_pnl": 18621114.03,
+          "pct_return": 1.0276,
+          "wr": 0.61,
+          "mean_pts": 34.53
+        },
+        "2023": {
+          "n": 93,
+          "year_start_capital": 36741542.91,
+          "year_end_capital": 49069173.09,
+          "absolute_pnl": 12327630.18,
+          "pct_return": 0.3355,
+          "wr": 0.516,
+          "mean_pts": 18.1
+        },
+        "2024": {
+          "n": 103,
+          "year_start_capital": 49069173.09,
+          "year_end_capital": 90071183.84,
+          "absolute_pnl": 41002010.75,
+          "pct_return": 0.8356,
+          "wr": 0.524,
+          "mean_pts": 32.81
+        },
+        "2025": {
+          "n": 105,
+          "year_start_capital": 90071183.84,
+          "year_end_capital": 392103189.46,
+          "absolute_pnl": 302032005.62,
+          "pct_return": 3.3533,
+          "wr": 0.629,
+          "mean_pts": 68.64
+        },
+        "2026": {
+          "n": 92,
+          "year_start_capital": 392103189.46,
+          "year_end_capital": 538243394.65,
+          "absolute_pnl": 146140205.19,
+          "pct_return": 0.3727,
+          "wr": 0.587,
+          "mean_pts": 32.35
+        }
+      },
+      "checks": {
+        "entry_after_signal_violations": 0,
+        "skipped_no_entry_bar": 0,
+        "entry_buy_is_open_plus_slip": true,
+        "entry_sell_is_open_minus_slip": true,
+        "exit_buy_is_open_minus_slip": true,
+        "exit_sell_is_open_plus_slip": true
+      },
+      "violation_count": 0
+    },
+    {
+      "name": "#2 BTST PCR20 | signal 14:00 close vs open \u2192 entry next OPEN \u2192 exit next 14:00 OPEN",
+      "decision_clock": "14:00",
+      "exit_clock": "14:00",
+      "n_trades": 790,
+      "wr": 0.572,
+      "mean_pts": 31.07,
+      "end_capital": 754867706.89,
+      "multiple": 75.487,
+      "total_pnl": 744867706.89,
+      "max_dd": 0.6206,
+      "yearly": {
+        "2019": {
+          "n": 82,
+          "year_start_capital": 10000000.0,
+          "year_end_capital": 10287213.55,
+          "absolute_pnl": 287213.55,
+          "pct_return": 0.0287,
+          "wr": 0.5,
+          "mean_pts": 4.34
+        },
+        "2020": {
+          "n": 109,
+          "year_start_capital": 10287213.55,
+          "year_end_capital": 11080923.13,
+          "absolute_pnl": 793709.58,
+          "pct_return": 0.0772,
+          "wr": 0.56,
+          "mean_pts": 8.22
+        },
+        "2021": {
+          "n": 102,
+          "year_start_capital": 11080923.13,
+          "year_end_capital": 30331037.62,
+          "absolute_pnl": 19250114.49,
+          "pct_return": 1.7372,
+          "wr": 0.637,
+          "mean_pts": 47.5
+        },
+        "2022": {
+          "n": 105,
+          "year_start_capital": 30331037.62,
+          "year_end_capital": 46341677.07,
+          "absolute_pnl": 16010639.45,
+          "pct_return": 0.5279,
+          "wr": 0.543,
+          "mean_pts": 23.82
+        },
+        "2023": {
+          "n": 92,
+          "year_start_capital": 46341677.07,
+          "year_end_capital": 79688782.28,
+          "absolute_pnl": 33347105.21,
+          "pct_return": 0.7196,
+          "wr": 0.576,
+          "mean_pts": 29.87
+        },
+        "2024": {
+          "n": 103,
+          "year_start_capital": 79688782.28,
+          "year_end_capital": 134093911.08,
+          "absolute_pnl": 54405128.8,
+          "pct_return": 0.6827,
+          "wr": 0.573,
+          "mean_pts": 30.13
+        },
+        "2025": {
+          "n": 105,
+          "year_start_capital": 134093911.08,
+          "year_end_capital": 650149286.69,
+          "absolute_pnl": 516055375.61,
+          "pct_return": 3.8485,
+          "wr": 0.6,
+          "mean_pts": 73.2
+        },
+        "2026": {
+          "n": 92,
+          "year_start_capital": 650149286.69,
+          "year_end_capital": 754867706.89,
+          "absolute_pnl": 104718420.2,
+          "pct_return": 0.1611,
+          "wr": 0.576,
+          "mean_pts": 26.21
+        }
+      },
+      "checks": {
+        "entry_after_signal_violations": 0,
+        "skipped_no_entry_bar": 0,
+        "entry_buy_is_open_plus_slip": true,
+        "entry_sell_is_open_minus_slip": true,
+        "exit_buy_is_open_minus_slip": true,
+        "exit_sell_is_open_plus_slip": true
+      },
+      "violation_count": 0
+    }
+  ]
+}

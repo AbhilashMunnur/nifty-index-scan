@@ -1,0 +1,56 @@
+{
+  "rule": "OI-25 + 20w + 1.25% SL on index side / futures fill",
+  "start": "2018-02-01",
+  "pcr_available_from": "2021-10-12",
+  "note": "Before PCR exists, choose_side falls back to Loka only.",
+  "pre_pcr": {
+    "n": 359,
+    "end_capital": 10365939.26,
+    "profit": 365939.26,
+    "max_dd": 0.4921,
+    "mean_pts": 3.69,
+    "winrate": 0.6212,
+    "longs": 254,
+    "shorts": 105,
+    "oi_signals": 0,
+    "loka_signals": 359
+  },
+  "from_2021_10_14_fresh": {
+    "n": 589,
+    "end_capital": 235404961.56,
+    "profit": 225404961.56,
+    "max_dd": 0.248,
+    "mean_pts": 30.92,
+    "winrate": 0.6825,
+    "longs": 445,
+    "shorts": 144,
+    "oi_signals": 191,
+    "loka_signals": 398
+  },
+  "full_2018": {
+    "n": 948,
+    "end_capital": 244689095.22,
+    "profit": 234689095.22,
+    "max_dd": 0.4921,
+    "mean_pts": 20.61,
+    "winrate": 0.6593,
+    "longs": 699,
+    "shorts": 249,
+    "oi_signals": 191,
+    "loka_signals": 757
+  },
+  "unfiltered": {
+    "n": 1437,
+    "end_capital": 55039071.49,
+    "profit": 45039071.49,
+    "max_dd": 0.0,
+    "mean_pts": 11.49,
+    "winrate": 0.5978,
+    "longs": 699,
+    "shorts": 738,
+    "oi_signals": 299,
+    "loka_signals": 1138
+  },
+  "blocked_shorts": 489,
+  "sheet": "btst-stbt-futures-architect-oi25-20w-sl1_25-fyers-2018-2026.xlsx"
+}

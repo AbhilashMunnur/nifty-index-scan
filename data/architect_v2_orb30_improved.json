@@ -1,0 +1,226 @@
+{
+  "generated_at": "2026-11-20T00:28:20",
+  "loss_pattern": "Morning ATM PCR mid-ranks produce mushy ORB breaks; extremes are directional.",
+  "filter": "60-day PCR rank at ~09:30 <=0.20 or >=0.80",
+  "recommended": "ORB30 SL0.8 PCR20-80",
+  "alt_smoother_dd": "ORB30 SL0.5 PCR20-80",
+  "more_trades_compromise": "ORB30 SL0.8 SkipPCRmid (skip only 40-60)",
+  "books": [
+    {
+      "name": "ORB30 SL0.8 BASE",
+      "all": {
+        "n": 1791,
+        "wr": 0.578,
+        "mean_pts": 21.31,
+        "sum_net": 73067751.14,
+        "roe": 7.3068,
+        "max_dd": 0.1107,
+        "avg_loss_pts": -74.68,
+        "avg_win_pts": 86.44
+      },
+      "train": {
+        "n": 1257,
+        "wr": 0.582,
+        "mean_pts": 21.17,
+        "sum_net": 55766852.57,
+        "roe": 5.5767,
+        "max_dd": 0.1107,
+        "avg_loss_pts": -66.77,
+        "avg_win_pts": 82.21
+      },
+      "test": {
+        "n": 534,
+        "wr": 0.569,
+        "mean_pts": 21.64,
+        "sum_net": 17300898.57,
+        "roe": 1.7301,
+        "max_dd": 0.1491,
+        "avg_loss_pts": -94.15,
+        "avg_win_pts": 96.11
+      },
+      "yearly": {
+        "2019": 0.5268,
+        "2020": 1.2581,
+        "2021": 0.8805,
+        "2022": 1.2433,
+        "2023": 0.2984,
+        "2024": 1.6934,
+        "2025": 0.8262,
+        "2026": 0.5801
+      }
+    },
+    {
+      "name": "ORB30 SL0.8 PCR20-80",
+      "all": {
+        "n": 760,
+        "wr": 0.637,
+        "mean_pts": 38.05,
+        "sum_net": 61622855.6,
+        "roe": 6.1623,
+        "max_dd": 0.0663,
+        "avg_loss_pts": -83.05,
+        "avg_win_pts": 102.13
+      },
+      "train": {
+        "n": 534,
+        "wr": 0.637,
+        "mean_pts": 36.46,
+        "sum_net": 43330801.83,
+        "roe": 4.3331,
+        "max_dd": 0.0663,
+        "avg_loss_pts": -73.43,
+        "avg_win_pts": 97.66
+      },
+      "test": {
+        "n": 226,
+        "wr": 0.637,
+        "mean_pts": 41.78,
+        "sum_net": 18292053.77,
+        "roe": 1.8292,
+        "max_dd": 0.081,
+        "avg_loss_pts": -108.56,
+        "avg_win_pts": 112.07
+      },
+      "yearly": {
+        "2019": 0.3692,
+        "2020": 1.2411,
+        "2021": 0.8225,
+        "2022": 0.6894,
+        "2023": 0.2495,
+        "2024": 1.4981,
+        "2025": 0.896,
+        "2026": 0.3964
+      }
+    },
+    {
+      "name": "ORB30 SL0.8 SkipPCRmid",
+      "all": {
+        "n": 1489,
+        "wr": 0.604,
+        "mean_pts": 25.63,
+        "sum_net": 76219422.79,
+        "roe": 7.6219,
+        "max_dd": 0.0856,
+        "avg_loss_pts": -75.81,
+        "avg_win_pts": 87.84
+      },
+      "train": {
+        "n": 1043,
+        "wr": 0.608,
+        "mean_pts": 25.21,
+        "sum_net": 56419896.8,
+        "roe": 5.642,
+        "max_dd": 0.0856,
+        "avg_loss_pts": -66.84,
+        "avg_win_pts": 82.93
+      },
+      "test": {
+        "n": 446,
+        "wr": 0.594,
+        "mean_pts": 26.63,
+        "sum_net": 19799525.99,
+        "roe": 1.98,
+        "max_dd": 0.1634,
+        "avg_loss_pts": -97.79,
+        "avg_win_pts": 98.99
+      },
+      "yearly": {
+        "2019": 0.576,
+        "2020": 1.1956,
+        "2021": 0.8345,
+        "2022": 1.2233,
+        "2023": 0.4866,
+        "2024": 1.7736,
+        "2025": 0.9861,
+        "2026": 0.5462
+      }
+    },
+    {
+      "name": "ORB30 SL0.5 BASE",
+      "all": {
+        "n": 1791,
+        "wr": 0.55,
+        "mean_pts": 21.14,
+        "sum_net": 72338526.83,
+        "roe": 7.2339,
+        "max_dd": 0.0703,
+        "avg_loss_pts": -65.92,
+        "avg_win_pts": 88.01
+      },
+      "train": {
+        "n": 1257,
+        "wr": 0.55,
+        "mean_pts": 20.89,
+        "sum_net": 54909424.41,
+        "roe": 5.4909,
+        "max_dd": 0.0703,
+        "avg_loss_pts": -58.3,
+        "avg_win_pts": 83.9
+      },
+      "test": {
+        "n": 534,
+        "wr": 0.551,
+        "mean_pts": 21.74,
+        "sum_net": 17429102.42,
+        "roe": 1.7429,
+        "max_dd": 0.1424,
+        "avg_loss_pts": -85.14,
+        "avg_win_pts": 97.21
+      },
+      "yearly": {
+        "2019": 0.6413,
+        "2020": 1.3321,
+        "2021": 0.9434,
+        "2022": 1.0123,
+        "2023": 0.3138,
+        "2024": 1.6898,
+        "2025": 0.9347,
+        "2026": 0.3666
+      }
+    },
+    {
+      "name": "ORB30 SL0.5 PCR20-80",
+      "all": {
+        "n": 760,
+        "wr": 0.601,
+        "mean_pts": 37.98,
+        "sum_net": 61503213.26,
+        "roe": 6.1503,
+        "max_dd": 0.0527,
+        "avg_loss_pts": -70.6,
+        "avg_win_pts": 105.72
+      },
+      "train": {
+        "n": 534,
+        "wr": 0.594,
+        "mean_pts": 35.74,
+        "sum_net": 42401814.77,
+        "roe": 4.2402,
+        "max_dd": 0.0527,
+        "avg_loss_pts": -62.97,
+        "avg_win_pts": 102.27
+      },
+      "test": {
+        "n": 226,
+        "wr": 0.619,
+        "mean_pts": 43.27,
+        "sum_net": 19101398.49,
+        "roe": 1.9101,
+        "max_dd": 0.0926,
+        "avg_loss_pts": -91.9,
+        "avg_win_pts": 113.12
+      },
+      "yearly": {
+        "2019": 0.3867,
+        "2020": 1.2656,
+        "2021": 0.8433,
+        "2022": 0.4996,
+        "2023": 0.329,
+        "2024": 1.5963,
+        "2025": 0.883,
+        "2026": 0.3469
+      }
+    }
+  ],
+  "workbook": "architect-v2-orb30-pcr-filter-improved.xlsx"
+}

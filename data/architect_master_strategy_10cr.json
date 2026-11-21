@@ -1,0 +1,97 @@
+{
+  "strategy": "Master Strategy",
+  "start": 100000000.0,
+  "end": 3618293669.9,
+  "multiple": 36.1829,
+  "total_pnl": 3518293669.9,
+  "base_pnl": 2395012306.32,
+  "filler_pnl": 1123281363.57,
+  "max_dd": 0.0958,
+  "trades": 1257,
+  "yearly": [
+    {
+      "year": 2019,
+      "start_capital": 100000000.0,
+      "end_capital": 452710198.3,
+      "pnl": 352710198.3,
+      "pct": 352.7102,
+      "trades": 151,
+      "base": 55,
+      "filler": 96
+    },
+    {
+      "year": 2020,
+      "start_capital": 452710198.3,
+      "end_capital": 1053532274.57,
+      "pnl": 600822076.27,
+      "pct": 600.8221,
+      "trades": 153,
+      "base": 60,
+      "filler": 93
+    },
+    {
+      "year": 2021,
+      "start_capital": 1053532274.57,
+      "end_capital": 1677649385.42,
+      "pnl": 624117110.85,
+      "pct": 624.1171,
+      "trades": 162,
+      "base": 56,
+      "filler": 106
+    },
+    {
+      "year": 2022,
+      "start_capital": 1677649385.42,
+      "end_capital": 2126011066.07,
+      "pnl": 448361680.65,
+      "pct": 448.3617,
+      "trades": 160,
+      "base": 53,
+      "filler": 107
+    },
+    {
+      "year": 2023,
+      "start_capital": 2126011066.07,
+      "end_capital": 2495443945.89,
+      "pnl": 369432879.82,
+      "pct": 369.4329,
+      "trades": 158,
+      "base": 63,
+      "filler": 95
+    },
+    {
+      "year": 2024,
+      "start_capital": 2495443945.89,
+      "end_capital": 2996192182.88,
+      "pnl": 500748236.99,
+      "pct": 500.7482,
+      "trades": 175,
+      "base": 80,
+      "filler": 95
+    },
+    {
+      "year": 2025,
+      "start_capital": 2996192182.88,
+      "end_capital": 3376930928.78,
+      "pnl": 380738745.9,
+      "pct": 380.7387,
+      "trades": 169,
+      "base": 70,
+      "filler": 99
+    },
+    {
+      "year": 2026,
+      "start_capital": 3376930928.78,
+      "end_capital": 3618293669.9,
+      "pnl": 241362741.12,
+      "pct": 241.3627,
+      "trades": 129,
+      "base": 49,
+      "filler": 80
+    }
+  ],
+  "rules": {
+    "base": "time_exit",
+    "filler": "softPCR_30_70 + partial_50_tp200_scaled"
+  }
+}
