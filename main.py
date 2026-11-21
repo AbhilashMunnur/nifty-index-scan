@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Nifty and Sensex 1-hour RSI + 5-strike PCR paper futures. Live orders stay off."""
+"""Nifty/Sensex OI scans + Master paper desks (synthetic + option-buy). Live orders stay off."""
 
 from __future__ import annotations
 
@@ -19,7 +19,6 @@ if str(ROOT) not in sys.path:
 from src.config import load_config
 from src.market import IndexMarket
 from src.observe import format_digest, format_snapshot
-from src.paper import NiftyPaperBook
 from src.oi_flow import (
     classify_band_flow,
     format_band_flow,
@@ -39,7 +38,7 @@ from src.power_hour import (
     todays_mark,
     wide_wings,
 )
-from src.report import format_open_position, format_pnl_snapshot, format_signal_report
+from src.report import format_signal_report
 from src.scan_slots import active_slot, should_run_slot, write_last_slot
 from src.session import is_market_session, now_ist, seconds_until_next_slot
 from src.strategy import evaluate_signal
@@ -300,12 +299,12 @@ class IndexScanResult:
     signal: str | None = None
     report: str = ""
     events: list[str] = field(default_factory=list)
-    book: NiftyPaperBook | None = None
+    book: object | None = None
     future_ltp: float | None = None
 
 
 def scan_one_index(config, args, market, symbol: str, ltp: float | None) -> IndexScanResult:
-    """1H RSI + 5-strike Angel OI/PCR paper scan for one index."""
+    """1H RSI + 5-strike Angel OI/PCR observation scan (no RSI paper fills)."""
     rules = config.rules
     label = _pretty_index(symbol)
     if not ltp:
@@ -327,7 +326,6 @@ def scan_one_index(config, args, market, symbol: str, ltp: float | None) -> Inde
     band = _option_band(market, symbol, ltp)
     signal_band = _strategy_band(band)
     signal, reason = evaluate_signal(rsi, signal_band, rules)
-    atm_change_pcr = None if signal_band is None else signal_band.atm_change_pcr
 
     report = format_signal_report(
         spot=ltp,
@@ -353,89 +351,12 @@ def scan_one_index(config, args, market, symbol: str, ltp: float | None) -> Inde
         print(report)
         print()
 
+    # RSI 1H futures paper book retired — only Master desks paper-trade now.
     events: list[str] = []
-    book = NiftyPaperBook(lots=config.lots, symbol=symbol)
-    in_session = is_market_session(config.market_start, config.paper_end)
-    paper_on = config.mode == "paper" and not args.no_paper and in_session
-    if paper_on and future_ltp:
-        events.extend(book.manage(future_ltp, rsi, atm_change_pcr, rules))
-        if book.is_open and config.console:
-            print(format_open_position(book.position, future_ltp, rsi))
-            print()
-    elif config.mode == "paper" and not args.no_paper and not in_session:
-        events.append(
-            f"{label} paper book idle — session is closed. "
-            f"Fills run {config.market_start}–{config.paper_end} IST; "
-            f"Telegram {config.market_start}–{config.market_end} IST."
-        )
-
-    if signal and future and future_ltp and paper_on and not book.is_open:
-        events.append(
-            book.apply(
-                signal,
-                future,
-                future_ltp,
-                rsi=rsi,
-                pcr=None if signal_band is None else signal_band.pcr,
-                change_pcr=None if signal_band is None else signal_band.change_pcr,
-                reason=reason,
-                rules=rules,
-            )
-        )
-    elif signal and book.is_open:
-        events.append(f"{label}: signal ignored while a scale-out is still open.")
-    elif signal and not future:
-        events.append(
-            f"{label}: signal found but no future with 10+ trading days — no paper fill."
-        )
-    elif signal and not future_ltp:
-        events.append(f"{label}: signal found but future LTP missing — no paper fill.")
-
-    for line in events:
-        print(line)
-
-    extra: list[str] = list(events)
-    if book.is_open:
-        extra.append(format_open_position(book.position, future_ltp, rsi))
-    extra.append(
-        format_pnl_snapshot(
-            position=book.position if book.is_open else None,
-            realised_pnl=book.realised_pnl,
-            mark=future_ltp,
-            rsi=rsi,
-            closed_count=len(book.closed),
-        )
-    )
-    notify_text = report + "\n\n" + "\n".join(extra)
-
-    force = config.telegram_every_scan or bool(signal or events)
-    if force:
-        try:
-            from src.pnl_card import render_pnl_card
-
-            card = render_pnl_card(
-                position=book.position if book.is_open else None,
-                realised_pnl=book.realised_pnl,
-                mark=future_ltp,
-                closed=book.closed,
-                spot=ltp,
-                rsi=rsi,
-                title=f"{label} 1H · Futures",
-            )
-            print(f"{label} P&L card: {card}")
-            maybe_telegram_photo(
-                config,
-                args,
-                card,
-                caption=(
-                    f"{label} paper P&L · {datetime.now():%d %b %H:%M IST}\n"
-                    f"Signal: {signal or 'NONE'}"
-                    + (f"\n{format_flow_caption(band_flow)}" if band_flow else "")
-                ),
-                force=True,
-            )
-        except Exception as exc:
-            print(f"{label} P&L card failed ({exc}); text snapshot only.")
+    notify_text = report
+    force = config.telegram_every_scan or bool(signal)
+    if force and band_flow:
+        notify_text = report + "\n\n" + format_flow_caption(band_flow)
     maybe_telegram(config, args, notify_text, force=force)
 
     return IndexScanResult(
@@ -448,38 +369,64 @@ def scan_one_index(config, args, market, symbol: str, ltp: float | None) -> Inde
         signal=signal,
         report=notify_text,
         events=events,
-        book=book,
+        book=None,
         future_ltp=future_ltp,
     )
 
 
-def _run_loka(market) -> None:
-    """Paper the Loka Kalyanam pair. A miss here does not fail the other scans."""
+def _seed_pcr_once() -> None:
+    """Warm Master PCR ranks from Fyers OI archives (idempotent)."""
     try:
-        from src.loka_kalyanam import LokaBook
-        from src.loka_live import run_loka_kalyanam
+        from src.seed_pcr_history import seed_master_pcr_history
 
-        for line in run_loka_kalyanam(market, LokaBook(), now_ist()):
+        added = seed_master_pcr_history()
+        if any(added.values()):
+            print(
+                "PCR history seeded: "
+                + ", ".join(f"{k}+{v}" for k, v in added.items() if v)
+            )
+    except Exception:
+        traceback.print_exc()
+        print("PCR history seed skipped — ranks may warm from live only.")
+
+
+def _run_master_desks(market) -> None:
+    """Run both Master paper desks off one shared PCR collect when needed."""
+    try:
+        from datetime import time as dtime
+
+        from src.broker_adapter import PaperBroker, get_broker
+        from src.master_book import MasterBook
+        from src.master_live import LIVE_SCRIPTS, collect_signals, run_master_tick
+        from src.option_buy_book import OptionBuyBook
+        from src.option_buy_live import run_option_buy_tick
+        from src.option_buy_strategy import INTENT_LOG
+
+        at = now_ist()
+        candidates = None
+        # Shared collect in signal / entry windows so ranks stay identical.
+        if dtime(14, 0) <= at.time() <= dtime(14, 25):
+            print("\n--- Master PCR collect (shared) ---")
+            candidates = collect_signals(market, LIVE_SCRIPTS, at.date())
+
+        print("\n--- Synthetic futures (base+filler) ---")
+        for line in run_master_tick(
+            market, MasterBook(), get_broker("paper"), at, candidates=candidates
+        ):
+            print(line)
+
+        print("\n--- Option-buy BASE ONLY ---")
+        for line in run_option_buy_tick(
+            market,
+            OptionBuyBook(),
+            PaperBroker(log_path=INTENT_LOG),
+            at,
+            candidates=candidates,
+        ):
             print(line)
     except Exception:
         traceback.print_exc()
-        print("Loka Kalyanam paper step failed. The other scans still stand.")
-    try:
-        from src.loka_oi_live import run_loka_oi
-
-        for line in run_loka_oi(market, now_ist()):
-            print(line)
-    except Exception:
-        traceback.print_exc()
-        print("Loka open-interest paper step failed. The other scans still stand.")
-    try:
-        from src.loka_fut_live import run_loka_oi_futures
-
-        for line in run_loka_oi_futures(market, now_ist()):
-            print(line)
-    except Exception:
-        traceback.print_exc()
-        print("Loka open-interest futures paper step failed. The other scans still stand.")
+        print("Master paper desks failed. The other scans still stand.")
 
 
 def run_strategy(config, args, slot=None) -> bool:
@@ -487,17 +434,9 @@ def run_strategy(config, args, slot=None) -> bool:
     rules = config.rules
     names = " + ".join(_pretty_index(s) for s in symbols)
     print(
-        f"{names} 1H strategy (Angel OI). "
-        f"Short RSI>={rules.rsi_short:g} and ΔPCR<{rules.change_pcr_short_max:g}; "
-        f"long RSI<={rules.rsi_long:g} and ΔPCR>{rules.change_pcr_long_min:g}. "
-        f"Enter {rules.lots} lots; 1 lot at {rules.first_target_pct:g}% if that hits first; "
-        f"if opposite RSI hits first (short {rules.rsi_cover_short:g}-{rules.rsi_long:g} "
-        f"and ATM ΔPCR>{rules.change_pcr_long_min:g}; "
-        f"long {rules.rsi_cover_long:g}-{rules.rsi_short:g} "
-        f"and ATM ΔPCR<{rules.change_pcr_short_max:g}) both lots are booked. "
-        f"SL {rules.stop_loss_pct:g}% against entry closes all remaining lots; "
-        f"re-enter when the same RSI+PCR rules fire again. "
-        f"Futures need {rules.min_trading_days_to_expiry} trading days to expiry.\n"
+        f"{names} Angel OI observation + Master paper desks.\n"
+        f"Paper trades: synthetic futures (base+filler) and option-buy BASE only. "
+        f"RSI 1H / Loka / instinct paper books are retired. Live orders stay off.\n"
     )
 
     market = IndexMarket()
@@ -525,7 +464,8 @@ def run_strategy(config, args, slot=None) -> bool:
             sensex_spot=sensex.ltp if sensex and sensex.ok else None,
         )
         if config.mode == "paper" and not args.no_paper:
-            _run_loka(market)
+            _seed_pcr_once()
+            _run_master_desks(market)
         return any(row.ok for row in results)
     finally:
         market.close()
@@ -536,9 +476,9 @@ def run_loop(config, args) -> None:
     now = now_ist()
     live = is_market_session(config.market_start, config.market_end, now)
     banner = (
-        f"Nifty + Sensex 1H RSI + 5-strike Angel OI paper loop is on.\n"
+        f"Nifty + Sensex OI scan loop is on.\n"
+        f"Paper desks: Master synthetic (base+filler) + option-buy BASE only.\n"
         f"Telegram every {interval} min, {config.market_start}–{config.market_end} IST.\n"
-        f"Paper 2 lots each {config.market_start}–{config.paper_end} IST when RSI+ΔPCR fire.\n"
         f"Live Angel One orders stay off.\n"
         f"Clock {now:%d %b %Y %H:%M IST} — "
         + ("in session, scanning." if live else "outside hours, waiting for the next NSE open.")

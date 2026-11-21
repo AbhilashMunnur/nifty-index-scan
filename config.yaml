@@ -1,6 +1,9 @@
 # Live path: 1H Nifty + Sensex RSI + 5-strike OI/PCR from Angel, Telegram every
 # 15 min with P&L, paper fills. Stocks and other indices are out of scope.
 # Live Angel One orders stay off.
+#
+# Master Strategy (paper): 14:00 PCR signal → 14:05 synthetic entry → next 15:00 exit;
+# filler soft PCR + 50%@TP1. BANKNIFTY live universe not wired yet (NIFTY+SENSEX only).
 
 universe:
   - NIFTY
@@ -8,11 +11,17 @@ universe:
 
 mode: paper            # 1H Nifty + Sensex futures paper; observe = quotes only
 
+master_strategy:
+  enabled: true
+  broker: paper        # paper | live (live blocked until MASTER_LIVE_ORDERS=1 + impl)
+  lot_cap: 1000
+  starting_capital_cr: 10
+
 notifications:
   console: true
   telegram: true       # Used only when TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are set
   telegram_every_scan: true   # 15-minute status + P&L snapshot, not only on trade signals
-  interval_minutes: 15
+  interval_minutes: 5         # 5m loop for Master Strategy bar alignment
   market_start: "09:30"       # Telegram from 9:30
   market_end: "15:40"         # Telegram through 3:40
   paper_end: "15:30"          # No paper fills after cash/F&O close

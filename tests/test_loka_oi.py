@@ -92,52 +92,25 @@ def test_oi_book_records_the_signal_and_the_clock_it_actually_used(tmp_path):
     assert (tmp_path / variant.journal_name).exists()
 
 
-def test_desk_lists_both_books_and_hides_tokens(tmp_path):
+def test_public_desk_no_longer_exposes_loka_oi_books(tmp_path):
     data = tmp_path / "data"
     data.mkdir()
     (data / "loka_oi_120_book.json").write_text(
         json.dumps(
             {
                 "name": "Loka OI 120",
-                "started_on": "2026-11-13",
-                "starting_capital": 10000000,
-                "capital": 10000000,
-                "realised_pnl": 0,
-                "position": {
-                    "side": "Short",
-                    "entry_date": "2026-11-16",
-                    "entry_time": "15:00",
-                    "exit_clock": "10:00",
-                    "check_clock": "10:00",
-                    "fallback_clock": "14:00",
-                    "signal": "OI day",
-                    "pcr": 0.7,
-                    "pcr_rank": 8,
-                    "call_token": "SECRET",
-                    "call_action": "Sell",
-                    "call_strike": 25000,
-                    "call_entry": 40,
-                    "put_token": "SECRET2",
-                    "put_action": "Buy",
-                    "put_strike": 25000,
-                    "put_entry": 80,
-                    "lots": 37,
-                    "capital_before": 10000000,
-                    "capital_used": 9935166,
-                },
+                "position": {"call_token": "SECRET", "lots": 1},
                 "closed": [],
             }
         ),
         encoding="utf-8",
     )
     desk = build_desk(tmp_path, today=date(2026, 11, 16))
+    assert "loka_oi_120" not in desk
+    assert "loka_oi_60" not in desk
     assert "SECRET" not in json.dumps(desk)
-    book = desk["loka_oi_120"]
-    assert book["name"] == "Loka OI 120"
-    assert book["open"]["signal"] == "OI day"
-    assert book["open"]["check_clock"] == "10:00"
-    assert book["open"]["fallback_clock"] == "14:00"
-    assert desk["loka_oi_60"]["saved"] is False
+    assert "master_strategy" in desk
+    assert "option_buy" in desk
 
 
 def test_saved_ratio_history_covers_both_windows():

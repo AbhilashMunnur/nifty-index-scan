@@ -101,64 +101,21 @@ def test_short_waits_until_the_next_session_at_14():
     assert not entry_window(datetime(2026, 11, 13, 14, 45))
 
 
-def test_desk_shows_two_rows_and_hides_the_token(tmp_path):
+def test_public_desk_no_longer_exposes_loka_kalyanam(tmp_path):
     data = tmp_path / "data"
     data.mkdir()
     (data / "loka_kalyanam_book.json").write_text(
         json.dumps(
             {
                 "name": "Loka Kalyanam",
-                "started_on": "2026-11-13",
-                "starting_capital": 10000000,
-                "capital": 10314967.87,
-                "realised_pnl": 314967.87,
-                "updated_at": "2026-11-18 09:30:00",
                 "position": None,
-                "closed": [
-                    {
-                        "side": "Buy",
-                        "entry_date": "2026-11-13",
-                        "entry_time": "15:00",
-                        "exit_clock": "09:15",
-                        "nifty_entry": 18330.3,
-                        "call_action": "Buy",
-                        "call_token": "SECRET",
-                        "call_strike": 18350,
-                        "call_entry": 110.8,
-                        "put_action": "Sell",
-                        "put_token": "SECRET2",
-                        "put_strike": 18350,
-                        "put_entry": 120.7,
-                        "lots": 37,
-                        "capital_before": 10000000,
-                        "capital_used": 9935166,
-                        "exit_date": "2026-11-16",
-                        "exit_time": "09:15",
-                        "nifty_exit": 18475.4,
-                        "call_exit_action": "Sell",
-                        "call_exit": 125.4,
-                        "put_exit_action": "Buy",
-                        "put_exit": 0,
-                        "exit_quote": "Market",
-                        "points": 131.3,
-                        "profit": 315777.46,
-                        "charges": 809.59,
-                        "capital_after": 10314967.87,
-                    }
-                ],
+                "closed": [{"call_token": "SECRET", "put_token": "SECRET2"}],
             }
         ),
         encoding="utf-8",
     )
     desk = build_desk(tmp_path, today=date(2026, 11, 13))
-    encoded = json.dumps(desk)
-    assert "SECRET" not in encoded
-    book = desk["loka_kalyanam"]
-    assert book["name"] == "Loka Kalyanam"
-    assert book["realised"] == 314967.87
-    assert [row["event"] for row in book["rows"]] == ["Entry", "Exit"]
-    assert book["rows"][0]["date"] == "13-11-2026"
-    assert book["rows"][0]["call_strike"] == "18350 call"
-    assert book["rows"][1]["put_strike"] == "18350 put"
-    assert book["rows"][1]["exit_date"] == "16-11-2026"
-    assert book["rows"][1]["time"] == "09:15"
+    assert "loka_kalyanam" not in desk
+    assert "SECRET" not in json.dumps(desk)
+    assert "master_strategy" in desk
+    assert "option_buy" in desk

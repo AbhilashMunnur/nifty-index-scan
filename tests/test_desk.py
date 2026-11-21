@@ -23,12 +23,33 @@ def test_desk_lists_newest_first_and_drops_tokens(tmp_path):
         encoding="utf-8",
     )
     book = {
+        "name": "Master Strategy",
         "updated_at": "2026-10-06 15:40:00",
+        "started_on": "2026-10-01",
+        "starting_capital": 100_000_000,
+        "capital": 100_000_000,
         "realised_pnl": -10.5,
-        "position": {"token": "999", "lots": 0},
+        "position": {
+            "token": "999",
+            "call_token": "999",
+            "put_token": "998",
+            "lots": 2,
+            "remaining_frac": 1.0,
+            "script": "NIFTY",
+            "tier": "base",
+            "side": "Buy",
+            "entry_date": "2026-10-06",
+            "entry_clock": "14:05",
+            "exit_clock": "15:00",
+            "strike": 25000,
+            "call_symbol": "NIFTYCE",
+            "put_symbol": "NIFTYPE",
+            "call_entry": 100,
+            "put_entry": 90,
+        },
         "closed": [],
     }
-    (tmp_path / "data" / "nifty_paper_book.json").write_text(json.dumps(book), encoding="utf-8")
+    (tmp_path / "data" / "master_strategy_book.json").write_text(json.dumps(book), encoding="utf-8")
 
     desk = build_desk(tmp_path, today=date(2026, 10, 6))
     encoded = json.dumps(desk)
@@ -47,8 +68,12 @@ def test_desk_lists_newest_first_and_drops_tokens(tmp_path):
     assert latest_fut["label"] == "NEW BUYING"
     assert latest_fut["lots"] == "10 lots"
     assert desk["nifty_fut"][1]["label"] == "BASELINE"
-    assert desk["positions"]["nifty"]["flat"] is True
-    assert desk["positions"]["sensex"]["saved"] is False
+    assert desk["master_strategy"]["flat"] is False
+    assert desk["master_strategy"]["open"]["script"] == "NIFTY"
+    assert desk["option_buy"]["saved"] is False
+    assert "positions" not in desk
+    assert "loka_kalyanam" not in desk
+    assert "human_instinct" not in desk
     assert desk["fut_days"] == []
 
 
@@ -112,8 +137,19 @@ def test_scans_older_than_two_days_are_removed_and_the_book_stays(tmp_path):
             ),
             encoding="utf-8",
         )
-    (tmp_path / "data" / "nifty_paper_book.json").write_text(
-        json.dumps({"updated_at": "2026-09-11 09:42:08", "realised_pnl": -1, "position": None, "closed": []}),
+    (tmp_path / "data" / "option_buy_book.json").write_text(
+        json.dumps(
+            {
+                "name": "Master Option-Buy (BASE ONLY)",
+                "updated_at": "2026-09-11 09:42:08",
+                "started_on": "2026-09-01",
+                "starting_capital": 10_000_000,
+                "capital": 9_999_999,
+                "realised_pnl": -1,
+                "position": None,
+                "closed": [],
+            }
+        ),
         encoding="utf-8",
     )
 
@@ -124,8 +160,9 @@ def test_scans_older_than_two_days_are_removed_and_the_book_stays(tmp_path):
     assert (history / "2026-10-08.json").exists()
     for key in ("nifty_oi", "sensex_oi", "nifty_fut", "sensex_fut"):
         assert [card["day"] for card in desk[key]] == ["2026-10-08", "2026-10-07"]
-    assert desk["positions"]["nifty"]["saved"] is True
-    assert desk["positions"]["nifty"]["realised"] == -1.0
+    assert desk["option_buy"]["saved"] is True
+    assert desk["option_buy"]["realised"] == -1
+    assert desk["master_strategy"]["saved"] is False
 
 
 def _oi(updated: str, slot: str, call_oi: int) -> dict:

@@ -16,10 +16,10 @@ from src.fut_flow import (
     reading_from_mark,
 )
 from src.oi_flow import classify_band_flow, interval_totals_line
-from src.loka_kalyanam import NAME
-from src.loka_fut import FUTURES_BOOKS
-from src.loka_fut import NAME as FUT_NAME
-from src.loka_oi import VARIANTS
+from src.master_strategy import BOOK_PATH as MASTER_BOOK_PATH
+from src.master_strategy import NAME as MASTER_NAME
+from src.option_buy_strategy import BOOK_PATH as OPTION_BUY_BOOK_PATH
+from src.option_buy_strategy import NAME as OPTION_BUY_NAME
 from src.paths import ROOT
 from src.pcr import BandPcr, StrikePcr
 from src.power_hour import is_report_slot
@@ -27,12 +27,12 @@ from src.scan_history import day_is_current, prune_old_scans, _parse_day
 from src.scan_slots import IST
 
 HISTORY_KEYS = ("nifty_oi", "sensex_oi", "nifty_fut", "sensex_fut")
-BOOKS = {"nifty": "nifty_paper_book.json", "sensex": "sensex_paper_book.json"}
 SESSIONS = "fut_sessions.json"
 SESSION_NAMES = ("NIFTY", "SENSEX")
 
 
 def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
+    """Public desk: OI/fut scans + the two Master paper strategies only."""
     history_dir = root / "data" / "scan_history"
     prune_old_scans(history_dir, today)
     history = _load_history(history_dir, today)
@@ -42,13 +42,8 @@ def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
         "sensex_oi": _option_cards(history.get("sensex_oi") or []),
         "nifty_fut": _future_cards(history.get("nifty_fut") or []),
         "sensex_fut": _future_cards(history.get("sensex_fut") or []),
-        "positions": {
-            "nifty": _book(root / "data" / BOOKS["nifty"]),
-            "sensex": _book(root / "data" / BOOKS["sensex"]),
-        },
-        "loka_kalyanam": _loka(root / "data" / "loka_kalyanam_book.json"),
-        **{variant.key: _loka(root / "data" / variant.book_name) for variant in VARIANTS},
-        **{style.key: _loka_futures(root / "data" / style.book_name, style.name) for style in FUTURES_BOOKS},
+        "master_strategy": _master_synth(root / "data" / MASTER_BOOK_PATH.name),
+        "option_buy": _option_buy(root / "data" / OPTION_BUY_BOOK_PATH.name),
         "fut_days": _fut_days(root, today),
     }
     return _strip_tokens(desk)
@@ -303,121 +298,8 @@ def _dmy(value: str) -> str:
     return text
 
 
-def _strike_name(strike, kind: str) -> str:
-    try:
-        number = int(float(strike))
-    except (TypeError, ValueError):
-        return str(strike or "")
-    return f"{number} {kind}"
-
-
-def _loka_row(trade: dict, event: str) -> dict:
-    entry = event == "Entry"
+def _empty_paper(name: str) -> dict:
     return {
-        "date": _dmy(trade.get("entry_date")),
-        "event": event,
-        "time": trade.get("entry_time") if entry else trade.get("exit_time"),
-        "exit_date": "" if entry else _dmy(trade.get("exit_date")),
-        "nifty": trade.get("nifty_entry") if entry else trade.get("nifty_exit"),
-        "side": trade.get("side"),
-        "call": trade.get("call_action") if entry else trade.get("call_exit_action"),
-        "call_strike": _strike_name(trade.get("call_strike"), "call"),
-        "call_price": trade.get("call_entry") if entry else trade.get("call_exit"),
-        "put": trade.get("put_action") if entry else trade.get("put_exit_action"),
-        "put_strike": _strike_name(trade.get("put_strike"), "put"),
-        "put_price": trade.get("put_entry") if entry else trade.get("put_exit"),
-        "exit_quote": "" if entry else trade.get("exit_quote"),
-        "exit_reason": "" if entry else (trade.get("exit_reason") or ""),
-        "signal": trade.get("signal") or "",
-        "pcr": trade.get("pcr"),
-        "pcr_rank": trade.get("pcr_rank"),
-        "points": None if entry else trade.get("points"),
-        "lots": trade.get("lots"),
-        "capital_before": trade.get("capital_before"),
-        "capital_used": trade.get("capital_used") if entry else None,
-        "profit": None if entry else trade.get("profit"),
-        "charges": None if entry else trade.get("charges"),
-        "capital_after": None if entry else trade.get("capital_after"),
-    }
-
-
-def _loka(path: Path) -> dict:
-    empty = {
-        "name": NAME,
-        "saved": False,
-        "started_on": "",
-        "starting_capital": None,
-        "capital": None,
-        "realised": None,
-        "updated_at": None,
-        "flat": True,
-        "open": None,
-        "rows": [],
-    }
-    if not path.exists():
-        return empty
-    try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return empty
-    if not isinstance(raw, dict):
-        return empty
-    position = raw.get("position") if isinstance(raw.get("position"), dict) else None
-    open_row = None
-    if position and int(position.get("lots") or 0) > 0:
-        open_row = _loka_row(position, "Entry")
-        open_row["exit_clock"] = position.get("exit_clock")
-        open_row["check_clock"] = position.get("check_clock") or ""
-        open_row["fallback_clock"] = position.get("fallback_clock") or ""
-        open_row["expiry"] = position.get("expiry")
-    rows: list[dict] = []
-    if open_row:
-        rows.append(open_row)
-    for trade in reversed(list(raw.get("closed") or [])):
-        if not isinstance(trade, dict):
-            continue
-        rows.append(_loka_row(trade, "Entry"))
-        rows.append(_loka_row(trade, "Exit"))
-    return {
-        "name": str(raw.get("name") or NAME),
-        "saved": True,
-        "started_on": _dmy(raw.get("started_on")),
-        "starting_capital": raw.get("starting_capital"),
-        "capital": raw.get("capital"),
-        "realised": raw.get("realised_pnl"),
-        "updated_at": raw.get("updated_at"),
-        "flat": open_row is None,
-        "open": open_row,
-        "rows": rows,
-    }
-
-
-def _loka_futures_row(trade: dict, event: str) -> dict:
-    entry = event == "Entry"
-    return {
-        "date": _dmy(trade.get("entry_date")),
-        "event": event,
-        "time": trade.get("entry_time") if entry else trade.get("exit_time"),
-        "exit_date": "" if entry else _dmy(trade.get("exit_date")),
-        "side": trade.get("side"),
-        "signal": trade.get("signal") or "",
-        "pcr": trade.get("pcr"),
-        "pcr_rank": trade.get("pcr_rank"),
-        "contract": trade.get("tradingsymbol") or "",
-        "exit_reason": "" if entry else (trade.get("exit_reason") or ""),
-        "price": trade.get("price") if entry else trade.get("exit_price"),
-        "points": None if entry else trade.get("points"),
-        "lots": trade.get("lots"),
-        "capital_before": trade.get("capital_before"),
-        "capital_used": trade.get("capital_used") if entry else None,
-        "profit": None if entry else trade.get("profit"),
-        "charges": None if entry else trade.get("charges"),
-        "capital_after": None if entry else trade.get("capital_after"),
-    }
-
-
-def _loka_futures(path: Path, name: str = FUT_NAME) -> dict:
-    empty = {
         "name": name,
         "saved": False,
         "started_on": "",
@@ -429,6 +311,38 @@ def _loka_futures(path: Path, name: str = FUT_NAME) -> dict:
         "open": None,
         "rows": [],
     }
+
+
+def _master_synth_row(trade: dict, event: str) -> dict:
+    entry = event == "Entry"
+    return {
+        "date": _dmy(trade.get("entry_date")),
+        "event": event,
+        "time": trade.get("entry_clock") if entry else trade.get("exit_clock"),
+        "exit_date": "" if entry else _dmy(trade.get("exit_date")),
+        "script": trade.get("script"),
+        "tier": trade.get("tier"),
+        "side": trade.get("side"),
+        "strike": trade.get("strike"),
+        "expiry": trade.get("expiry"),
+        "call_symbol": trade.get("call_symbol"),
+        "put_symbol": trade.get("put_symbol"),
+        "call_price": trade.get("call_entry") if entry else trade.get("call_exit"),
+        "put_price": trade.get("put_entry") if entry else trade.get("put_exit"),
+        "pcr": trade.get("pcr"),
+        "pcr_rank": trade.get("pcr_rank"),
+        "points": None if entry else trade.get("points"),
+        "lots": trade.get("lots"),
+        "net": None if entry else trade.get("net"),
+        "exit_why": "" if entry else (trade.get("exit_why") or ""),
+        "partial": trade.get("partial") if not entry else None,
+        "capital_before": trade.get("capital_before"),
+        "capital_after": None if entry else trade.get("capital_after"),
+    }
+
+
+def _master_synth(path: Path) -> dict:
+    empty = _empty_paper(MASTER_NAME)
     if not path.exists():
         return empty
     try:
@@ -439,19 +353,22 @@ def _loka_futures(path: Path, name: str = FUT_NAME) -> dict:
         return empty
     position = raw.get("position") if isinstance(raw.get("position"), dict) else None
     open_row = None
-    if position and int(position.get("lots") or 0) > 0:
-        open_row = _loka_futures_row(position, "Entry")
+    rem = float((position or {}).get("remaining_frac") or 0)
+    if position and rem > 1e-9:
+        open_row = _master_synth_row(position, "Entry")
         open_row["exit_clock"] = position.get("exit_clock")
+        open_row["remaining_frac"] = rem
+        open_row["partial_done"] = bool(position.get("partial_done"))
     rows: list[dict] = []
     if open_row:
         rows.append(open_row)
     for trade in reversed(list(raw.get("closed") or [])):
         if not isinstance(trade, dict):
             continue
-        rows.append(_loka_futures_row(trade, "Entry"))
-        rows.append(_loka_futures_row(trade, "Exit"))
+        rows.append(_master_synth_row(trade, "Entry"))
+        rows.append(_master_synth_row(trade, "Exit"))
     return {
-        "name": str(raw.get("name") or name),
+        "name": str(raw.get("name") or MASTER_NAME),
         "saved": True,
         "started_on": _dmy(raw.get("started_on")),
         "starting_capital": raw.get("starting_capital"),
@@ -464,50 +381,69 @@ def _loka_futures(path: Path, name: str = FUT_NAME) -> dict:
     }
 
 
-def _book(path: Path) -> dict:
+def _option_buy_row(trade: dict, event: str) -> dict:
+    entry = event == "Entry"
+    return {
+        "date": _dmy(trade.get("entry_date")),
+        "event": event,
+        "time": trade.get("entry_clock") if entry else trade.get("exit_clock"),
+        "exit_date": "" if entry else _dmy(trade.get("exit_date")),
+        "script": trade.get("script"),
+        "tier": trade.get("tier") or "base",
+        "signal_side": trade.get("signal_side"),
+        "opt_side": trade.get("opt_side"),
+        "symbol": trade.get("symbol"),
+        "strike": trade.get("strike"),
+        "expiry": trade.get("expiry"),
+        "price": trade.get("entry") if entry else trade.get("exit"),
+        "slip": trade.get("slip"),
+        "pcr": trade.get("pcr"),
+        "pcr_rank": trade.get("pcr_rank"),
+        "points": None if entry else trade.get("points"),
+        "lots": trade.get("lots"),
+        "gross": None if entry else trade.get("gross"),
+        "charges": None if entry else trade.get("charges"),
+        "net": None if entry else trade.get("net"),
+        "exit_why": "" if entry else (trade.get("exit_why") or ""),
+        "capital_before": trade.get("capital_before"),
+        "capital_after": None if entry else trade.get("capital_after"),
+    }
+
+
+def _option_buy(path: Path) -> dict:
+    empty = _empty_paper(OPTION_BUY_NAME)
     if not path.exists():
-        return {"saved": False, "flat": True, "realised": None, "updated_at": None, "open": None, "closed": []}
+        return empty
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return {"saved": False, "flat": True, "realised": None, "updated_at": None, "open": None, "closed": []}
+        return empty
+    if not isinstance(raw, dict):
+        return empty
     position = raw.get("position") if isinstance(raw.get("position"), dict) else None
     open_row = None
     if position and int(position.get("lots") or 0) > 0:
-        open_row = {
-            "direction": position.get("direction"),
-            "tradingsymbol": position.get("tradingsymbol"),
-            "lots": position.get("lots"),
-            "entry_price": position.get("entry_price"),
-            "entry_time": position.get("entry_time"),
-            "stop_loss_price": position.get("stop_loss_price"),
-            "first_target_price": position.get("first_target_price"),
-        }
-    closed = []
+        open_row = _option_buy_row(position, "Entry")
+        open_row["exit_clock"] = position.get("exit_clock")
+    rows: list[dict] = []
+    if open_row:
+        rows.append(open_row)
     for trade in reversed(list(raw.get("closed") or [])):
         if not isinstance(trade, dict):
             continue
-        closed.append(
-            {
-                "direction": trade.get("direction"),
-                "tradingsymbol": trade.get("tradingsymbol"),
-                "lots": trade.get("lots"),
-                "entry_price": trade.get("entry_price"),
-                "exit_price": trade.get("exit_price"),
-                "entry_time": trade.get("entry_time"),
-                "exit_time": trade.get("exit_time"),
-                "pnl": trade.get("pnl"),
-                "exit_reason": trade.get("exit_reason"),
-            }
-        )
-    realised = raw.get("realised_pnl")
+        rows.append(_option_buy_row(trade, "Entry"))
+        rows.append(_option_buy_row(trade, "Exit"))
     return {
+        "name": str(raw.get("name") or OPTION_BUY_NAME),
         "saved": True,
-        "flat": open_row is None,
-        "realised": None if realised is None else float(realised),
+        "started_on": _dmy(raw.get("started_on")),
+        "starting_capital": raw.get("starting_capital"),
+        "capital": raw.get("capital"),
+        "realised": raw.get("realised_pnl"),
         "updated_at": raw.get("updated_at"),
+        "flat": open_row is None,
         "open": open_row,
-        "closed": closed,
+        "rows": rows,
     }
 
 
