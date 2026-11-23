@@ -1,8 +1,8 @@
 python-dotenv>=1.0.0
 requests>=2.31.0
 PyYAML>=6.0.0
-pandas>=2.0.0
-numpy>=1.24.0
+pandas>=2.0.0,<3
+numpy>=1.24.0,<2.3
 yfinance>=0.2.40
 
 # Angel One SmartAPI
@@ -11,8 +11,9 @@ pyotp>=2.9.0
 logzero>=1.7.0
 websocket-client>=1.7.0
 
-# FYERS historical futures (Prime)
-fyers-apiv3>=3.1.0
+# Live desk reads parquet if a research file is present. The Fyers
+# download client pins an older websocket and is installed only for
+# those download scripts: pip install 'fyers-apiv3>=3.1.0'
 pyarrow>=14.0.0
 
 # P&L card JPG for Telegram
