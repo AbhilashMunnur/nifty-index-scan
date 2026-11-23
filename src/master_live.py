@@ -49,6 +49,8 @@ LATENCY_LOG = ROOT / "data" / "master_latency.jsonl"
 
 # Live scripts currently supported by Angel instrument loader
 LIVE_SCRIPTS = tuple(s for s in PRIORITY if s in ALLOWED_SYMBOLS)
+# Latest rank read, including scripts that did not qualify. The desk stores this.
+LAST_READINGS: list[dict] = []
 
 
 def now_ist() -> datetime:
@@ -167,6 +169,7 @@ def collect_signals(market, scripts: tuple[str, ...], day: date) -> list[dict]:
     prices = market.get_ltps(list(scripts))
     hist = load_pcr_history()
     cands = []
+    readings: list[dict] = []
     for sym in scripts:
         spot = prices.get(sym)
         if not spot:
@@ -185,6 +188,17 @@ def collect_signals(market, scripts: tuple[str, ...], day: date) -> list[dict]:
             continue
         tier, side = classify_tier(sym, rank)
         print(f"  {sym}: spot={spot:.2f} PCR={pcr:.3f} rank={rank:.3f} → {tier}/{side}")
+        readings.append(
+            {
+                "script": sym,
+                "spot": round(float(spot), 2),
+                "pcr": round(float(pcr), 4),
+                "rank": round(float(rank), 4),
+                "tier": tier or "",
+                "side": side or "",
+                "expiry": str(getattr(band, "expiry", "") or ""),
+            }
+        )
         if tier and side:
             cands.append(
                 dict(
@@ -199,6 +213,8 @@ def collect_signals(market, scripts: tuple[str, ...], day: date) -> list[dict]:
                 )
             )
     save_pcr_history(hist)
+    global LAST_READINGS
+    LAST_READINGS = readings
     _log_latency("collect_signals", t0, n=len(cands))
     return cands
 

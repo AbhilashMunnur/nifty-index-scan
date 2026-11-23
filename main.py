@@ -410,12 +410,15 @@ def _run_master_desks(market) -> None:
             candidates = collect_signals(market, LIVE_SCRIPTS, at.date())
 
         print("\n--- Synthetic futures (base+filler) ---")
+        synth_lines = []
         for line in run_master_tick(
             market, MasterBook(), get_broker("paper"), at, candidates=candidates
         ):
             print(line)
+            synth_lines.append(line)
 
         print("\n--- Option-buy BASE ONLY ---")
+        option_lines = []
         for line in run_option_buy_tick(
             market,
             OptionBuyBook(),
@@ -424,6 +427,19 @@ def _run_master_desks(market) -> None:
             candidates=candidates,
         ):
             print(line)
+            option_lines.append(line)
+        if candidates is not None:
+            from src.master_live import LAST_READINGS
+            from src.paper_decision import commit_session
+
+            commit_session(
+                at,
+                LAST_READINGS,
+                MasterBook(),
+                OptionBuyBook(),
+                synth_lines,
+                option_lines,
+            )
     except Exception:
         traceback.print_exc()
         print("Master paper desks failed. The other scans still stand.")

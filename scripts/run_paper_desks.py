@@ -162,6 +162,7 @@ def main() -> None:
             at = now_ist()
 
         print("\n--- Synthetic futures (base+filler) ---")
+        synth_lines = []
         for line in run_master_tick(
             market,
             MasterBook(),
@@ -173,8 +174,10 @@ def main() -> None:
             open_wait=OPEN_WAIT_SECONDS,
         ):
             print(line)
+            synth_lines.append(line)
 
         print("\n--- Option-buy BASE ONLY ---")
+        option_lines = []
         for line in run_option_buy_tick(
             market,
             OptionBuyBook(),
@@ -186,6 +189,19 @@ def main() -> None:
             open_wait=OPEN_WAIT_SECONDS,
         ):
             print(line)
+            option_lines.append(line)
+
+        from src.master_live import LAST_READINGS
+        from src.paper_decision import commit_session
+
+        commit_session(
+            at,
+            LAST_READINGS,
+            MasterBook(),
+            OptionBuyBook(),
+            synth_lines,
+            option_lines,
+        )
 
         syn = MasterBook()
         ob = OptionBuyBook()

@@ -203,6 +203,24 @@ function optionBuyRow(row) {
     </article>`;
 }
 
+function decisionCard(decision) {
+  if (!decision || !decision.day) return "";
+  const scripts = (decision.scripts || []).map((row) => {
+    const expiry = row.expiry ? ` · rank uses expiry ${row.expiry}` : "";
+    return `<p class="meta">${row.reason || ""} PCR ${px(row.pcr)}${expiry}.</p>`;
+  }).join("");
+  const synthetic = (decision.synthetic || {}).summary || "";
+  const optionBuy = (decision.option_buy || {}).summary || "";
+  return `
+    <article class="card">
+      <header><div class="day-title">Paper check ${dayLabel(decision.day)}</div></header>
+      <p class="meta">Checked ${decision.checked_at || ""}</p>
+      <p><b>Synthetic.</b> ${synthetic}</p>
+      <p><b>Option-buy.</b> ${optionBuy}</p>
+      ${scripts}
+    </article>`;
+}
+
 function paperPage(desk, key, title, rowFn) {
   const book = desk[key] || {};
   if (!book.saved) {
@@ -218,6 +236,7 @@ function paperPage(desk, key, title, rowFn) {
     <a class="back" href="#">&larr; Landing</a>
     <h1>${title}</h1>
     <p class="lede">${lede}</p>
+    ${decisionCard(desk.paper_decision)}
     <p class="${moneyClass(book.realised)}">${inr(book.realised)}</p>
     <p class="meta">Profit and loss · capital ${inr(book.capital)} from ${inr(book.starting_capital)} · saved ${book.updated_at || ""}</p>
     ${rows}`;
@@ -245,6 +264,7 @@ function landing(desk) {
   return `
     <h1>Scan desk</h1>
     <p class="lede">Paper strategies: Master synthetic + option-buy only. Newest reading at the top of each scan page. Updated ${desk.generated_at}.</p>
+    ${decisionCard(desk.paper_decision)}
     ${sessionBlock(desk.fut_days)}
     <nav class="tiles">
       ${tiles.map(([id, title, sub, extra]) => `

@@ -20,6 +20,7 @@ from src.master_strategy import BOOK_PATH as MASTER_BOOK_PATH
 from src.master_strategy import NAME as MASTER_NAME
 from src.option_buy_strategy import BOOK_PATH as OPTION_BUY_BOOK_PATH
 from src.option_buy_strategy import NAME as OPTION_BUY_NAME
+from src.paper_decision import latest_decision
 from src.paths import ROOT
 from src.pcr import BandPcr, StrikePcr
 from src.power_hour import is_report_slot
@@ -76,6 +77,7 @@ def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
         "sensex_fut": _future_cards(history.get("sensex_fut") or []),
         "master_strategy": _master_synth(root / "data" / MASTER_BOOK_PATH.name),
         "option_buy": _option_buy(root / "data" / OPTION_BUY_BOOK_PATH.name),
+        "paper_decision": latest_decision(root / "data" / "paper_decision.json"),
         "fut_days": _fut_days(root, today),
     }
     return _strip_tokens(desk)
