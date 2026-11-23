@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.desk import build_desk
+from src.desk import build_desk, merge_published_desk
 
 PUBLIC_REPO = "git@github.com:AbhilashMunnur/nifty-alert-desk.git"
 SITE_FILES = ("index.html", "styles.css", "app.js", ".nojekyll")
@@ -66,6 +66,16 @@ def push_public(payload: str) -> None:
                 shutil.copyfile(source, clone / name)
         data_dir = clone / "data"
         data_dir.mkdir(parents=True, exist_ok=True)
+        existing: dict = {}
+        existing_path = data_dir / "desk.json"
+        if existing_path.exists():
+            try:
+                loaded = json.loads(existing_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                loaded = {}
+            if isinstance(loaded, dict):
+                existing = loaded
+        payload = json.dumps(merge_published_desk(existing, json.loads(payload)), indent=2) + "\n"
         (data_dir / "desk.json").write_text(payload, encoding="utf-8")
         _run(["git", "add", "index.html", "styles.css", "app.js", ".nojekyll", "data/desk.json"], ssh, clone)
         status = _run(["git", "status", "--porcelain"], ssh, clone)

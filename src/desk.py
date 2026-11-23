@@ -31,6 +31,38 @@ SESSIONS = "fut_sessions.json"
 SESSION_NAMES = ("NIFTY", "SENSEX")
 
 
+def merge_published_desk(current: dict | None, incoming: dict) -> dict:
+    """Keep every slot already on the public page.
+
+    A futures publish from the standby repo must not wipe a newer option scan.
+    """
+    if not isinstance(current, dict) or not current:
+        return incoming
+    merged = dict(incoming)
+    for key in HISTORY_KEYS:
+        merged[key] = _merge_cards(current.get(key), incoming.get(key))
+    current_at = str(current.get("generated_at") or "")
+    incoming_at = str(incoming.get("generated_at") or "")
+    merged["generated_at"] = max(current_at, incoming_at)
+    return merged
+
+
+def _merge_cards(older, newer) -> list:
+    chosen: dict[tuple[str, str], dict] = {}
+    for row in list(older or []) + list(newer or []):
+        if not isinstance(row, dict):
+            continue
+        key = (str(row.get("day") or ""), str(row.get("clock") or ""))
+        previous = chosen.get(key)
+        if previous is None or str(row.get("saved_at") or "") >= str(previous.get("saved_at") or ""):
+            chosen[key] = row
+    return sorted(
+        chosen.values(),
+        key=lambda row: (str(row.get("day") or ""), str(row.get("clock") or "")),
+        reverse=True,
+    )
+
+
 def build_desk(root: Path = ROOT, today: date | None = None) -> dict:
     """Public desk: OI/fut scans + the two Master paper strategies only."""
     history_dir = root / "data" / "scan_history"

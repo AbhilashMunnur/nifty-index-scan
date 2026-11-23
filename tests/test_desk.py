@@ -1,7 +1,7 @@
 import json
 from datetime import date
 
-from src.desk import build_desk
+from src.desk import build_desk, merge_published_desk
 
 
 def test_desk_lists_newest_first_and_drops_tokens(tmp_path):
@@ -195,6 +195,39 @@ def _session_mark(updated, price, oi, symbol="NIFTY27OCT26FUT", expiry="2026-10-
         "price": price,
         "oi": oi,
     }
+
+
+def test_publish_keeps_a_newer_option_scan_when_futures_arrives_later():
+    current = {
+        "generated_at": "2026-11-23 13:32 IST",
+        "nifty_oi": [
+            {"day": "2026-11-23", "clock": "13:30", "saved_at": "2026-11-23 13:31:38", "atm": "25,450"},
+            {"day": "2026-11-23", "clock": "13:15", "saved_at": "2026-11-23 13:16:40", "atm": "25,450"},
+        ],
+        "nifty_fut": [
+            {"day": "2026-11-23", "clock": "13:00", "saved_at": "2026-11-23 13:04:14"},
+        ],
+    }
+    incoming = {
+        "generated_at": "2026-11-23 13:33 IST",
+        "nifty_oi": [
+            {"day": "2026-11-23", "clock": "13:00", "saved_at": "2026-11-23 13:13:53", "atm": "25,500"},
+        ],
+        "nifty_fut": [
+            {"day": "2026-11-23", "clock": "13:30", "saved_at": "2026-11-23 13:33:20"},
+            {"day": "2026-11-23", "clock": "13:00", "saved_at": "2026-11-23 13:04:14"},
+        ],
+    }
+    merged = merge_published_desk(current, incoming)
+    oi = [(row["clock"], row["saved_at"]) for row in merged["nifty_oi"]]
+    fut = [row["clock"] for row in merged["nifty_fut"]]
+    assert oi == [
+        ("13:30", "2026-11-23 13:31:38"),
+        ("13:15", "2026-11-23 13:16:40"),
+        ("13:00", "2026-11-23 13:13:53"),
+    ]
+    assert fut == ["13:30", "13:00"]
+    assert merged["generated_at"] == "2026-11-23 13:33 IST"
 
 
 def _fut(updated: str, slot: str, price: float, oi: int) -> dict:
