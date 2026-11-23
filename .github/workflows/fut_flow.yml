@@ -70,15 +70,22 @@ jobs:
         run: |
           TAG="fut-slot-${{ steps.slot.outputs.id }}"
           SHA=$(git rev-parse HEAD)
-          # Creating the ref fails when it already exists, including when the
-          # tag points at this same commit. git push would call that success.
-          if gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+          # 422 means another job already owns this slot. A 403 from the
+          # dispatch token is not ownership — skipping here drops the scan.
+          set +e
+          RESP=$(gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
             -f ref="refs/tags/${TAG}" \
-            -f sha="$SHA"; then
+            -f sha="$SHA" 2>&1)
+          CODE=$?
+          set -e
+          if [ "$CODE" -eq 0 ]; then
             echo "owned=true" >> "$GITHUB_OUTPUT"
-          else
+          elif printf '%s' "$RESP" | grep -q 'Reference already exists'; then
             echo "Futures slot ${TAG} already claimed. No second alert."
             echo "owned=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Could not create ${TAG} (${RESP}). The slot file still stops a second run."
+            echo "owned=true" >> "$GITHUB_OUTPUT"
           fi
 
       - uses: actions/setup-python@v5

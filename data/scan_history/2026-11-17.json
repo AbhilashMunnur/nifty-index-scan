@@ -1,5 +1,69 @@
 {
   "date": "2026-11-17",
+  "sensex_fut": [
+    {
+      "updated_at": "2026-11-17 09:33:26",
+      "tradingsymbol": "SENSEX26NOVFUT",
+      "token": "1100929",
+      "expiry": "2026-11-26",
+      "lot_size": 20,
+      "price": 82345.0,
+      "oi": 42240,
+      "slot": "2026-11-17 09:30"
+    },
+    {
+      "updated_at": "2026-11-17 09:48:21",
+      "tradingsymbol": "SENSEX26NOVFUT",
+      "token": "1100929",
+      "expiry": "2026-11-26",
+      "lot_size": 20,
+      "price": 82440.0,
+      "oi": 42600,
+      "slot": "2026-11-17 09:45"
+    },
+    {
+      "updated_at": "2026-11-17 10:03:16",
+      "tradingsymbol": "SENSEX26NOVFUT",
+      "token": "1100929",
+      "expiry": "2026-11-26",
+      "lot_size": 20,
+      "price": 82442.95,
+      "oi": 42440,
+      "slot": "2026-11-17 10:00"
+    }
+  ],
+  "nifty_fut": [
+    {
+      "updated_at": "2026-11-17 09:33:14",
+      "tradingsymbol": "NIFTY23NOV26FUT",
+      "token": "61471",
+      "expiry": "2026-11-23",
+      "lot_size": 65,
+      "price": 25367.0,
+      "oi": 11519105,
+      "slot": "2026-11-17 09:30"
+    },
+    {
+      "updated_at": "2026-11-17 09:48:21",
+      "tradingsymbol": "NIFTY23NOV26FUT",
+      "token": "61471",
+      "expiry": "2026-11-23",
+      "lot_size": 65,
+      "price": 25395.3,
+      "oi": 11498435,
+      "slot": "2026-11-17 09:45"
+    },
+    {
+      "updated_at": "2026-11-17 10:03:15",
+      "tradingsymbol": "NIFTY23NOV26FUT",
+      "token": "61471",
+      "expiry": "2026-11-23",
+      "lot_size": 65,
+      "price": 25398.1,
+      "oi": 11555310,
+      "slot": "2026-11-17 10:00"
+    }
+  ],
   "sensex_oi": [
     {
       "updated_at": "2026-11-17 09:43:03",
@@ -295,70 +359,6 @@
           "put_ltp": 94.2
         }
       ],
-      "slot": "2026-11-17 10:00"
-    }
-  ],
-  "sensex_fut": [
-    {
-      "updated_at": "2026-11-17 09:33:26",
-      "tradingsymbol": "SENSEX26NOVFUT",
-      "token": "1100929",
-      "expiry": "2026-11-26",
-      "lot_size": 20,
-      "price": 82345.0,
-      "oi": 42240,
-      "slot": "2026-11-17 09:30"
-    },
-    {
-      "updated_at": "2026-11-17 09:48:21",
-      "tradingsymbol": "SENSEX26NOVFUT",
-      "token": "1100929",
-      "expiry": "2026-11-26",
-      "lot_size": 20,
-      "price": 82440.0,
-      "oi": 42600,
-      "slot": "2026-11-17 09:45"
-    },
-    {
-      "updated_at": "2026-11-17 10:03:16",
-      "tradingsymbol": "SENSEX26NOVFUT",
-      "token": "1100929",
-      "expiry": "2026-11-26",
-      "lot_size": 20,
-      "price": 82442.95,
-      "oi": 42440,
-      "slot": "2026-11-17 10:00"
-    }
-  ],
-  "nifty_fut": [
-    {
-      "updated_at": "2026-11-17 09:33:14",
-      "tradingsymbol": "NIFTY23NOV26FUT",
-      "token": "61471",
-      "expiry": "2026-11-23",
-      "lot_size": 65,
-      "price": 25367.0,
-      "oi": 11519105,
-      "slot": "2026-11-17 09:30"
-    },
-    {
-      "updated_at": "2026-11-17 09:48:21",
-      "tradingsymbol": "NIFTY23NOV26FUT",
-      "token": "61471",
-      "expiry": "2026-11-23",
-      "lot_size": 65,
-      "price": 25395.3,
-      "oi": 11498435,
-      "slot": "2026-11-17 09:45"
-    },
-    {
-      "updated_at": "2026-11-17 10:03:15",
-      "tradingsymbol": "NIFTY23NOV26FUT",
-      "token": "61471",
-      "expiry": "2026-11-23",
-      "lot_size": 65,
-      "price": 25398.1,
-      "oi": 11555310,
       "slot": "2026-11-17 10:00"
     }
   ]
