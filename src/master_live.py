@@ -2,9 +2,9 @@
 
 Latency model (matches backtest honesty as closely as live allows):
   - 14:00–14:04: after 14:00 bar is closed, compute PCR rank + tier/side (signal).
-  - 14:05–14:25: enter at option LTP (± slip) as proxy for bar OPEN of 14:05.
+  - 14:05: enter at the five-minute option OPEN (± slip), not a later LTP.
   - Intrabar (filler only): check TP1 partial on LTP marks.
-  - From 15:00 next day: exit remaining at LTP (± slip) as proxy for 15:00 OPEN.
+  - Next session 15:00: exit remaining at the five-minute option OPEN (± slip).
 
 Live broker orders stay off (PaperBroker). BANKNIFTY waits until universe support.
 """
@@ -19,6 +19,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from src.broker_adapter import OrderIntent, PaperBroker, get_broker
+from src.clock_fill import choose_price, poll_pair_open
 from src.master_book import MasterBook
 from src.master_strategy import (
     ENTRY_CLOCK,
@@ -202,6 +203,35 @@ def collect_signals(market, scripts: tuple[str, ...], day: date) -> list[dict]:
     return cands
 
 
+def _pinned_open(
+    market,
+    script: str,
+    call_token: str,
+    put_token: str,
+    stamp: datetime,
+    pin: dict | None,
+    wait_seconds: float,
+    snapshot_label: str,
+) -> tuple[float | None, float | None, str]:
+    """14:05 / 15:00 prices. Candle open wins. A late job never uses a fresh LTP."""
+    spec = require_index(script)
+    call_candle, put_candle = poll_pair_open(
+        market, spec.fno_exchange, call_token, put_token, stamp, wait_seconds
+    )
+    armed = bool(pin and pin.get("stamped"))
+    call_snap = float(pin["call_ltp"]) if armed else None
+    put_snap = float(pin["put_ltp"]) if armed else None
+    call_px, call_src = choose_price(
+        call_candle, call_snap, armed=armed, snapshot_label=snapshot_label
+    )
+    put_px, put_src = choose_price(
+        put_candle, put_snap, armed=armed, snapshot_label=snapshot_label
+    )
+    if call_px is None or put_px is None or call_src != put_src:
+        return None, None, "missing"
+    return call_px, put_px, call_src
+
+
 def run_master_tick(
     market,
     book: MasterBook | None = None,
@@ -209,6 +239,9 @@ def run_master_tick(
     at: datetime | None = None,
     scripts: tuple[str, ...] = LIVE_SCRIPTS,
     candidates: list[dict] | None = None,
+    pinned_legs: dict | None = None,
+    exit_pin: dict | None = None,
+    open_wait: float = 25,
 ) -> list[str]:
     """One production tick. Safe to call every scan slot (~1–5 min).
 
@@ -228,11 +261,37 @@ def run_master_tick(
         pos = book.position
         sym = pos["script"]
         try:
-            marks = _position_marks(market, pos)
-            if marks is None:
-                call_px = put_px = None
+            fill_source = "ltp"
+            if exit_due(pos, at):
+                call_token = str(pos.get("call_token") or "")
+                put_token = str(pos.get("put_token") or "")
+                if call_token in ("", "hist") or put_token in ("", "hist"):
+                    expiry = date.fromisoformat(str(pos["expiry"])[:10])
+                    call = market.option_contract(sym, expiry, float(pos["strike"]), "CE")
+                    put = market.option_contract(sym, expiry, float(pos["strike"]), "PE")
+                    if not call or not put:
+                        lines.append(f"  open {sym}: 15:00 contracts missing — exit held")
+                        return lines
+                    call_token, put_token = call["token"], put["token"]
+                call_px, put_px, fill_source = _pinned_open(
+                    market,
+                    sym,
+                    call_token,
+                    put_token,
+                    datetime.combine(day, time(15, 0)),
+                    exit_pin,
+                    open_wait,
+                    "15:00 snapshot",
+                )
+                if call_px is None or put_px is None:
+                    lines.append(f"  open {sym}: 15:00 open not published yet — exit held")
+                    return lines
             else:
-                call_px, put_px = marks
+                marks = _position_marks(market, pos)
+                if marks is None:
+                    call_px = put_px = None
+                else:
+                    call_px, put_px = marks
             if call_px is None or put_px is None:
                 lines.append(f"  open {sym}: option marks unavailable")
             else:
@@ -262,8 +321,8 @@ def run_master_tick(
                             )
                 if exit_due(pos, at):
                     ce_x, pe_x = synth_exit_fills(pos["side"], call_px, put_px)
-                    msg = book.exit(day=day, call_px=ce_x, put_px=pe_x, clock=clock, why="time")
-                    lines.append(f"  {msg}")
+                    msg = book.exit(day=day, call_px=ce_x, put_px=pe_x, clock="15:00", why="time")
+                    lines.append(f"  {msg} | {fill_source}")
                     rem_qty = int(round(pos["qty"] * float(pos.get("remaining_frac") or 0)))
                     if rem_qty > 0:
                         if pos["side"] == "Buy":
@@ -311,11 +370,37 @@ def run_master_tick(
             lines.append("  entry window — no signal")
             return lines
         t0 = time_mod.perf_counter()
-        legs = _atm_legs(market, sig["script"], float(sig["spot"]), after=day)
+        if (
+            pinned_legs
+            and pinned_legs.get("script") == sig["script"]
+            and pinned_legs.get("call_token")
+            and pinned_legs.get("put_token")
+        ):
+            legs = pinned_legs
+        else:
+            legs = _atm_legs(market, sig["script"], float(sig["spot"]), after=day)
         if not legs:
             lines.append(f"  entry failed — ATM legs missing for {sig['script']}")
             return lines
-        ce_e, pe_e = synth_entry_fills(sig["side"], legs["call_ltp"], legs["put_ltp"])
+        ce_raw, pe_raw, fill_source = _pinned_open(
+            market,
+            sig["script"],
+            str(legs["call_token"]),
+            str(legs["put_token"]),
+            datetime.combine(day, time(14, 5)),
+            legs if legs.get("stamped") else None,
+            open_wait,
+            "14:05 snapshot",
+        )
+        if ce_raw is None or pe_raw is None:
+            lines.append(
+                f"  entry held — 14:05 open not published yet for {sig['script']}"
+            )
+            return lines
+        legs = dict(legs)
+        legs["call_ltp"] = ce_raw
+        legs["put_ltp"] = pe_raw
+        ce_e, pe_e = synth_entry_fills(sig["side"], ce_raw, pe_raw)
         msg = book.enter(
             script=sig["script"],
             tier=sig["tier"],
@@ -334,7 +419,7 @@ def run_master_tick(
             expiry=str(legs["expiry"]),
             lot_size=int(legs["lot_size"]),
         )
-        lines.append(f"  {msg}")
+        lines.append(f"  {msg} | {fill_source}")
         if book.is_open:
             _emit_orders(broker, sig["side"], legs, book.position["qty"], note="entry")
             _save_pending(None)

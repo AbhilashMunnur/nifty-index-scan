@@ -2,8 +2,8 @@
 
 Latency model (matches preferred backtest):
   - 14:00–14:04: after 14:00 bar closed, rank PCR; keep BASE signals only.
-  - 14:05–14:25: buy ATM CE (Buy) or PE (Sell) at LTP + size-slip.
-  - Next session from 15:00: sell at LTP − size-slip.
+  - 14:05: buy ATM CE (Buy) or PE (Sell) at the five-minute OPEN + size-slip.
+  - Next session 15:00: sell at the five-minute OPEN − size-slip.
   - Charges via leg_costs. Live broker orders stay off.
 """
 
@@ -16,6 +16,7 @@ from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
 
 from src.broker_adapter import OrderIntent, PaperBroker
+from src.clock_fill import choose_price, poll_bar_open
 from src.master_live import LIVE_SCRIPTS, _atm_legs, _position_marks, collect_signals
 from src.universe import require_index
 from src.master_strategy import ENTRY_CLOCK, EXIT_CLOCK, SIGNAL_CLOCK
@@ -79,6 +80,22 @@ def _leg_for_side(legs: dict, opt_side: str) -> tuple[str, str, float] | None:
     return None
 
 
+def _official_raw(
+    market,
+    script: str,
+    token: str,
+    stamp: datetime,
+    pin: dict | None,
+    wait_seconds: float,
+    snapshot_label: str,
+) -> tuple[float | None, str]:
+    spec = require_index(script)
+    candle = poll_bar_open(market, spec.fno_exchange, token, stamp, wait_seconds)
+    armed = bool(pin and pin.get("stamped"))
+    snapshot = float(pin["ltp"]) if armed and pin.get("ltp") is not None else None
+    return choose_price(candle, snapshot, armed=armed, snapshot_label=snapshot_label)
+
+
 def run_option_buy_tick(
     market,
     book: OptionBuyBook | None = None,
@@ -86,6 +103,9 @@ def run_option_buy_tick(
     at: datetime | None = None,
     scripts: tuple[str, ...] = LIVE_SCRIPTS,
     candidates: list[dict] | None = None,
+    pinned_legs: dict | None = None,
+    exit_pin: dict | None = None,
+    open_wait: float = 25,
 ) -> list[str]:
     """One option-buy paper tick. Safe to call every scan slot.
 
@@ -117,11 +137,26 @@ def run_option_buy_tick(
                 marks = _position_marks(market, pos)
                 if marks:
                     raw = marks[0] if pos["opt_side"] == "CE" else marks[1]
-            if raw is None:
-                lines.append(f"  open {sym}: {pos['opt_side']} mark unavailable")
-            elif exit_due(pos, at):
-                msg = book.exit(day=day, raw_open=raw, clock=clock, why="time")
-                lines.append(f"  {msg}")
+            if token in ("", "hist"):
+                expiry = date.fromisoformat(str(pos["expiry"])[:10])
+                contract = market.option_contract(sym, expiry, float(pos["strike"]), pos["opt_side"])
+                if contract:
+                    token = contract["token"]
+            if exit_due(pos, at):
+                raw, fill_source = _official_raw(
+                    market,
+                    sym,
+                    token,
+                    datetime.combine(day, time(15, 0)),
+                    exit_pin,
+                    open_wait,
+                    "15:00 snapshot",
+                )
+                if raw is None:
+                    lines.append(f"  open {sym}: 15:00 open not published yet — exit held")
+                    return lines
+                msg = book.exit(day=day, raw_open=raw, clock="15:00", why="time")
+                lines.append(f"  {msg} | {fill_source}")
                 broker.place(
                     OrderIntent(
                         "Sell",
@@ -134,6 +169,8 @@ def run_option_buy_tick(
                     )
                 )
                 _save_pending(None)
+            elif raw is None:
+                lines.append(f"  open {sym}: {pos['opt_side']} mark unavailable")
             else:
                 mark = raw - float(pos["slip"])
                 pts = mark - float(pos["entry"])
@@ -179,7 +216,15 @@ def run_option_buy_tick(
             lines.append("  entry window — no BASE signal")
             return lines
         t0 = time_mod.perf_counter()
-        legs = _atm_legs(market, sig["script"], float(sig["spot"]), after=day)
+        if (
+            pinned_legs
+            and pinned_legs.get("script") == sig["script"]
+            and pinned_legs.get("call_token")
+            and pinned_legs.get("put_token")
+        ):
+            legs = pinned_legs
+        else:
+            legs = _atm_legs(market, sig["script"], float(sig["spot"]), after=day)
         if not legs:
             lines.append(f"  entry failed — ATM legs missing for {sig['script']}")
             return lines
@@ -188,7 +233,22 @@ def run_option_buy_tick(
         if not got:
             lines.append(f"  entry failed — {opt} quote missing")
             return lines
-        symbol, token, raw = got
+        symbol, token, _stale = got
+        pin = None
+        if legs is pinned_legs and legs.get("stamped"):
+            pin = {"stamped": True, "ltp": _stale}
+        raw, fill_source = _official_raw(
+            market,
+            sig["script"],
+            token,
+            datetime.combine(day, time(14, 5)),
+            pin,
+            open_wait,
+            "14:05 snapshot",
+        )
+        if raw is None:
+            lines.append(f"  entry held — 14:05 open not published yet for {sig['script']}")
+            return lines
         msg = book.enter(
             script=sig["script"],
             signal_side=sig["side"],
@@ -204,7 +264,7 @@ def run_option_buy_tick(
             expiry=str(legs["expiry"]),
             lot_size=int(legs["lot_size"]),
         )
-        lines.append(f"  {msg}")
+        lines.append(f"  {msg} | {fill_source}")
         if book.is_open:
             broker.place(
                 OrderIntent(

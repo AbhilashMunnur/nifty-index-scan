@@ -1,20 +1,21 @@
 name: Master paper desks
 
 # Entry and exit must not wait for the 15-minute OI scan.
-# 14:05 IST places the paper entry. 15:00 IST places the paper exit.
-# The regular scan still runs the desks first as a backup.
+# The job starts two minutes early, then the script waits until the print.
+# 14:05 IST is the entry open. 15:00 IST is the exit open.
+# The regular scan still runs the desks first as a backup, at the same opens.
 on:
   schedule:
-    # 14:05 IST (08:35 UTC), weekdays
-    - cron: "35 8 * * 1-5"
-    # 15:00 IST (09:30 UTC), weekdays
-    - cron: "30 9 * * 1-5"
+    # 14:03 IST (08:33 UTC), weekdays. Script sleeps until 14:05:00.
+    - cron: "33 8 * * 1-5"
+    # 14:58 IST (09:28 UTC), weekdays. Script sleeps until 15:00:00.
+    - cron: "28 9 * * 1-5"
   workflow_dispatch:
 
 jobs:
   paper:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     concurrency:
       group: master-paper-desk
       cancel-in-progress: false
@@ -42,7 +43,7 @@ jobs:
 
       - name: Run paper desks
         id: paper
-        timeout-minutes: 4
+        timeout-minutes: 8
         run: python -u scripts/run_paper_desks.py
 
       - name: Save paper books
