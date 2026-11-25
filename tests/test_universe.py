@@ -16,14 +16,15 @@ from src.strikes import atm_band
 from src.universe import ALLOWED_SYMBOLS, UniverseError, require_index, validate_universe
 
 
-def test_only_nifty_and_sensex_are_allowed():
+def test_only_nifty_banknifty_and_sensex_are_allowed():
     assert require_index("nifty").symbol == "NIFTY"
+    assert require_index("banknifty").fno_exchange == "NFO"
     assert require_index("Sensex").symbol == "SENSEX"
-    assert validate_universe(["NIFTY", "SENSEX"]) == ["NIFTY", "SENSEX"]
+    assert validate_universe(["NIFTY", "BANKNIFTY", "SENSEX"]) == ["NIFTY", "BANKNIFTY", "SENSEX"]
 
 
 def test_stocks_and_other_indices_are_rejected():
-    for symbol in ("RELIANCE", "BANKNIFTY", "FINNIFTY", "BANKEX"):
+    for symbol in ("RELIANCE", "FINNIFTY", "BANKEX"):
         try:
             require_index(symbol)
             raise AssertionError(f"{symbol} should be rejected")
@@ -31,9 +32,16 @@ def test_stocks_and_other_indices_are_rejected():
             pass
 
 
+def test_paper_reads_banknifty_ahead_of_sensex_and_nifty():
+    from src.master_live import LIVE_SCRIPTS
+
+    assert LIVE_SCRIPTS == ("BANKNIFTY", "SENSEX", "NIFTY")
+
+
 def test_config_universe_is_locked():
     config = load_config()
-    assert config.universe == list(ALLOWED_SYMBOLS)
+    assert config.universe == ["NIFTY", "SENSEX"]
+    assert "BANKNIFTY" in ALLOWED_SYMBOLS
     assert config.mode in {"observe", "paper"}
     assert config.strategy_symbol == "NIFTY"
     assert config.strategy_symbols == ["NIFTY", "SENSEX"]

@@ -3,7 +3,8 @@
 # Live Angel One orders stay off.
 #
 # Master Strategy (paper): 14:00 PCR signal → 14:05 synthetic entry → next 15:00 exit;
-# filler soft PCR + 50%@TP1. BANKNIFTY live universe not wired yet (NIFTY+SENSEX only).
+# filler soft PCR + 50%@TP1. Paper reads NIFTY, BANKNIFTY, and SENSEX.
+# The 15-minute OI and futures board stays Nifty and Sensex.
 
 universe:
   - NIFTY

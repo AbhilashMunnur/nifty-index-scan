@@ -59,7 +59,7 @@ class Throttle:
 
 
 class IndexMarket:
-    """Quotes and nearest-expiry OI for NIFTY and SENSEX only."""
+    """Quotes and nearest-expiry OI for Nifty, BankNifty, and Sensex."""
 
     def __init__(self, auth: AngelOneAuth | None = None):
         self.auth = auth or AngelOneAuth()

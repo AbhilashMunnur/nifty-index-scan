@@ -1,10 +1,10 @@
-"""This project only watches Nifty 50 and Sensex — never stocks or other indices."""
+"""Nifty, BankNifty, and Sensex. Stocks and other indices stay out."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-ALLOWED_SYMBOLS = ("NIFTY", "SENSEX")
+ALLOWED_SYMBOLS = ("NIFTY", "BANKNIFTY", "SENSEX")
 
 
 @dataclass(frozen=True)
@@ -26,6 +26,14 @@ SPECS: dict[str, IndexSpec] = {
         future_type="FUTIDX",
         index_type="AMXIDX",
     ),
+    "BANKNIFTY": IndexSpec(
+        symbol="BANKNIFTY",
+        index_exchange="NSE",
+        fno_exchange="NFO",
+        option_type="OPTIDX",
+        future_type="FUTIDX",
+        index_type="AMXIDX",
+    ),
     "SENSEX": IndexSpec(
         symbol="SENSEX",
         index_exchange="BSE",
@@ -38,7 +46,7 @@ SPECS: dict[str, IndexSpec] = {
 
 
 class UniverseError(ValueError):
-    """Raised when a symbol outside NIFTY / SENSEX is requested."""
+    """Raised when a symbol outside Nifty, BankNifty, and Sensex is requested."""
 
 
 def normalize_symbol(symbol: str) -> str:

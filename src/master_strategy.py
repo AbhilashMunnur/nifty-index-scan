@@ -3,7 +3,7 @@
 Tier-1 BASE (priority over filler):
   NIFTY   extreme PCR: Buy if rank≤0.10, Sell if rank≥0.90
   SENSEX  aligned PCR: Buy if rank≤0.20, Sell if rank≥0.80
-  BANKNIFTY aligned (when live universe supports it): same as Sensex
+  BANKNIFTY aligned: same as Sensex
 
 Tier-2 FILLER (only if that script has no base signal that day):
   soft PCR: Buy if rank≤0.30, Sell if rank≥0.70

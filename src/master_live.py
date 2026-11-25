@@ -6,7 +6,7 @@ Latency model (matches backtest honesty as closely as live allows):
   - Intrabar (filler only): check TP1 partial on LTP marks.
   - Next session 15:00: exit remaining at the five-minute option OPEN (± slip).
 
-Live broker orders stay off (PaperBroker). BANKNIFTY waits until universe support.
+Live broker orders stay off (PaperBroker). Paper reads Nifty, BankNifty, and Sensex.
 """
 
 from __future__ import annotations
