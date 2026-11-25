@@ -90,8 +90,9 @@ def _official_raw(
     snapshot_label: str,
 ) -> tuple[float | None, str]:
     spec = require_index(script)
-    candle = poll_bar_open(market, spec.fno_exchange, token, stamp, wait_seconds)
     armed = bool(pin and pin.get("stamped"))
+    # The on-the-clock quote is the fill. A candle poll here would push the entry late.
+    candle = None if armed else poll_bar_open(market, spec.fno_exchange, token, stamp, wait_seconds)
     snapshot = float(pin["ltp"]) if armed and pin.get("ltp") is not None else None
     return choose_price(candle, snapshot, armed=armed, snapshot_label=snapshot_label)
 

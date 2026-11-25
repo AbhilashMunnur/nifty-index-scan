@@ -1,9 +1,8 @@
-"""Pin a paper fill to the 14:05 or 15:00 five-minute option open.
+"""Pin a paper fill to the 14:05 entry or the 15:00 exit.
 
-GitHub can start the job a minute late. The price that matches the backtest
-is the five-minute bar open, which does not change after the bar starts.
-A snapshot is used only when this process was waiting and woke on the clock,
-and the candle is not published yet.
+The desk is awake before the print. BankNifty, Sensex, and Nifty are scanned
+after 14:00, and the qualifying script is booked at 14:05:00. A job that
+misses that second still uses the 14:05 open. It does not use a later price.
 """
 
 from __future__ import annotations
@@ -28,6 +27,39 @@ def pick_bar_open(bars: list[dict], stamp: datetime) -> float | None:
         if px > 0:
             return px
     return None
+
+
+# The entry job is started at 13:50 so login and the three-script scan finish
+# before the print. The exit job is started at 14:50 for the same reason.
+ENTRY_ARM_FROM = clock(13, 40)
+ENTRY_AT = clock(14, 5)
+ENTRY_LATE_UNTIL = clock(14, 25)
+EXIT_ARM_FROM = clock(14, 40)
+EXIT_AT = clock(15, 0)
+
+
+def paper_phase(at: datetime) -> str:
+    """entry_arm, entry_late, exit_arm, or off.
+
+    entry_arm: process is up before 14:05. Scan, then fill at 14:05:00.
+    entry_late: already inside 14:05–14:25. Fill the 14:05 open, never a later price.
+    exit_arm: process is up before 15:00. Exit at 15:00:00.
+    """
+    t = at.time()
+    if ENTRY_ARM_FROM <= t < ENTRY_AT:
+        return "entry_arm"
+    if ENTRY_AT <= t <= ENTRY_LATE_UNTIL:
+        return "entry_late"
+    if EXIT_ARM_FROM <= t < EXIT_AT:
+        return "exit_arm"
+    return "off"
+
+
+def fill_wait(open_wait: float, armed: bool) -> float:
+    """A desk that woke on the clock already has the print. Do not sit on the candle."""
+    if armed:
+        return 0.0
+    return max(0.0, float(open_wait))
 
 
 def wait_until(

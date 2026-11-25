@@ -19,7 +19,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from src.broker_adapter import OrderIntent, PaperBroker, get_broker
-from src.clock_fill import choose_price, poll_pair_open
+from src.clock_fill import choose_price, fill_wait, poll_pair_open
 from src.master_book import MasterBook
 from src.master_strategy import (
     ENTRY_CLOCK,
@@ -229,12 +229,23 @@ def _pinned_open(
     wait_seconds: float,
     snapshot_label: str,
 ) -> tuple[float | None, float | None, str]:
-    """14:05 / 15:00 prices. Candle open wins. A late job never uses a fresh LTP."""
+    """14:05 / 15:00 prices. An on-the-clock snapshot is booked immediately.
+
+    A late job waits for the five-minute open and never uses a fresh LTP.
+    """
     spec = require_index(script)
-    call_candle, put_candle = poll_pair_open(
-        market, spec.fno_exchange, call_token, put_token, stamp, wait_seconds
-    )
     armed = bool(pin and pin.get("stamped"))
+    if armed:
+        call_candle = put_candle = None
+    else:
+        call_candle, put_candle = poll_pair_open(
+            market,
+            spec.fno_exchange,
+            call_token,
+            put_token,
+            stamp,
+            fill_wait(wait_seconds, armed),
+        )
     call_snap = float(pin["call_ltp"]) if armed else None
     put_snap = float(pin["put_ltp"]) if armed else None
     call_px, call_src = choose_price(

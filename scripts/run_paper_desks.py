@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT))
 from datetime import time as clock  # noqa: E402
 
 from src.broker_adapter import PaperBroker, get_broker  # noqa: E402
-from src.clock_fill import wait_until  # noqa: E402
+from src.clock_fill import paper_phase, wait_until  # noqa: E402
 from src.market import IndexMarket  # noqa: E402
 from src.master_book import MasterBook  # noqa: E402
 from src.master_live import (  # noqa: E402
@@ -33,9 +33,11 @@ from src.scan_slots import is_trading_day  # noqa: E402
 from src.seed_pcr_history import seed_master_pcr_history  # noqa: E402
 from src.universe import require_index  # noqa: E402
 
-# The runner is started a couple of minutes early, then this process waits
-# until the print. A late start still fills the bar open, not a later LTP.
+# The entry job starts at 13:50 and the exit job at 14:50. This process
+# finishes login and the three-script scan first, then waits for the print.
+# A start that misses 14:05 still fills that open, not a later price.
 OPEN_WAIT_SECONDS = 90
+SIGNAL_READY = clock(14, 0, 8)
 
 
 def _signal_for(day, pending: dict | None, candidates: list[dict] | None, pick) -> dict | None:
@@ -118,27 +120,30 @@ def main() -> None:
     if not is_trading_day(at.date()):
         print(f"{at:%d-%b %Y} is not an NSE session. Paper desks stay idle.")
         return
-    early_entry = clock(13, 58) <= at.time() < clock(14, 5)
-    early_exit = clock(14, 55) <= at.time() < clock(15, 0)
-    critical = early_entry or early_exit or (at.hour == 14 and at.minute <= 25) or (
-        at.hour == 15 and at.minute <= 10
-    )
-    if not critical:
+    phase = paper_phase(at)
+    in_exit_fill = clock(15, 0) <= at.time() <= clock(15, 10)
+    if phase == "off" and not in_exit_fill:
         added = seed_master_pcr_history()
         if any(added.values()):
             print("PCR seeded:", {k: v for k, v in added.items() if v})
     market = IndexMarket()
     try:
-        print(f"\nPaper desks @ {at:%d-%b %Y %H:%M:%S} IST | scripts={LIVE_SCRIPTS}")
+        print(f"\nPaper desks @ {at:%d-%b %Y %H:%M:%S} IST | scripts={LIVE_SCRIPTS} | {phase}")
         candidates = None
         pinned_synth = None
         pinned_opt = None
         exit_synth = None
         exit_opt = None
-        if early_entry or (at.hour == 14 and at.minute <= 25):
-            print("\n--- Master PCR collect (shared) ---")
+        if phase == "entry_arm":
+            print("Login and the instrument list finish before the 14:05 print.")
+            market.client
+            market._load_instruments()
+            if now_ist().time() < SIGNAL_READY:
+                print("Waiting until 14:00:08 IST so BankNifty, Sensex, and Nifty are read after that bar.")
+                wait_until(SIGNAL_READY, early_limit_s=25 * 60)
+            at = now_ist()
+            print("\n--- Master PCR collect (BankNifty, Sensex, Nifty) ---")
             candidates = collect_signals(market, LIVE_SCRIPTS, at.date())
-        if early_entry:
             day = at.date()
             pinned_synth = _legs_for(
                 market,
@@ -150,14 +155,30 @@ def main() -> None:
                 _signal_for(day, load_option_pending(), candidates, pick_base_signal),
                 day,
             )
-            print("Waiting for 14:05:00 IST so the fill is that print.")
-            if wait_until(clock(14, 5)):
-                pinned_synth = _restamp(market, pinned_synth)
-                pinned_opt = _restamp(market, pinned_opt)
-            at = now_ist()
-        elif early_exit:
-            print("Waiting for 15:00:00 IST so the exit is that print.")
-            if wait_until(clock(15, 0)):
+            if pinned_synth or pinned_opt:
+                names = []
+                if pinned_synth:
+                    names.append(f"synthetic {pinned_synth['script']}")
+                if pinned_opt:
+                    names.append(f"option-buy {pinned_opt['script']}")
+                print(
+                    "Chosen: "
+                    + ", ".join(names)
+                    + ". Waiting for 14:05:00 IST to take the position."
+                )
+                if wait_until(clock(14, 5), early_limit_s=10 * 60):
+                    if pinned_synth:
+                        pinned_synth = _restamp(market, pinned_synth)
+                    if pinned_opt:
+                        pinned_opt = _restamp(market, pinned_opt)
+                at = now_ist()
+        elif phase == "entry_late":
+            print("\n--- Master PCR collect (14:05 open is still the fill) ---")
+            candidates = collect_signals(market, LIVE_SCRIPTS, at.date())
+        elif phase == "exit_arm":
+            print("Login now, then wait for 15:00:00 IST so the exit is that print.")
+            market.client
+            if wait_until(clock(15, 0), early_limit_s=25 * 60):
                 exit_synth, exit_opt = _exit_pins(market)
             at = now_ist()
 
