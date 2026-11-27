@@ -113,6 +113,7 @@ class MasterBook:
         strike: int,
         expiry: str,
         lot_size: int,
+        entry_clock: str = "14:05",
     ) -> str:
         mpl = margin_per_lot(script, spot, lot_size)
         lots = lots_for(self.capital, mpl)
@@ -124,7 +125,7 @@ class MasterBook:
             "tier": tier,
             "side": side,
             "entry_date": _iso(day),
-            "entry_clock": "14:05",
+            "entry_clock": entry_clock,
             "exit_clock": "15:00",
             "spot_entry": round(float(spot), 2),
             "pcr": round(float(pcr), 4),

@@ -47,12 +47,12 @@ def summarise(book_name: str, taken: bool, readings: list[dict], trade: dict | N
         script = str(trade.get("script") or "")
         if book_name == "option_buy":
             return (
-                f"Position taken. Base {trade.get('signal_side') or ''} "
-                f"bought {trade.get('opt_side') or ''} {script} at rank {shown}."
+                f"Position taken. Entry {trade.get('entry_clock') or '14:05'}. "
+                f"Base {trade.get('signal_side') or ''} bought {trade.get('opt_side') or ''} {script} at rank {shown}."
             )
         return (
-            f"Position taken. {str(trade.get('tier') or '').title()} {trade.get('side') or ''} "
-            f"{script} at rank {shown}."
+            f"Position taken. Entry {trade.get('entry_clock') or '14:05'}. "
+            f"{str(trade.get('tier') or '').title()} {trade.get('side') or ''} {script} at rank {shown}."
         )
     if note:
         return note
@@ -139,6 +139,67 @@ def trade_opened_on(book, day: date) -> dict | None:
         if isinstance(trade, dict) and trade.get("entry_date") == iso:
             return trade
     return None
+
+
+def add_second_clock(
+    at: datetime,
+    readings: list[dict],
+    synthetic_book,
+    option_book,
+    synthetic_lines: list[str],
+    option_lines: list[str],
+    path: Path = PATH,
+) -> dict | None:
+    """Record the 15:00 base check on today's card. The 14:00 lines stay."""
+    if not readings or not (time(15, 0) <= at.time() <= time(15, 25)):
+        return None
+    body = _load(path)
+    days = [row for row in body.get("days") or [] if isinstance(row, dict)]
+    iso = at.date().isoformat()
+    current = next((row for row in days if row.get("day") == iso), None)
+    morning = list((current or {}).get("scripts") or [])
+    synthetic_trade = trade_opened_on(synthetic_book, at.date())
+    option_trade = trade_opened_on(option_book, at.date())
+    row = record_decision(
+        at.date(),
+        at,
+        morning,
+        synthetic_taken=synthetic_trade is not None,
+        synthetic_trade=synthetic_trade,
+        synthetic_note="" if synthetic_trade else note_from_lines(synthetic_lines),
+        option_taken=option_trade is not None,
+        option_trade=option_trade,
+        option_note="" if option_trade else note_from_lines(option_lines),
+        path=path,
+    )
+    saved = _load(path)
+    saved_days = [item for item in saved.get("days") or [] if isinstance(item, dict)]
+    for item in saved_days:
+        if item.get("day") != iso:
+            continue
+        item["scripts_1500"] = [
+            {
+                "script": reading.get("script"),
+                "spot": reading.get("spot"),
+                "pcr": reading.get("pcr"),
+                "rank": reading.get("rank"),
+                "tier": reading.get("tier") or "",
+                "side": reading.get("side") or "",
+                "expiry": reading.get("expiry") or "",
+                "reason": script_reason(
+                    str(reading.get("script") or ""),
+                    reading.get("rank"),
+                    reading.get("tier"),
+                    reading.get("side"),
+                ),
+            }
+            for reading in readings
+        ]
+        item["checked_at"] = at.strftime("%Y-%m-%d %H:%M:%S")
+    saved["updated_at"] = at.strftime("%Y-%m-%d %H:%M:%S")
+    saved["days"] = saved_days
+    path.write_text(json.dumps(saved, indent=2) + "\n", encoding="utf-8")
+    return row
 
 
 def commit_session(

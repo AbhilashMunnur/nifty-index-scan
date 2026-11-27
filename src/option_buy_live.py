@@ -3,6 +3,7 @@
 Latency model (matches preferred backtest):
   - 14:00–14:04: after 14:00 bar closed, rank PCR; keep BASE signals only.
   - 14:05: buy ATM CE (Buy) or PE (Sell) at the five-minute OPEN + size-slip.
+  - If this book is still flat, a 15:00 base rank is bought at the 15:05 open.
   - Next session 15:00: sell at the five-minute OPEN − size-slip.
   - Charges via leg_costs. Live broker orders stay off.
 """
@@ -19,7 +20,7 @@ from src.broker_adapter import OrderIntent, PaperBroker
 from src.clock_fill import choose_price, poll_bar_open
 from src.master_live import LIVE_SCRIPTS, _atm_legs, _position_marks, collect_signals
 from src.universe import require_index
-from src.master_strategy import ENTRY_CLOCK, EXIT_CLOCK, SIGNAL_CLOCK
+from src.master_strategy import ENTRY_CLOCK, EXIT_CLOCK, SIGNAL_CLOCK, second_entry_window
 from src.option_buy_book import OptionBuyBook
 from src.option_buy_strategy import (
     INTENT_LOG,
@@ -107,6 +108,7 @@ def run_option_buy_tick(
     pinned_legs: dict | None = None,
     exit_pin: dict | None = None,
     open_wait: float = 25,
+    fill_at: time | None = None,
 ) -> list[str]:
     """One option-buy paper tick. Safe to call every scan slot.
 
@@ -204,17 +206,26 @@ def run_option_buy_tick(
             lines.append("  no BASE option-buy signal today (filler ignored)")
         return lines
 
-    # --- entry window ---
-    if entry_window(at) and not book.entered_on(day):
-        sig = pending or _load_pending()
-        if not sig or sig.get("day") != day.isoformat():
-            if at.time() >= time(14, 5):
-                cands = candidates if candidates is not None else collect_signals(market, scripts, day)
-                sig = pick_base_signal(cands)
-                if sig:
-                    sig["day"] = day.isoformat()
+    # --- entry window (14:05, or 15:05 base only) ---
+    stamp_at = fill_at or time(14, 5)
+    second = stamp_at == time(15, 5)
+    window_open = second_entry_window(at) if second else entry_window(at)
+    if window_open and not book.entered_on(day):
+        if second:
+            sig = pick_base_signal(candidates or [])
+            if sig:
+                sig = dict(sig)
+                sig["day"] = day.isoformat()
+        else:
+            sig = pending or _load_pending()
+            if not sig or sig.get("day") != day.isoformat():
+                if at.time() >= time(14, 5):
+                    cands = candidates if candidates is not None else collect_signals(market, scripts, day)
+                    sig = pick_base_signal(cands)
+                    if sig:
+                        sig["day"] = day.isoformat()
         if not sig:
-            lines.append("  entry window — no BASE signal")
+            lines.append("  15:05 window — no BASE signal" if second else "  entry window — no BASE signal")
             return lines
         t0 = time_mod.perf_counter()
         if (
@@ -242,13 +253,13 @@ def run_option_buy_tick(
             market,
             sig["script"],
             token,
-            datetime.combine(day, time(14, 5)),
+            datetime.combine(day, stamp_at),
             pin,
             open_wait,
-            "14:05 snapshot",
+            f"{stamp_at.strftime('%H:%M')} snapshot",
         )
         if raw is None:
-            lines.append(f"  entry held — 14:05 open not published yet for {sig['script']}")
+            lines.append(f"  entry held — {stamp_at.strftime('%H:%M')} open not published yet for {sig['script']}")
             return lines
         msg = book.enter(
             script=sig["script"],
@@ -264,6 +275,7 @@ def run_option_buy_tick(
             strike=int(legs["strike"]),
             expiry=str(legs["expiry"]),
             lot_size=int(legs["lot_size"]),
+            entry_clock=stamp_at.strftime("%H:%M"),
         )
         lines.append(f"  {msg} | {fill_source}")
         if book.is_open:

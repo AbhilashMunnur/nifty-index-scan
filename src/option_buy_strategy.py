@@ -16,7 +16,7 @@ from datetime import date, datetime
 from src.master_strategy import ENTRY_WINDOW, EXIT_WINDOW_START, pick_signal
 from src.paths import ROOT
 
-NAME = "Master Option-Buy (BASE ONLY)"
+NAME = "Master Pro Buying"
 BOOK_PATH = ROOT / "data" / "option_buy_book.json"
 JOURNAL_NAME = "option_buy_journal.xlsx"
 PENDING_PATH = ROOT / "data" / "option_buy_pending_signal.json"

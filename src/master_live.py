@@ -3,6 +3,7 @@
 Latency model (matches backtest honesty as closely as live allows):
   - 14:00–14:04: after 14:00 bar is closed, compute PCR rank + tier/side (signal).
   - 14:05: enter at the five-minute option OPEN (± slip), not a later LTP.
+  - If this book is still flat, 15:00 base rank only, entered at the 15:05 open.
   - Intrabar (filler only): check TP1 partial on LTP marks.
   - Next session 15:00: exit remaining at the five-minute option OPEN (± slip).
 
@@ -26,13 +27,17 @@ from src.master_strategy import (
     EXIT_CLOCK,
     NAME,
     PCR_PATH,
+    PCR_PATH_1500,
     PRIORITY,
+    SECOND_ENTRY_CLOCK,
+    SECOND_SIGNAL_CLOCK,
     SIGNAL_CLOCK,
     WINGS,
     atm_strike,
     classify_tier,
     entry_window,
     exit_due,
+    second_entry_window,
     load_pcr_history,
     pick_signal,
     remember_pcr,
@@ -164,10 +169,21 @@ def _emit_orders(broker, side: str, legs: dict, qty: int, note: str) -> None:
         broker.place(intent)
 
 
-def collect_signals(market, scripts: tuple[str, ...], day: date) -> list[dict]:
+LAST_READINGS_1500: list[dict] = []
+
+
+def collect_signals(
+    market,
+    scripts: tuple[str, ...],
+    day: date,
+    *,
+    history_path: Path | None = None,
+    signal_clock: str = SIGNAL_CLOCK,
+) -> list[dict]:
     t0 = time_mod.perf_counter()
     prices = market.get_ltps(list(scripts))
-    hist = load_pcr_history()
+    path = history_path or PCR_PATH
+    hist = load_pcr_history(path)
     cands = []
     readings: list[dict] = []
     for sym in scripts:
@@ -209,12 +225,15 @@ def collect_signals(market, scripts: tuple[str, ...], day: date) -> list[dict]:
                     pcr=pcr,
                     spot=float(spot),
                     day=day.isoformat(),
-                    signal_clock=SIGNAL_CLOCK,
+                    signal_clock=signal_clock,
                 )
             )
-    save_pcr_history(hist)
-    global LAST_READINGS
-    LAST_READINGS = readings
+    save_pcr_history(hist, path)
+    global LAST_READINGS, LAST_READINGS_1500
+    if signal_clock == SECOND_SIGNAL_CLOCK:
+        LAST_READINGS_1500 = readings
+    else:
+        LAST_READINGS = readings
     _log_latency("collect_signals", t0, n=len(cands))
     return cands
 
@@ -269,6 +288,7 @@ def run_master_tick(
     pinned_legs: dict | None = None,
     exit_pin: dict | None = None,
     open_wait: float = 25,
+    fill_at: time | None = None,
 ) -> list[str]:
     """One production tick. Safe to call every scan slot (~1–5 min).
 
@@ -383,18 +403,28 @@ def run_master_tick(
             lines.append("  no Master signal today")
         return lines
 
-    # --- entry window ---
-    if entry_window(at) and not book.entered_on(day):
-        sig = pending or _load_pending()
-        if not sig or sig.get("day") != day.isoformat():
-            # Late join: compute signal now (still uses live PCR; prefer after 14:00)
-            if at.time() >= time(14, 5):
-                cands = candidates if candidates is not None else collect_signals(market, scripts, day)
-                sig = pick_signal(cands)
-                if sig:
-                    sig["day"] = day.isoformat()
+    # --- entry window (14:05, or 15:05 base only) ---
+    stamp_at = fill_at or time(14, 5)
+    second = stamp_at == time(15, 5)
+    window_open = second_entry_window(at) if second else entry_window(at)
+    if window_open and not book.entered_on(day):
+        if second:
+            bases = [c for c in (candidates or []) if c.get("tier") == "base"]
+            sig = pick_signal(bases)
+            if sig:
+                sig = dict(sig)
+                sig["day"] = day.isoformat()
+        else:
+            sig = pending or _load_pending()
+            if not sig or sig.get("day") != day.isoformat():
+                # Late join: compute signal now (still uses live PCR; prefer after 14:00)
+                if at.time() >= time(14, 5):
+                    cands = candidates if candidates is not None else collect_signals(market, scripts, day)
+                    sig = pick_signal(cands)
+                    if sig:
+                        sig["day"] = day.isoformat()
         if not sig:
-            lines.append("  entry window — no signal")
+            lines.append("  15:05 window — no base signal" if second else "  entry window — no signal")
             return lines
         t0 = time_mod.perf_counter()
         if (
@@ -414,14 +444,14 @@ def run_master_tick(
             sig["script"],
             str(legs["call_token"]),
             str(legs["put_token"]),
-            datetime.combine(day, time(14, 5)),
+            datetime.combine(day, stamp_at),
             legs if legs.get("stamped") else None,
             open_wait,
-            "14:05 snapshot",
+            f"{stamp_at.strftime('%H:%M')} snapshot",
         )
         if ce_raw is None or pe_raw is None:
             lines.append(
-                f"  entry held — 14:05 open not published yet for {sig['script']}"
+                f"  entry held — {stamp_at.strftime('%H:%M')} open not published yet for {sig['script']}"
             )
             return lines
         legs = dict(legs)
@@ -445,6 +475,7 @@ def run_master_tick(
             strike=int(legs["strike"]),
             expiry=str(legs["expiry"]),
             lot_size=int(legs["lot_size"]),
+            entry_clock=stamp_at.strftime("%H:%M"),
         )
         lines.append(f"  {msg} | {fill_source}")
         if book.is_open:

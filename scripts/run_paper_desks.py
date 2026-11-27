@@ -24,7 +24,7 @@ from src.master_live import (  # noqa: E402
     now_ist,
     run_master_tick,
 )
-from src.master_strategy import pick_signal  # noqa: E402
+from src.master_strategy import PCR_PATH_1500, SECOND_SIGNAL_CLOCK, pick_signal  # noqa: E402
 from src.option_buy_book import OptionBuyBook  # noqa: E402
 from src.option_buy_live import _load_pending as load_option_pending  # noqa: E402
 from src.option_buy_live import run_option_buy_tick  # noqa: E402
@@ -63,7 +63,7 @@ def _legs_for(market, sig: dict | None, day) -> dict | None:
     return legs
 
 
-def _restamp(market, legs: dict | None) -> dict | None:
+def _restamp(market, legs: dict | None, when: str = "14:05") -> dict | None:
     """Quote the already chosen contracts the moment the clock is reached."""
     if not legs:
         return None
@@ -79,7 +79,7 @@ def _restamp(market, legs: dict | None) -> dict | None:
     legs["put_ltp"] = float(put_px)
     legs["stamped"] = True
     print(
-        f"  14:05 snapshot {legs['script']} CE {legs['call_ltp']:.2f} "
+        f"  {when} snapshot {legs['script']} CE {legs['call_ltp']:.2f} "
         f"PE {legs['put_ltp']:.2f}"
     )
     return legs
@@ -115,13 +115,80 @@ def _exit_pins(market) -> tuple[dict | None, dict | None]:
     return syn_pin, ob_pin
 
 
+def _second_base(market, at):
+    """15:00 base check. A book that already traded today stays as it is."""
+    day = at.date()
+    print("\n--- 15:00 base check (filler at 15:00 is not taken) ---")
+    candidates = collect_signals(
+        market,
+        LIVE_SCRIPTS,
+        day,
+        history_path=PCR_PATH_1500,
+        signal_clock=SECOND_SIGNAL_CLOCK,
+    )
+    bases = [row for row in candidates if row.get("tier") == "base"]
+    syn = MasterBook()
+    ob = OptionBuyBook()
+    want_syn = not syn.is_open and not syn.entered_on(day)
+    want_opt = not ob.is_open and not ob.entered_on(day)
+    pinned_synth = _legs_for(market, _signal_for(day, None, bases, pick_signal), day) if want_syn else None
+    pinned_opt = _legs_for(market, _signal_for(day, None, bases, pick_base_signal), day) if want_opt else None
+    if pinned_synth or pinned_opt:
+        names = []
+        if pinned_synth:
+            names.append(f"synthetic {pinned_synth['script']}")
+        if pinned_opt:
+            names.append(f"option-buy {pinned_opt['script']}")
+        print("15:00 base: " + ", ".join(names) + ". Waiting for 15:05:00 IST.")
+        if wait_until(clock(15, 5), early_limit_s=10 * 60):
+            if pinned_synth:
+                pinned_synth = _restamp(market, pinned_synth, "15:05")
+            if pinned_opt:
+                pinned_opt = _restamp(market, pinned_opt, "15:05")
+        at = now_ist()
+    elif not bases:
+        print("15:00 base: no script qualified.")
+    synth_lines: list[str] = []
+    option_lines: list[str] = []
+    if want_syn:
+        print("\n--- Master Pro Synthetic 15:05 ---")
+        for line in run_master_tick(
+            market,
+            MasterBook(),
+            get_broker("paper"),
+            at,
+            candidates=bases,
+            pinned_legs=pinned_synth,
+            open_wait=OPEN_WAIT_SECONDS,
+            fill_at=clock(15, 5),
+        ):
+            print(line)
+            synth_lines.append(line)
+    if want_opt:
+        print("\n--- Master Pro Buying 15:05 ---")
+        for line in run_option_buy_tick(
+            market,
+            OptionBuyBook(),
+            PaperBroker(log_path=INTENT_LOG),
+            at,
+            candidates=bases,
+            pinned_legs=pinned_opt,
+            open_wait=OPEN_WAIT_SECONDS,
+            fill_at=clock(15, 5),
+        ):
+            print(line)
+            option_lines.append(line)
+    return at, synth_lines, option_lines
+
+
 def main() -> None:
     at = now_ist()
     if not is_trading_day(at.date()):
         print(f"{at:%d-%b %Y} is not an NSE session. Paper desks stay idle.")
         return
     phase = paper_phase(at)
-    in_exit_fill = clock(15, 0) <= at.time() <= clock(15, 10)
+    in_exit_fill = clock(15, 0) <= at.time() <= clock(15, 25)
+    run_second = phase == "exit_arm" or in_exit_fill
     if phase == "off" and not in_exit_fill:
         added = seed_master_pcr_history()
         if any(added.values()):
@@ -182,7 +249,7 @@ def main() -> None:
                 exit_synth, exit_opt = _exit_pins(market)
             at = now_ist()
 
-        print("\n--- Synthetic futures (base+filler) ---")
+        print("\n--- Master Pro Synthetic (14:00 base+filler) ---")
         synth_lines = []
         for line in run_master_tick(
             market,
@@ -197,7 +264,7 @@ def main() -> None:
             print(line)
             synth_lines.append(line)
 
-        print("\n--- Option-buy BASE ONLY ---")
+        print("\n--- Master Pro Buying (14:00 base) ---")
         option_lines = []
         for line in run_option_buy_tick(
             market,
@@ -212,8 +279,21 @@ def main() -> None:
             print(line)
             option_lines.append(line)
 
-        from src.master_live import LAST_READINGS
-        from src.paper_decision import commit_session
+        from src.master_live import LAST_READINGS, LAST_READINGS_1500
+        from src.paper_decision import add_second_clock, commit_session
+
+        if run_second:
+            at, extra_synth, extra_option = _second_base(market, at)
+            synth_lines.extend(extra_synth)
+            option_lines.extend(extra_option)
+            add_second_clock(
+                at,
+                LAST_READINGS_1500,
+                MasterBook(),
+                OptionBuyBook(),
+                synth_lines,
+                option_lines,
+            )
 
         commit_session(
             at,

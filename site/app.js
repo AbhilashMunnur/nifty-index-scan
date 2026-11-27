@@ -211,6 +211,10 @@ function decisionCard(decision) {
   }).join("");
   const synthetic = (decision.synthetic || {}).summary || "";
   const optionBuy = (decision.option_buy || {}).summary || "";
+  const later = (decision.scripts_1500 || []).map((row) => {
+    const expiry = row.expiry ? ` · rank uses expiry ${row.expiry}` : "";
+    return `<p class="meta">3 PM. ${row.reason || ""} PCR ${px(row.pcr)}${expiry}.</p>`;
+  }).join("");
   return `
     <article class="card">
       <header><div class="day-title">Paper check ${dayLabel(decision.day)}</div></header>
@@ -218,6 +222,7 @@ function decisionCard(decision) {
       <p><b>Synthetic.</b> ${synthetic}</p>
       <p><b>Option-buy.</b> ${optionBuy}</p>
       ${scripts}
+      ${later}
     </article>`;
 }
 

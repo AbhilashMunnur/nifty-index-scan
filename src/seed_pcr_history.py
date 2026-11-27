@@ -60,6 +60,50 @@ def _from_nifty_atm_5m(path: Path) -> dict[str, float]:
     return out
 
 
+def _from_parquet_clock(path: Path, column: str, clock: str | None = None) -> dict[str, float]:
+    out: dict[str, float] = {}
+    if not path.exists():
+        return out
+    try:
+        import pandas as pd
+    except ImportError:
+        return out
+    columns = ["day", column] if clock is None else ["day", "clock", column]
+    frame = pd.read_parquet(path, columns=columns)
+    if clock is not None:
+        frame = frame[frame["clock"].astype(str) == clock]
+    for row in frame.itertuples(index=False):
+        day = str(getattr(row, "day"))[:10]
+        val = getattr(row, column)
+        try:
+            number = float(val)
+        except (TypeError, ValueError):
+            continue
+        if day and number == number:
+            out[day] = number
+    return out
+
+
+def seed_master_pcr_history_1500(*, force: bool = False) -> dict[str, int]:
+    """Fill the 15:00 rank history. It is never written into the 14:00 file."""
+    from src.master_strategy import PCR_PATH_1500
+
+    hist = load_pcr_history(PCR_PATH_1500)
+    added = {s: 0 for s in PRIORITY}
+    warm = all(len(hist.get(s) or {}) >= 40 for s in PRIORITY)
+    if warm and not force:
+        return added
+    sx = _from_parquet_clock(OI_DIR / "sensex_oi_daily.parquet", "pcr_1500")
+    bn = _from_parquet_clock(OI_DIR / "banknifty_oi_daily.parquet", "pcr_1500")
+    nf = _from_parquet_clock(OI_DIR / "nifty_atm_oi_5m.parquet", "pcr", "15:00")
+    added["SENSEX"] = _merge(hist, "SENSEX", sx)
+    added["BANKNIFTY"] = _merge(hist, "BANKNIFTY", bn)
+    added["NIFTY"] = _merge(hist, "NIFTY", nf)
+    if any(added.values()) or force or not PCR_PATH_1500.exists():
+        save_pcr_history(hist, PCR_PATH_1500)
+    return added
+
+
 def seed_master_pcr_history(*, force: bool = False) -> dict[str, int]:
     """Fill missing days from archives. Returns counts added per script."""
     hist = load_pcr_history()

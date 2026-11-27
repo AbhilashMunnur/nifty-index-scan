@@ -14,6 +14,8 @@ Overlap (one trade/day): prefer any BASE, else FILLER; among scripts
 Timing (honest):
   Signal uses 14:00 index CLOSE + PCR rank.
   Entry window 14:05–14:25 at option OPEN (else LTP) ± slip.
+  If that book is still flat, a 15:00 PCR rank is checked on its own history.
+  Only a base rank at 15:00 is taken, at the 15:05 open.
   Exit next session from 15:00 at option OPEN (else LTP) ± slip.
   Filler only: book 50% if unrealized synthetic pts ≥ TP1
     (200 for Nifty, 500 for BN/Sensex). Remainder to time exit.
@@ -29,9 +31,10 @@ from pathlib import Path
 
 from src.paths import ROOT
 
-NAME = "Master Strategy"
+NAME = "Master Pro Synthetic"
 BOOK_PATH = ROOT / "data" / "master_strategy_book.json"
 PCR_PATH = ROOT / "data" / "master_pcr_history.json"
+PCR_PATH_1500 = ROOT / "data" / "master_pcr_history_1500.json"
 JOURNAL_NAME = "master_strategy_journal.xlsx"
 
 STARTING_CAPITAL = 100_000_000.0  # ₹10 Cr paper
@@ -43,7 +46,10 @@ MARGIN_FRAC = 0.12
 ENTRY_CLOCK = "14:05"
 SIGNAL_CLOCK = "14:00"
 EXIT_CLOCK = "15:00"
+SECOND_SIGNAL_CLOCK = "15:00"
+SECOND_ENTRY_CLOCK = "15:05"
 ENTRY_WINDOW = (time(14, 5), time(14, 25))
+SECOND_ENTRY_WINDOW = (time(15, 5), time(15, 25))
 EXIT_WINDOW_START = time(15, 0)
 
 # PCR thresholds
@@ -144,6 +150,10 @@ def pick_signal(candidates: list[dict]) -> dict | None:
 
 def entry_window(at: datetime) -> bool:
     return ENTRY_WINDOW[0] <= at.time() <= ENTRY_WINDOW[1]
+
+
+def second_entry_window(at: datetime) -> bool:
+    return SECOND_ENTRY_WINDOW[0] <= at.time() <= SECOND_ENTRY_WINDOW[1]
 
 
 def exit_due(position: dict, at: datetime) -> bool:

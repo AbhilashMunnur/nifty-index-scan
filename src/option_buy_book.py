@@ -105,6 +105,7 @@ class OptionBuyBook:
         strike: int,
         expiry: str,
         lot_size: int,
+        entry_clock: str = "14:05",
     ) -> str:
         sized = size_from_premium(raw_open, lot_size, script, STARTING_CAPITAL)
         if not sized:
@@ -119,7 +120,7 @@ class OptionBuyBook:
             "opt_side": opt_side,
             "action": "Buy",
             "entry_date": _iso(day),
-            "entry_clock": "14:05",
+            "entry_clock": entry_clock,
             "exit_clock": "15:00",
             "spot_entry": round(float(spot), 2),
             "pcr": round(float(pcr), 4),
