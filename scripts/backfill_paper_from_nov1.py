@@ -19,6 +19,8 @@ sys.path.insert(0, str(ROOT))
 
 from src.master_book import MasterBook  # noqa: E402
 from src.master_strategy import (  # noqa: E402
+    NAME as SYN_NAME,
+    PCR_PATH_1500,
     STARTING_CAPITAL,
     classify_tier,
     load_pcr_history,
@@ -30,14 +32,17 @@ from src.master_strategy import (  # noqa: E402
     tp1_for,
 )
 from src.option_buy_book import OptionBuyBook  # noqa: E402
+from src.option_buy_strategy import NAME as OB_NAME  # noqa: E402
 from src.option_buy_strategy import STARTING_CAPITAL as OB_START  # noqa: E402
 from src.option_buy_strategy import opt_side_for, pick_base_signal  # noqa: E402
 
 START = date(2026, 11, 1)
-SCRIPTS = ("SENSEX", "NIFTY")  # same universe the live paper desk can trade
+TODAY = date(2026, 11, 27)
+SCRIPTS = ("BANKNIFTY", "SENSEX", "NIFTY")
 PARQUET = {
     "NIFTY": ROOT / "data/fyers/nifty_opt_atm6_5m.parquet",
     "SENSEX": ROOT / "data/fyers/sensex_opt_atm6_5m.parquet",
+    "BANKNIFTY": ROOT / "data/fyers/banknifty_opt_atm6_5m.parquet",
 }
 
 
@@ -66,7 +71,7 @@ def load_script(script: str) -> pd.DataFrame:
 
 
 def session_days(df: pd.DataFrame) -> list[date]:
-    bars = df[(df["clock"] == "14:05") & (df["wing"] == 0) & (df["day"] >= START)]
+    bars = df[(df["day"] >= START) & (df["clock"].isin(("14:05", "15:05", "15:00")))]
     return sorted(set(bars["day"]))
 
 
@@ -152,7 +157,8 @@ def symbol(script: str, expiry: date, strike: int, opt: str) -> str:
     return f"{script}{expiry.strftime('%d%b%y').upper()}{strike}{opt}"
 
 
-def reset(book, started: str, capital: float) -> None:
+def reset(book, started: str, capital: float, name: str) -> None:
+    book.name = name
     book.started_on = started
     book.starting_capital = capital
     book.capital = capital
@@ -198,38 +204,48 @@ def _exit_if_due(book, frames, days, day: date, kind: str) -> bool:
 
 def backfill() -> None:
     hist = load_pcr_history()
+    hist1500 = load_pcr_history(PCR_PATH_1500)
     frames = {s: load_script(s) for s in SCRIPTS}
     days = {s: session_days(frames[s]) for s in SCRIPTS}
-    # Union calendar so each book steps through every session either script traded.
     calendar = sorted(set().union(*days.values()))
     print("Sessions", [d.isoformat() for d in calendar])
 
     syn = MasterBook()
     ob = OptionBuyBook()
-    reset(syn, "2026-11-01", STARTING_CAPITAL)
-    reset(ob, "2026-11-01", OB_START)
+    reset(syn, "2026-11-01", STARTING_CAPITAL, SYN_NAME)
+    reset(ob, "2026-11-01", OB_START, OB_NAME)
 
     for day in calendar:
-        # Exit only on that script's next session, and do not re-enter the same day.
-        # Live entry is 14:05 while the prior trade is still open until 15:00.
+        # 14:05 cannot use cash that is still in a trade until 15:00.
+        # A 15:05 base entry is after that exit, so it is allowed.
         syn_exited = _exit_if_due(syn, frames, days, day, kind="syn")
         ob_exited = _exit_if_due(ob, frames, days, day, kind="ob")
         cands = candidates(hist, day)
+        syn_entered = False
+        ob_entered = False
         if not syn.is_open and not syn_exited:
             sig = pick_signal(cands)
             if sig:
-                _enter_syn(syn, frames, sig, day)
+                syn_entered = _enter_syn(syn, frames, sig, day, "14:05")
         if not ob.is_open and not ob_exited:
             sig = pick_base_signal(cands)
             if sig:
-                _enter_ob(ob, frames, sig, day)
+                ob_entered = _enter_ob(ob, frames, sig, day, "14:05")
+        late = [row for row in candidates(hist1500, day) if row["tier"] == "base"]
+        if not syn.is_open and not syn_entered:
+            sig = pick_signal(late)
+            if sig:
+                _enter_syn(syn, frames, sig, day, "15:05")
+        if not ob.is_open and not ob_entered:
+            sig = pick_base_signal(late)
+            if sig:
+                _enter_ob(ob, frames, sig, day, "15:05")
 
-    # Drop a position whose exit session is already in the past but missing.
     for book in (syn, ob):
         if book.is_open:
             entry = date.fromisoformat(book.position["entry_date"])
             nxt = next_session(days[book.position["script"]], entry)
-            if nxt is None or nxt <= date(2026, 11, 21):
+            if nxt is None or nxt <= TODAY:
                 print("Dropping unexited", book.name, book.position["script"], entry, "next", nxt)
                 book.position = None
 
@@ -251,7 +267,8 @@ def _try_partial(book: MasterBook, df: pd.DataFrame, pos: dict, entry: date, exi
     strike = int(pos["strike"])
     expiry = date.fromisoformat(str(pos["expiry"])[:10])
     bars = df[(df["expiry"] == expiry) & (df["strike"] == strike)].copy()
-    bars = bars[((bars["day"] > entry) | ((bars["day"] == entry) & (bars["clock"] > "14:05")))]
+    start_clock = str(pos.get("entry_clock") or "14:05")
+    bars = bars[((bars["day"] > entry) | ((bars["day"] == entry) & (bars["clock"] > start_clock)))]
     bars = bars[(bars["day"] < exit_day) | ((bars["day"] == exit_day) & (bars["clock"] <= "15:00"))]
     bars = bars.sort_values(["day", "clock"])
     ce = bars[bars["side"] == "CE"][["day", "clock", "open"]].rename(columns={"open": "ce"})
@@ -265,11 +282,11 @@ def _try_partial(book: MasterBook, df: pd.DataFrame, pos: dict, entry: date, exi
             return
 
 
-def _enter_syn(book: MasterBook, frames, sig: dict, day: date) -> None:
-    q = atm_quote(frames[sig["script"]], day, "14:05")
+def _enter_syn(book: MasterBook, frames, sig: dict, day: date, clock: str) -> bool:
+    q = atm_quote(frames[sig["script"]], day, clock)
     if not q:
-        print("  synthetic skip, no 14:05 ATM", sig["script"], day)
-        return
+        print(f"  synthetic skip, no {clock} ATM", sig["script"], day)
+        return False
     ce, pe = synth_entry_fills(sig["side"], q["ce"], q["pe"])
     print(
         " ",
@@ -290,15 +307,17 @@ def _enter_syn(book: MasterBook, frames, sig: dict, day: date) -> None:
             strike=q["strike"],
             expiry=q["expiry"].isoformat(),
             lot_size=lot_size(sig["script"], day),
+            entry_clock=clock,
         ),
     )
+    return book.is_open
 
 
-def _enter_ob(book: OptionBuyBook, frames, sig: dict, day: date) -> None:
-    q = atm_quote(frames[sig["script"]], day, "14:05")
+def _enter_ob(book: OptionBuyBook, frames, sig: dict, day: date, clock: str) -> bool:
+    q = atm_quote(frames[sig["script"]], day, clock)
     if not q:
-        print("  option-buy skip, no 14:05 ATM", sig["script"], day)
-        return
+        print(f"  option-buy skip, no {clock} ATM", sig["script"], day)
+        return False
     opt = opt_side_for(sig["side"])
     raw = q["ce"] if opt == "CE" else q["pe"]
     print(
@@ -317,8 +336,10 @@ def _enter_ob(book: OptionBuyBook, frames, sig: dict, day: date) -> None:
             strike=q["strike"],
             expiry=q["expiry"].isoformat(),
             lot_size=lot_size(sig["script"], day),
+            entry_clock=clock,
         ),
     )
+    return book.is_open
 
 
 if __name__ == "__main__":
