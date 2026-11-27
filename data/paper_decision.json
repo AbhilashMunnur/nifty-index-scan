@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-26 14:16:01",
+  "updated_at": "2026-11-27 14:19:41",
   "days": [
     {
       "day": "2026-11-23",
@@ -111,6 +111,50 @@
       "option_buy": {
         "taken": false,
         "summary": "No position. BankNifty 50.8% is outside base 20/80 and filler 30/70. Sensex 49.1% is outside base 20/80 and filler 30/70. Nifty 66.1% is outside base 10/90 and filler 30/70."
+      }
+    },
+    {
+      "day": "2026-11-27",
+      "checked_at": "2026-11-27 14:19:41",
+      "scripts": [
+        {
+          "script": "BANKNIFTY",
+          "spot": 63255.75,
+          "pcr": 0.9866,
+          "rank": 0.6102,
+          "tier": "",
+          "side": "",
+          "expiry": "2026-12-29",
+          "reason": "BankNifty 61.0% is outside base 20/80 and filler 30/70."
+        },
+        {
+          "script": "SENSEX",
+          "spot": 83618.44,
+          "pcr": 0.7658,
+          "rank": 0.339,
+          "tier": "",
+          "side": "",
+          "expiry": "2026-12-03",
+          "reason": "Sensex 33.9% is outside base 20/80 and filler 30/70."
+        },
+        {
+          "script": "NIFTY",
+          "spot": 25688.4,
+          "pcr": 0.6734,
+          "rank": 0.3559,
+          "tier": "",
+          "side": "",
+          "expiry": "2026-12-01",
+          "reason": "Nifty 35.6% is outside base 10/90 and filler 30/70."
+        }
+      ],
+      "synthetic": {
+        "taken": false,
+        "summary": "No position. BankNifty 61.0% is outside base 20/80 and filler 30/70. Sensex 33.9% is outside base 20/80 and filler 30/70. Nifty 35.6% is outside base 10/90 and filler 30/70."
+      },
+      "option_buy": {
+        "taken": false,
+        "summary": "No position. BankNifty 61.0% is outside base 20/80 and filler 30/70. Sensex 33.9% is outside base 20/80 and filler 30/70. Nifty 35.6% is outside base 10/90 and filler 30/70."
       }
     }
   ]
